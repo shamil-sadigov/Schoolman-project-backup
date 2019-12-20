@@ -1,0 +1,10 @@
+Infrasctruecture
+
+- Create AppUser
+- Create Role
+- Create DbContext
+- Create Dependency Extension method
+- Do first Migration To MySQL
+- Create IUserManagerService in Core
+- Implement it in Infrastructure
+- Create Result in Core

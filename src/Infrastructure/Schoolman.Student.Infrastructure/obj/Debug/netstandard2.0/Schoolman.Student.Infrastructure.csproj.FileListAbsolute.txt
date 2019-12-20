@@ -1,0 +1,8 @@
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\bin\Debug\netstandard2.0\Schoolman.Student.Infrastructure.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\bin\Debug\netstandard2.0\Schoolman.Student.Infrastructure.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\bin\Debug\netstandard2.0\Schoolman.Student.Infrastructure.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Infrastructure\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.pdb
