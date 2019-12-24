@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace Schoolman.Student.Infrastructure.Helpers
 {
-    public static class AuthExtensions
+    internal static class AuthExtensions
     {
-        public static async Task<(string jwt, string refresh)> GenerateTokensAsync<Tuser> 
-            (this IAuthTokenManager<Tuser> tokenManager , Tuser user) where Tuser: class
+        /// <summary>
+        /// Returns bytes of secret keywork in ASCI 
+        /// </summary>
+        /// <param name="securityKey"></param>
+        /// <returns></returns>
+        public static byte[] GetBytes(this string securityKey)
         {
-            var jwt = tokenManager.GenerateJWT(user);
-            var refreshToken = await tokenManager.GenerateRefreshTokenAsync(jwt);
-            return (jwt, refreshToken);
-        } 
+            return Encoding.ASCII.GetBytes(securityKey);
+        }
     }
 }

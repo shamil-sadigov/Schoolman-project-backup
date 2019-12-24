@@ -65,17 +65,17 @@ namespace Schoolman.Student.Infrastructure.Services
             if(string.IsNullOrEmpty(options.Email))
                 return (Result.Failure("Email is not valid"), null);
 
-            // Check Email
+            // Check user by Email
             var user = await userManager.FindByEmailAsync(options.Email);
             if(user == null)
                 return (Result.Failure("User doesn't exists"), null);
 
-            // Check Password
+            // Check if Password valid
             if (!string.IsNullOrEmpty(options.Password))
                 if (!await userManager.CheckPasswordAsync(user, options.Password))
                     return (Result.Failure("Password is not valid"), null);
 
-            // Check email confirmed
+            // Check if email confirmed
             if (options.ConfirmedEmail)
                 if (!await userManager.IsEmailConfirmedAsync(user))
                     return (Result.Failure("Email is not confirmed"), null);

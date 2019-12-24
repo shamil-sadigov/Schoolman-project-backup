@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Schoolman.Student.Infrastructure.Data.Identity;
 using System;
 
 namespace Schoolman.Student.Infrastructure
 {
     public class UserDataContext : IdentityDbContext<AppUser, AppRole, string>
     {
-
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public UserDataContext(DbContextOptions<UserDataContext> ops) : base(ops)
         {
            

@@ -10,22 +10,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        string GenerateJWT(T_user user);
-
-        /// <summary>
-        /// Generates refresh token for specified jwt Token and save it in database
-        /// </summary>
-        /// <param name="jwt"></param>
-        /// <returns></returns>
-        Task<string> GenerateRefreshTokenAsync(string jwt);
-
-        /// <summary>
-        /// Check whether jwt and refresh tokens are valid
-        /// </summary>
-        /// <param name="refreshToken"></param>
-        /// <param name="jwt"></param>
-        /// <returns></returns>
-        Task<Result> CheckRefreshToken(string refreshToken, string jwt);
+        Task<(string jwt, string refreshToken)> GenerateTokens(T_user user);
 
         /// <summary>
         /// Get tokens and refresh
@@ -33,6 +18,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// <param name="jwt"></param>
         /// <param name="refreshToken"></param>
         /// <returns></returns>
-        Task<(string jwt, string refreshToken)> RefreshTokens(string jwt, string refreshToken);
+        Task<(Result result, string jwt, string refreshToken)> RefreshTokens(string jwt, string refreshToken);
     }
 }

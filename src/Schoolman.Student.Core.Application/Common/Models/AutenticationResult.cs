@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Schoolman.Student.Core.Application
+namespace Schoolman.Student.Core.Application.Models
 {
     /// <summary>
     /// Authentication result that is used in Authentication Serivce
