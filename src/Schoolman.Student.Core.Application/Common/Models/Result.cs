@@ -10,7 +10,7 @@ namespace Schoolman.Student.Core.Application
         public bool Succeeded { get; private set; }
         public string[] Errors { get; private set; }
 
-        private Result(bool succeeded, string[] errors)
+        protected Result(bool succeeded, string[] errors)
             => (Succeeded, Errors) = (succeeded, errors);
 
         public static Result Success()=>

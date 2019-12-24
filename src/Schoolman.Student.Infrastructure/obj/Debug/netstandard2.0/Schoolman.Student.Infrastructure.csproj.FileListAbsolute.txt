@@ -14,3 +14,6 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.I
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.AssemblyInfo.cs
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Infrastructure\bin\Debug\netstandard2.0\Schoolman.Student.Core.Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Infrastructure\bin\Debug\netstandard2.0\Schoolman.Student.Core.Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Infrastructure\obj\Debug\netstandard2.0\Schoolman.Student.Infrastructure.csproj.CopyComplete

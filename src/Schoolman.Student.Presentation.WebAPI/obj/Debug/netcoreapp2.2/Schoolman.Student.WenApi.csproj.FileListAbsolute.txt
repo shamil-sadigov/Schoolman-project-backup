@@ -36,3 +36,5 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.P
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Presentation.WebAPI\obj\Debug\netcoreapp2.2\Schoolman.Student.WenApi.csproj.CopyComplete
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Presentation.WebAPI\obj\Debug\netcoreapp2.2\Schoolman.Student.WenApi.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Presentation.WebAPI\obj\Debug\netcoreapp2.2\Schoolman.Student.WenApi.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Presentation.WebAPI\bin\Debug\netcoreapp2.2\Schoolman.Student.Core.Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Schoolman.Student.Presentation.WebAPI\bin\Debug\netcoreapp2.2\Schoolman.Student.Core.Application.pdb

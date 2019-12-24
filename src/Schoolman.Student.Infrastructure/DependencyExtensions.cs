@@ -12,7 +12,6 @@ namespace Schoolman.Student.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-
             services.AddIdentity<AppUser, AppRole>(ops =>
             {
                 ops.User.RequireUniqueEmail = true;
@@ -21,7 +20,6 @@ namespace Schoolman.Student.Infrastructure
                 ops.SignIn.RequireConfirmedPhoneNumber = false;
             })
             .AddEntityFrameworkStores<UserDataContext>();
-
 
             services.AddDbContext<UserDataContext>(ops =>
             {
@@ -32,11 +30,8 @@ namespace Schoolman.Student.Infrastructure
 #endif
             });
 
-            services.AddScoped<IUserService, UserService>();
-
-
-
-
+            services.AddScoped<IUserService<AppUser>, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
     }
 }

@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Schoolman.Student.Infrastructure
 {
-    public class AppUser:IdentityUser<Guid>
+    public class AppUser:IdentityUser<string>
     {
         public AppUser()
         {
 
         }
+
         public AppUser(string email, string userName)
         {
             this.Email = email;

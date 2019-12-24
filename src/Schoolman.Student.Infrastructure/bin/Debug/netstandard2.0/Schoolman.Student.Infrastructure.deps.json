@@ -13,7 +13,8 @@
           "Microsoft.EntityFrameworkCore.Relational": "2.2.6",
           "Microsoft.EntityFrameworkCore.Tools": "2.2.6",
           "NETStandard.Library": "2.0.3",
-          "Pomelo.EntityFrameworkCore.MySql": "2.2.6"
+          "Pomelo.EntityFrameworkCore.MySql": "2.2.6",
+          "Schoolman.Student.Core.Application": "1.0.0"
         },
         "runtime": {
           "Schoolman.Student.Infrastructure.dll": {}
@@ -979,6 +980,11 @@
             "fileVersion": "4.6.24705.1"
           }
         }
+      },
+      "Schoolman.Student.Core.Application/1.0.0": {
+        "runtime": {
+          "Schoolman.Student.Core.Application.dll": {}
+        }
       }
     }
   },
@@ -1603,6 +1609,11 @@
       "sha512": "sha512-npvJkVKl5rKXrtl1Kkm6OhOUaYGEiF9wFbppFRWSMoApKzt2PiPHT2Bb8a5sAWxprvdOAtvaARS9QYMznEUtug==",
       "path": "system.threading.tasks.extensions/4.3.0",
       "hashPath": "system.threading.tasks.extensions.4.3.0.nupkg.sha512"
+    },
+    "Schoolman.Student.Core.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

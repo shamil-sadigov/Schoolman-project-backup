@@ -5,12 +5,12 @@ using System;
 
 namespace Schoolman.Student.Infrastructure
 {
-    public class UserDataContext : IdentityDbContext<AppUser, AppRole, Guid>
+    public class UserDataContext : IdentityDbContext<AppUser, AppRole, string>
     {
 
         public UserDataContext(DbContextOptions<UserDataContext> ops) : base(ops)
         {
-
+           
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

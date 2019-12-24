@@ -3,7 +3,7 @@ using System;
 
 namespace Schoolman.Student.Infrastructure
 {
-    public class AppRole:IdentityRole<Guid>
+    public class AppRole:IdentityRole<string>
     {
 
     }

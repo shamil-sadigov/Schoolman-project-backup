@@ -175,11 +175,20 @@
           "System.Runtime": "4.3.0"
         }
       },
+      "Schoolman.Student.Core.Application/1.0.0": {
+        "runtime": {
+          "Schoolman.Student.Core.Application.dll": {}
+        },
+        "compile": {
+          "Schoolman.Student.Core.Application.dll": {}
+        }
+      },
       "Schoolman.Student.Infrastructure/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "2.2.0",
           "Microsoft.EntityFrameworkCore.Relational": "2.2.6",
-          "Pomelo.EntityFrameworkCore.MySql": "2.2.6"
+          "Pomelo.EntityFrameworkCore.MySql": "2.2.6",
+          "Schoolman.Student.Core.Application": "1.0.0"
         },
         "runtime": {
           "Schoolman.Student.Infrastructure.dll": {}
@@ -3389,6 +3398,11 @@
       "sha512": "sha512-Yn/WfYe9RoRfmSLvUt2JerP0BTGGykCZkQPgojaxgzF2N0oPo+/AhB8TXOpdCcNlrG3VRtsamtK2uzsp3cqRVw==",
       "path": "system.linq.queryable/4.0.1",
       "hashPath": "system.linq.queryable.4.0.1.nupkg.sha512"
+    },
+    "Schoolman.Student.Core.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Schoolman.Student.Infrastructure/1.0.0": {
       "type": "project",
