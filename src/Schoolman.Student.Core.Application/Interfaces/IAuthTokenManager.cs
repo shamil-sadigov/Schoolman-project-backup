@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Schoolman.Student.Core.Application.Models;
+using System.Threading.Tasks;
 
 namespace Schoolman.Student.Core.Application.Interfaces
 {
@@ -10,7 +11,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<(string jwt, string refreshToken)> GenerateTokens(T_user user);
+        Task<AuthResult> GenerateAuthTokens(T_user user);
 
         /// <summary>
         /// Get tokens and refresh
@@ -18,6 +19,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// <param name="jwt"></param>
         /// <param name="refreshToken"></param>
         /// <returns></returns>
-        Task<(Result result, string jwt, string refreshToken)> RefreshTokens(string jwt, string refreshToken);
+        Task<AuthResult> RefreshTokens(string jwt, string refreshToken);
     }
 }

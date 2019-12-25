@@ -71,8 +71,8 @@ namespace Schoolman.Student.Infrastructure.Services
                 return (Result.Failure("User doesn't exists"), null);
 
             // Check if Password valid
-            if (!string.IsNullOrEmpty(options.Password))
-                if (!await userManager.CheckPasswordAsync(user, options.Password))
+            if (!string.IsNullOrEmpty(options.PasswordToConfirm))
+                if (!await userManager.CheckPasswordAsync(user, options.PasswordToConfirm))
                     return (Result.Failure("Password is not valid"), null);
 
             // Check if email confirmed

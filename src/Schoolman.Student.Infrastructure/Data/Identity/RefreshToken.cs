@@ -9,10 +9,10 @@ namespace Schoolman.Student.Infrastructure.Data.Identity
 {
     public class RefreshToken
     {
-        public Guid Token { get;set; } 
+        public string Token { get;set; } 
         public string JwtId { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Expires { get; set; }
+        public DateTimeOffset Expires { get; set; }
         
         public string UserId { get; set; }
         public AppUser User { get; set; }

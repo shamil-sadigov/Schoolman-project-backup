@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Schoolman.Student.Core.Application.Models;
+using System.Threading.Tasks;
 
 namespace Schoolman.Student.Core.Application.Interfaces
 {

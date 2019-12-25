@@ -1,11 +1,13 @@
 ﻿using Schoolman.Student.Core.Application;
-using Schoolman.Student.Core.Application.Helpers;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System.Threading.Tasks;
 
 namespace Schoolman.Student.Infrastructure.Services
 {
+    /// <summary>
+    /// Service for user authentication
+    /// </summary>
     public class AuthService : IAuthService
     {
         private readonly IUserService<AppUser> userService;
@@ -44,14 +46,14 @@ namespace Schoolman.Student.Infrastructure.Services
             var (result, user) =  await userService.FindAsync(with =>
                                                                {
                                                                     with.Email = email;
-                                                                    with.Password= password;
+                                                                    with.PasswordToConfirm = password;
                                                                     with.ConfirmedEmail = true;
                                                                });
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
                                                                     // Extension method
-            (string jwt, string refresh_token) = await tokenManager.GenerateTokens(user);
+            (string jwt, string refresh_token) = await tokenManager.GenerateAuthTokens(user);
 
             return AuthResult.Success(jwt, refresh_token);
         }
