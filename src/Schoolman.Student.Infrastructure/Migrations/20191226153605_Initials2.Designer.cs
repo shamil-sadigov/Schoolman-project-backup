@@ -9,8 +9,8 @@ using Schoolman.Student.Infrastructure;
 namespace Schoolman.Student.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDataContext))]
-    [Migration("20191223112538_Initial")]
-    partial class Initial
+    [Migration("20191226153605_Initials2")]
+    partial class Initials2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -141,6 +141,10 @@ namespace Schoolman.Student.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -174,6 +178,28 @@ namespace Schoolman.Student.Infrastructure.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Schoolman.Student.Infrastructure.Data.Identity.RefreshToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<DateTimeOffset>("Expires");
+
+                    b.Property<string>("Jti")
+                        .IsRequired();
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -218,6 +244,14 @@ namespace Schoolman.Student.Infrastructure.Migrations
                     b.HasOne("Schoolman.Student.Infrastructure.AppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Schoolman.Student.Infrastructure.Data.Identity.RefreshToken", b =>
+                {
+                    b.HasOne("Schoolman.Student.Infrastructure.AppUser", "User")
+                        .WithOne()
+                        .HasForeignKey("Schoolman.Student.Infrastructure.Data.Identity.RefreshToken", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

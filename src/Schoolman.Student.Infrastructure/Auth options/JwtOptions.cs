@@ -1,7 +1,10 @@
 ﻿using System;
 
-namespace Schoolman.Student.Infrastructure.Services
+namespace Schoolman.Student.Infrastructure.AuthOptions
 {
+    /// <summary>
+    /// Jwt Options that should be configure in Startup.cs and appsettings.json
+    /// </summary>
     public class JwtOptions
     {
         public string SecretKey { get; set; }

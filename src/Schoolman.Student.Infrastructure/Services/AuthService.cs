@@ -13,9 +13,11 @@ namespace Schoolman.Student.Infrastructure.Services
         private readonly IUserService<AppUser> userService;
         private readonly IAuthTokenManager<AppUser> tokenManager;
 
-        public AuthService(IUserService<AppUser> userService)
+        public AuthService(IUserService<AppUser> userService,
+                           IAuthTokenManager<AppUser> tokenManager)
         {
             this.userService = userService;
+            this.tokenManager = tokenManager;
         }
 
         /// <summary>
@@ -26,14 +28,18 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<Result> RegisterAsync(string email, string password)
         {
-            var (result, newUser) = await userService.CreateUserAsync(email, password);
+            var (result, newUser) = await userService.CreateUser(email, password);
 
             if (!result.Succeeded)
                 return result;
 
+
+
+
+
+            //userService.SendConfirmationMail();
             return Result.Success();
         }
-
 
         /// <summary>
         /// Generates token for registered and email-confirmed user
@@ -43,19 +49,16 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> LoginAsync(string email, string password)
         {
-            var (result, user) =  await userService.FindAsync(with =>
-                                                               {
-                                                                    with.Email = email;
-                                                                    with.PasswordToConfirm = password;
-                                                                    with.ConfirmedEmail = true;
-                                                               });
+            var (result, user) =  await userService.Find(with => {
+                                                                        with.Email = email;
+                                                                        with.PasswordToConfirm = password;
+                                                                        with.ConfirmedEmail = true;
+                                                                       });
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
-                                                                    // Extension method
-            (string jwt, string refresh_token) = await tokenManager.GenerateAuthTokens(user);
-
-            return AuthResult.Success(jwt, refresh_token);
+                                                                    
+            return await tokenManager.GenerateAuthTokens(user);
         }
 
 
@@ -67,7 +70,7 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public Task<AuthResult> RefreshTokenAsync(string jwtToken, string refreshToken)
         {
-            throw new System.Exception();
+            return tokenManager.RefreshTokens(jwtToken, refreshToken);
         }
 
         

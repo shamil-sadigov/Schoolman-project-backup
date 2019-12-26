@@ -19,12 +19,8 @@ namespace Schoolman.Student.Infrastructure.Helpers
         /// <param name="securityKey"></param>
         /// <returns></returns>
         public static byte[] GetBytes(this string securityKey)
-        {
-            return Encoding.ASCII.GetBytes(securityKey);
-        }
-
-
-
+            => Encoding.ASCII.GetBytes(securityKey);
+        
 
         /// <summary>
         /// Get Unix time from Expiration claim. Throw exception if Expiration Claims has invalid format
@@ -60,7 +56,6 @@ namespace Schoolman.Student.Infrastructure.Helpers
 
 
 
-
         /// <summary>
         /// Gets ClaimsPrincipal from JWT token
         /// </summary>
@@ -84,7 +79,13 @@ namespace Schoolman.Student.Infrastructure.Helpers
         }
 
 
-
+        /// <summary>
+        /// Simple method for merging addition and saving entity in database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="db"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public static async Task<int> AddAndSaveAsync<T>(this DbContext db, T entity) where T : class
         {
             await db.Set<T>().AddAsync(entity);
@@ -92,7 +93,13 @@ namespace Schoolman.Student.Infrastructure.Helpers
         }
 
 
-
+        /// <summary>
+        /// Simple method for merthing removing and saving entity in database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="db"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public static async Task<int> RemoveAndSaveAsync<T>(this DbContext db, T entity) where T:class
         {
             db.Set<T>().Remove(entity);
@@ -100,6 +107,11 @@ namespace Schoolman.Student.Infrastructure.Helpers
         }
 
 
+        /// <summary>
+        /// Get UserId from Claims
+        /// </summary>
+        /// <param name="claims"></param>
+        /// <returns></returns>
         public static string GetId(this IEnumerable<Claim> claims)
         {
             var userId =
@@ -108,7 +120,6 @@ namespace Schoolman.Student.Infrastructure.Helpers
 
             return userId;
         }
-
 
 
     }

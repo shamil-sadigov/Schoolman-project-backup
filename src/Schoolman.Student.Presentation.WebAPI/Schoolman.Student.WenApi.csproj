@@ -14,5 +14,7 @@
     <ProjectReference Include="..\Schoolman.Student.Infrastructure\Schoolman.Student.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
 
 </Project>

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Schoolman.Student.Core.Application.Interfaces
 {
     /// <summary>
-    /// Service for generating and refreshing authentication tokens
+    /// Service for Registering and Logging in Users
     /// </summary>
     public interface IAuthService
     {

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Schoolman.Student.Core.Application
+namespace Schoolman.Student.Core.Application.Models
 {
+    /// <summary>
+    /// Simple Result object that is used in common cases
+    /// </summary>
     public class Result
     {
         public bool Succeeded { get; private set; }

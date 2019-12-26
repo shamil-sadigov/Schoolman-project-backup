@@ -29,8 +29,6 @@ namespace Schoolman.Student.WenApi
             services.AddInfrastructure(Configuration);
 
 
-
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

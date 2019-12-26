@@ -5,7 +5,7 @@ using System.Text;
 namespace Schoolman.Student.Core.Application.Models
 {
     /// <summary>
-    /// Authentication result that is used in Authentication Serivce
+    /// Authentication result that is used in Authentication-related services
     /// </summary>
     public class AuthResult : Result
     {

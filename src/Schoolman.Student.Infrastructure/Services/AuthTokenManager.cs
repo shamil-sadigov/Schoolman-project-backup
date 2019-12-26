@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Schoolman.Student.Core.Application;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
+using Schoolman.Student.Infrastructure.AuthOptions;
 using Schoolman.Student.Infrastructure.Data.Identity;
 using Schoolman.Student.Infrastructure.Helpers;
 using System;
@@ -80,7 +81,7 @@ namespace Schoolman.Student.Infrastructure.Services
             if (storedRefreshToken.Expires.Offset < currentTime)
                 return AuthResult.Failure("Refresh token has expired");
 
-            if (storedRefreshToken.JwtId != jti)
+            if (storedRefreshToken.Jti != jti)
                 return AuthResult.Failure("Refresh token doesn't match with JWT");
 
             await dataContext.RemoveAndSaveAsync(storedRefreshToken);

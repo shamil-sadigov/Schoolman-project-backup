@@ -3,7 +3,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
+using Schoolman.Student.Infrastructure.Interface;
 using Schoolman.Student.Infrastructure.Services;
 
 namespace Schoolman.Student.Infrastructure
@@ -21,6 +23,7 @@ namespace Schoolman.Student.Infrastructure
             })
             .AddEntityFrameworkStores<UserDataContext>();
 
+
             services.AddDbContext<UserDataContext>(ops =>
             {
 #if Server_Local
@@ -30,8 +33,17 @@ namespace Schoolman.Student.Infrastructure
 #endif
             });
 
-            services.AddScoped<IUserService<AppUser>, UserService>();
+            services.AddTransient<IUserService<AppUser>, UserService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IConfirmationEmailService, ConfirmationEmailService>();
+
+
+
+            services.Configure<EmailOptions>("EmailConfirmationOptions", ops =>
+                ops = configuration.GetSection("EmailOptions:Confirmation").Get<EmailOptions>());
+
+            services.Configure<EmailTemplate>(eTemplates =>
+                configuration.GetSection(nameof(EmailTemplate)).Bind(eTemplates));
         }
     }
 }
