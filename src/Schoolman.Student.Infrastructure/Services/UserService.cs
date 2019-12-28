@@ -19,18 +19,14 @@ namespace Schoolman.Student.Infrastructure.Services
     {
         private readonly UserManager<AppUser> userManager;
         private readonly IConfirmationEmailService emailService;
-        private readonly EmailTemplate emailTampltes;
-        private UserSearchOptions options = new UserSearchOptions();
+        private readonly UserSearchOptions options = new UserSearchOptions();
 
-        public UserService(UserManager<AppUser> userManager, 
-                 IOptionsMonitor<EmailTemplate> tempOptions,
+        public UserService(UserManager<AppUser> userManager,
                  IConfirmationEmailService emailService)
         {
             this.userManager = userManager;
             this.emailService = emailService;
-            this.emailTampltes = tempOptions.CurrentValue;
         }
-
 
 
         /// <summary>
@@ -41,15 +37,13 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns>Creation result</returns>
         public async Task<(Result result, AppUser user)> CreateUser(string email, string password)
         {
-            (bool IsUserValid, string error) = ValidateUser(email, password);
+            (bool IsUserValid, string error) = await ValidateUser(email, password);
 
             if (!IsUserValid)
                 return (Result.Failure(error), user: null);
 
             return await TryCreateUserAsync(email, password);
         }
-
-
 
 
         /// <summary>
@@ -107,23 +101,14 @@ namespace Schoolman.Student.Infrastructure.Services
 
         public async Task<Result> SendConfirmationEmail(AppUser user)
         {
-            if (!emailTampltes.Location.TryGetValue("Confirmation-Email", out string templateLocation))
-            {
-#if DEBUG
-                throw new KeyNotFoundException("Confirmation-Email key is not set in appsettings");
-#endif
-            }
-
-            string htmlTemplate = File.ReadAllText(templateLocation);
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            AddConfirmationToken(ref htmlTemplate, token);
-            AddUserName(ref htmlTemplate, user.UserName);
-
-            var result = await emailService.SendAsync(user.Email, "Account confirmation", htmlTemplate);
-
+            var result = await emailService.SetConfirmationOptions(token, user.UserName)
+                                           .SendAsync(user.Email);
+               
             return result;
         }
+
 
 
         public async Task<Result> ConfirmEmail(AppUser user, string token)
@@ -138,7 +123,7 @@ namespace Schoolman.Student.Infrastructure.Services
 
 
 
-        #region Local methods
+        #region Local helper methods
 
         /// <summary>
         /// Verifies if email and password is valid, and whether user does exists.
@@ -146,14 +131,14 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <param name="email">User email</param>
         /// <param name="password">User password</param>
         /// <returns>Validation result</returns>
-        private (bool IsUserValid, string error) ValidateUser(string email, string password)
+        private async Task<(bool IsUserValid, string error)> ValidateUser(string email, string password)
         {
             // Verify if email and password is valid
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return (false, "Email or password is invalid");
 
             // Verify if user already exists
-            var user = userManager.FindByNameAsync(email);
+            var user = await userManager.FindByNameAsync(email);
             if (user != null)
                 return (false, "User already exists");
 
@@ -181,22 +166,11 @@ namespace Schoolman.Student.Infrastructure.Services
             return (Result.Success(), newUser);
         }
 
-        private void AddConfirmationToken(ref string htmlTemplate, string token)
-            => htmlTemplate.Replace("<aspnet-confirmation-url/>", token);
-
-
-        private void AddUserName(ref string htmlTemplate, string userName)
-            => htmlTemplate.Replace("<aspnet-username/>", userName);
-
-        
+     
 
 
 
         #endregion
-
-
-
-
 
     }
 }

@@ -122,5 +122,12 @@ namespace Schoolman.Student.Infrastructure.Helpers
         }
 
 
+        public static StringBuilder AddConfirmationToken(this StringBuilder htmlTemplate, string token)=>
+             htmlTemplate.Replace("<aspnet-confirmation-token/>", token);
+
+
+        public static StringBuilder AddUserName(this StringBuilder htmlTemplate, string token) =>
+             htmlTemplate.Replace("<aspnet-username/>", token);
+
     }
 }

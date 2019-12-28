@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using Schoolman.Student.Infrastructure.Helpers;
+using System;
 
 namespace Schoolman.Student.Infrastructure.AuthOptions
 {
@@ -9,9 +11,25 @@ namespace Schoolman.Student.Infrastructure.AuthOptions
     {
         public string SecretKey { get; set; }
         public TimeSpan ExpirationTime { get; set; }
-        public DateTime IssueDate { get; set; }
         public string Issuer { get; set; }
         public string Audience { get; set; }
-        public string Jti { get; set; }
+
+
+        public static explicit operator TokenValidationParameters(JwtOptions ops)
+        {
+            return new TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(ops.SecretKey.GetBytes()),
+                ValidIssuer = ops.Issuer,
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                RequireExpirationTime = true,
+                ValidateLifetime = true,
+            };
+        }
     }
+
+
+
 }

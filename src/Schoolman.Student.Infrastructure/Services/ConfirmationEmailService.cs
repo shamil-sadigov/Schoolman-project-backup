@@ -4,6 +4,7 @@ using MimeKit;
 using MimeKit.Text;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Models;
+using Schoolman.Student.Infrastructure.Helpers;
 using Schoolman.Student.Infrastructure.Interface;
 using System;
 using System.Collections.Generic;
@@ -15,27 +16,42 @@ namespace Schoolman.Student.Infrastructure.Services
 {
     public class ConfirmationEmailService : IConfirmationEmailService
     {
-        private EmailOptions options;
+        /// <summary>
+        /// Token that is initialized in SetConfirmationOptions() method
+        /// </summary>
+        string confirmationToken;
+        /// <summary>
+        /// Initialized in SetConfirmationOptions() method
+        /// </summary>
+        string username;
+        /// <summary>
+        /// Contains information to configure smpt
+        /// </summary>
+        readonly EmailOptions emailOptions;
+        readonly EmailTemplate emailTemplate;
 
-        public ConfirmationEmailService(IOptionsMonitor<EmailOptions> emailOptions)
+        public ConfirmationEmailService(IOptionsMonitor<EmailOptions> emailOps,
+                                        IOptionsMonitor<EmailTemplate> templateOps)
         {
-            this.options = emailOptions.Get("EmailConfirmationOptions");
+            this.emailOptions = emailOps.Get("Confirmation");
+            emailTemplate = templateOps.Get("Confirmation");
         }
 
-        public async Task<Result> SendAsync(string email, string htmlContent , string subject = "Account Confirmation")
+        public async Task<Result> SendAsync(string email)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(options.Sender));
-            message.To.Add(new MailboxAddress(email));
-            message.Subject = subject;
-            message.Body = new TextPart(TextFormat.Html) { Text = htmlContent };
+            var htmlMessage = new StringBuilder
+                               (File.ReadAllText(emailTemplate.Path))
+                               .AddConfirmationToken(confirmationToken)
+                               .AddUserName(username);
+
+            var message = BuildMessage(email, htmlMessage.ToString());
 
             try
             {
                 using (var smpt = new SmtpClient())
                 {
-                    await smpt.ConnectAsync(options.Host, options.Port, options.EnableSSL);
-                    await smpt.AuthenticateAsync(options.Username, options.Password);
+                    await smpt.ConnectAsync(emailOptions.Host, emailOptions.Port, emailOptions.EnableSSL);
+                    await smpt.AuthenticateAsync(emailOptions.Username, emailOptions.Password);
                     await smpt.SendAsync(message);
                     await smpt.DisconnectAsync(true);
                 }
@@ -49,5 +65,37 @@ namespace Schoolman.Student.Infrastructure.Services
 
             return Result.Success();
         }
+
+        /// <summary>
+        /// Sets confirmation token. Must be called before sending email
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public IConfirmationEmailService SetConfirmationOptions(string token, string username)
+        {
+            (this.confirmationToken, this.username) = (token, username);
+            return this;
+        }
+
+        #region Local helper methods
+
+    
+        private MimeMessage BuildMessage(string email, string htmlTemplate)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(emailOptions.Username));
+            message.To.Add(new MailboxAddress(email));
+            message.Subject = "Account Confirmation";
+            message.Body = new TextPart(TextFormat.Html) { Text = htmlTemplate };
+            return message;
+        }
+
+
+
+
+
+        #endregion
+
     }
 }

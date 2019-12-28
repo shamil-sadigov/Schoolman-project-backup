@@ -1,9 +1,5 @@
-﻿using Schoolman.Student.Infrastructure.Services;
+﻿using Schoolman.Student.Infrastructure.AuthOptions;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Text;
 
 namespace Schoolman.Student.Infrastructure.Data.Identity
 {

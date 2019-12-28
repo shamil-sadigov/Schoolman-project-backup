@@ -8,6 +8,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
 {
     public interface IEmailService
     {
-        Task<Result> SendAsync(string email,  string message, string subject);
+        Task<Result> SendAsync(string email);
     }
 }

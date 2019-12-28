@@ -7,7 +7,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
     /// Manager class that responsible for generating and refreshing authentication tokens
     /// </summary>
     /// <typeparam name="T_user"></typeparam>
-    public interface IAuthTokenManager<T_user> 
+    public interface IJwtFactory<T_user> 
         where T_user: class
     {
         /// <summary>
@@ -15,7 +15,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<AuthResult> GenerateAuthTokens(T_user user);
+        Task<AuthResult> GenerateTokens(T_user user);
 
         /// <summary>
         /// Get tokens and refresh them.

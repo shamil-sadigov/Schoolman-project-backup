@@ -1,6 +1,8 @@
-﻿using Schoolman.Student.Core.Application;
+﻿using Microsoft.AspNetCore.Authentication;
+using Schoolman.Student.Core.Application;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Schoolman.Student.Infrastructure.Services
@@ -11,10 +13,10 @@ namespace Schoolman.Student.Infrastructure.Services
     public class AuthService : IAuthService
     {
         private readonly IUserService<AppUser> userService;
-        private readonly IAuthTokenManager<AppUser> tokenManager;
+        private readonly IJwtFactory<AppUser> tokenManager;
 
         public AuthService(IUserService<AppUser> userService,
-                           IAuthTokenManager<AppUser> tokenManager)
+                           IJwtFactory<AppUser> tokenManager)
         {
             this.userService = userService;
             this.tokenManager = tokenManager;
@@ -33,12 +35,12 @@ namespace Schoolman.Student.Infrastructure.Services
             if (!result.Succeeded)
                 return result;
 
+            result =  await userService.SendConfirmationEmail(newUser);
 
-
-
-
-            //userService.SendConfirmationMail();
-            return Result.Success();
+            //if(!result.Succeeded)
+            //    // some logging will be 
+                
+            return result;
         }
 
         /// <summary>
@@ -52,13 +54,13 @@ namespace Schoolman.Student.Infrastructure.Services
             var (result, user) =  await userService.Find(with => {
                                                                         with.Email = email;
                                                                         with.PasswordToConfirm = password;
-                                                                        with.ConfirmedEmail = true;
-                                                                       });
+                                                                        with.ConfirmedEmail = true; 
+                                                                  });
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
-                                                                    
-            return await tokenManager.GenerateAuthTokens(user);
+                                                                                
+            return await tokenManager.GenerateTokens(user);
         }
 
 
@@ -72,6 +74,7 @@ namespace Schoolman.Student.Infrastructure.Services
         {
             return tokenManager.RefreshTokens(jwtToken, refreshToken);
         }
+
 
         
     }

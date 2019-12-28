@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Schoolman.Student.Core.Application;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using Schoolman.Student.Infrastructure.AuthOptions;
@@ -11,7 +10,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Schoolman.Student.Infrastructure.Services
@@ -20,23 +18,20 @@ namespace Schoolman.Student.Infrastructure.Services
     /// <summary>
     /// Manages JWT and Refresh token
     /// </summary>
-    public class AuthTokenManager : IAuthTokenManager<AppUser>
+    public class JwtFactory : IJwtFactory<AppUser>
     {
         private readonly JwtOptions jwtOptions;
         private readonly RefreshTokenOptions refreshTokenOptions;
         private readonly UserDataContext dataContext;
-        private readonly TokenValidationParameters validationParameters;
-        private JwtSecurityTokenHandler tokenhandler = new JwtSecurityTokenHandler();
+        private readonly JwtSecurityTokenHandler tokenhandler = new JwtSecurityTokenHandler();
 
-        public AuthTokenManager(IOptionsMonitor<JwtOptions> jwtOptions,
-                                IOptionsMonitor<RefreshTokenOptions> refreshTokenOptions,
-                                UserDataContext dataContext,
-                                TokenValidationParameters validationParameters)
+        public JwtFactory(JwtOptions jwtOptions,
+                          IOptionsMonitor<RefreshTokenOptions> refreshTokenOptions,
+                          UserDataContext dataContext)
         {
-            this.jwtOptions = jwtOptions.CurrentValue;
+            this.jwtOptions = jwtOptions;
             this.refreshTokenOptions = refreshTokenOptions.CurrentValue;
-            this.dataContext = dataContext;
-            this.validationParameters = validationParameters;
+            this.dataContext = dataContext; 
         }
 
         /// <summary>
@@ -44,7 +39,7 @@ namespace Schoolman.Student.Infrastructure.Services
         /// </summary>
         /// <param name="user">User for whom tokens will be created for</param>
         /// <returns>JWT and Refresh tokens</returns>
-        public async Task<AuthResult> GenerateAuthTokens(AppUser user)
+        public async Task<AuthResult> GenerateTokens(AppUser user)
         {
             // no validation yet
             var claims = GenerateClaims(user);
@@ -59,7 +54,7 @@ namespace Schoolman.Student.Infrastructure.Services
 
         public async Task<AuthResult> RefreshTokens(string jwt, string refreshToken)
         {
-            var (succeeded, error, user) = jwt.GetUserFromToken(validationParameters);
+            var (succeeded, error, user) = jwt.GetUserFromToken((TokenValidationParameters) jwtOptions); // explicit operator
 
             if (!succeeded)
                 return AuthResult.Failure(error);

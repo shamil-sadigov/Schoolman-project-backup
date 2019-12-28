@@ -2,3 +2,27 @@
 
 # EF1000: Possible SQL injection vulnerability.
 dotnet_diagnostic.EF1000.severity = none
+
+# MVC1000: Use of IHtmlHelper.{0} should be avoided.
+dotnet_diagnostic.MVC1000.severity = none
+
+# MVC1001: Filters cannot be applied to page handler methods.
+dotnet_diagnostic.MVC1001.severity = none
+
+# MVC1002: Route attributes cannot be applied to page handler methods.
+dotnet_diagnostic.MVC1002.severity = none
+
+# MVC1003: Route attributes cannot be applied to page models.
+dotnet_diagnostic.MVC1003.severity = none
+
+# MVC1004: Rename model bound parameter.
+dotnet_diagnostic.MVC1004.severity = none
+
+# RS1001: Missing diagnostic analyzer attribute.
+dotnet_diagnostic.RS1001.severity = none
+
+# RS1004: Recommend adding language support to diagnostic analyzer.
+dotnet_diagnostic.RS1004.severity = none
+
+# RS1009: Only internal implementations of this interface are allowed.
+dotnet_diagnostic.RS1009.severity = none
