@@ -1,31 +1,46 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Schoolman.Student.Core.Application;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
+using Schoolman.Student.Infrastructure.Helpers;
 using Schoolman.Student.Infrastructure.Interface;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Schoolman.Student.Infrastructure.Services
 {
     public class UserService : IUserService<AppUser>
     {
+        //private readonly IConfirmationEmailService emailService;
+        private readonly IEmailService<ConfirmationEmailBuilder> emailService;
+        readonly EmailTemplate emailTemplate;
+        private readonly HttpContext httpContext;
         private readonly UserManager<AppUser> userManager;
-        private readonly IConfirmationEmailService emailService;
-        private readonly UserSearchOptions options = new UserSearchOptions();
+
+
 
         public UserService(UserManager<AppUser> userManager,
-                 IConfirmationEmailService emailService)
+                 //IConfirmationEmailService emailService,
+                 IEmailService<ConfirmationEmailBuilder> emailService,
+                 IOptionsMonitor<EmailTemplate> templateOps, 
+                 IHttpContextAccessor httpContextAccessor)
         {
             this.userManager = userManager;
             this.emailService = emailService;
+            //this.emailService = emailService;
+            emailTemplate = templateOps.Get("Confirmation");
+            httpContext =  httpContextAccessor.HttpContext;
         }
 
 
@@ -51,12 +66,12 @@ namespace Schoolman.Student.Infrastructure.Services
         /// </summary>
         /// <param name="userId">User identifier</param>
         /// <returns>Deletion result</returns>
-        public async Task<Result> DeleteUser(string userId)
+        public async Task<Result> DeleteUser(string email)
         {
-            var userToDelete = await userManager.FindByIdAsync(userId);
+            var userToDelete = await userManager.FindByEmailAsync(email);
             
             if (userToDelete == null)
-                return Result.Failure("User wasn't found");
+                return Result.Failure("User doens't exist found");
 
             var deletionResult = await userManager.DeleteAsync(userToDelete);
 
@@ -68,51 +83,103 @@ namespace Schoolman.Student.Infrastructure.Services
 
 
 
-        /// <summary>
-        /// Finds user based on options
-        /// </summary>
-        /// <param name="configureOptions"></param>
-        /// <returns></returns>
-        public async Task<(Result, AppUser)> Find(Action<UserSearchOptions> configureOptions)
-        {
-            configureOptions(options);
+        ///// <summary>
+        ///// Finds user based on options
+        ///// </summary>
+        ///// <param name="configureOptions"></param>
+        ///// <returns></returns>
+        //public async Task<(Result, AppUser)> Find(Action<UserSearchOptions> configureOptions)
+        //{
+        //    configureOptions(options);
             
-            if(string.IsNullOrEmpty(options.Email))
-                return (Result.Failure("Email is not valid"), null);
+        //    if(string.IsNullOrEmpty(options.Email))
+        //        return (Result.Failure("Email is not valid"), null);
 
-            // Check user by Email
-            var user = await userManager.FindByEmailAsync(options.Email);
+        //    // Check user by Email
+        //    var user = await userManager.FindByEmailAsync(options.Email);
+        //    if(user == null)
+        //        return (Result.Failure("User doesn't exists"), null);
+
+        //    // Check if Password valid
+        //    if (!string.IsNullOrEmpty(options.PasswordToConfirm))
+        //        if (!await userManager.CheckPasswordAsync(user, options.PasswordToConfirm))
+        //            return (Result.Failure("Password is not valid"), null);
+
+        //    // Check if email confirmed
+        //    if (options.ConfirmedEmail)
+        //        if (!await userManager.IsEmailConfirmedAsync(user))
+        //            return (Result.Failure("Email is not confirmed"), null);
+
+        //    return (Result.Success(), user);
+        //}
+
+
+
+        public async Task<(Result, AppUser)> Find(string email, Action<UserSearchOptions> searchOptions = null)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
             if(user == null)
                 return (Result.Failure("User doesn't exists"), null);
 
-            // Check if Password valid
-            if (!string.IsNullOrEmpty(options.PasswordToConfirm))
-                if (!await userManager.CheckPasswordAsync(user, options.PasswordToConfirm))
+            if (searchOptions != null)
+            {
+                var userOptions = new UserSearchOptions();
+                searchOptions(userOptions);
+
+                // Is password valid ?
+                if(!await userManager.CheckPasswordAsync(user, userOptions.Password))
                     return (Result.Failure("Password is not valid"), null);
 
-            // Check if email confirmed
-            if (options.ConfirmedEmail)
-                if (!await userManager.IsEmailConfirmedAsync(user))
+                // Is email confirmed ?
+                if(userOptions.ConfirmedEmail)
+                if(!await userManager.IsEmailConfirmedAsync(user))
                     return (Result.Failure("Email is not confirmed"), null);
+            }
 
             return (Result.Success(), user);
         }
+
 
 
         public async Task<Result> SendConfirmationEmail(AppUser user)
         {
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            var result = await emailService.SetConfirmationOptions(token, user.UserName)
-                                           .SendAsync(user.Email);
-               
+            #region Url Encoding
+
+            // generated token may contain some invalid characters such as '+' and '='
+            // which is considered url-unsafe
+            // so you should encode it as below
+            token = HttpUtility.UrlEncode(token);
+            // so, now '+' replaced by '%2b' 
+            // and '=' by '%3d'
+
+            #endregion
+
+            var confirmUrl = new UriBuilder()
+                            .BuildConfirmationUrl(httpContext.Request, user.Id, token);
+
+            var result = await emailService.SendAsync(ops => ops.ConfirmationUrl(confirmUrl)
+                                                                 .To(user.Email)
+                                                                 .Subject("Account Confirmation")
+                                                                 .Template(emailTemplate.Path));
+
             return result;
         }
 
 
 
-        public async Task<Result> ConfirmEmail(AppUser user, string token)
+
+
+        public async Task<Result> ConfirmEmail(string userId, string token)
         {
+
+            var user = await  userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return Result.Failure("User doesn't exists");
+
             var result = await userManager.ConfirmEmailAsync(user, token);
 
             if (!result.Succeeded)
@@ -166,11 +233,7 @@ namespace Schoolman.Student.Infrastructure.Services
             return (Result.Success(), newUser);
         }
 
-     
-
-
-
+    
         #endregion
-
     }
 }

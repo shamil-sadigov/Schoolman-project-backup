@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Schoolman.Student.Core.Application\Schoolman.Student.Core.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Emails\" />
+  </ItemGroup>
+
 </Project>

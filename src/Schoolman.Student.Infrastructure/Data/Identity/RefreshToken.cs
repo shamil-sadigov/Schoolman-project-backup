@@ -9,11 +9,11 @@ namespace Schoolman.Student.Infrastructure.Data.Identity
         public string Jti { get; set; }
         public DateTime Created { get; set; }
         public DateTimeOffset Expires { get; set; }
+
         public RefreshToken()
         {
             Token = Guid.NewGuid().ToString();
         }
-
 
         public string UserId { get; set; }
         public AppUser User { get; set; }

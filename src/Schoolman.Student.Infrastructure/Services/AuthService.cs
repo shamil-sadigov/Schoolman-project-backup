@@ -13,13 +13,13 @@ namespace Schoolman.Student.Infrastructure.Services
     public class AuthService : IAuthService
     {
         private readonly IUserService<AppUser> userService;
-        private readonly IJwtFactory<AppUser> tokenManager;
+        private readonly IJwtFactory<AppUser> tokenFactory;
 
         public AuthService(IUserService<AppUser> userService,
-                           IJwtFactory<AppUser> tokenManager)
+                           IJwtFactory<AppUser> tokenFactory)
         {
             this.userService = userService;
-            this.tokenManager = tokenManager;
+            this.tokenFactory = tokenFactory;
         }
 
         /// <summary>
@@ -35,13 +35,15 @@ namespace Schoolman.Student.Infrastructure.Services
             if (!result.Succeeded)
                 return result;
 
-            result =  await userService.SendConfirmationEmail(newUser);
+            result = await userService.SendConfirmationEmail(newUser);
 
             //if(!result.Succeeded)
             //    // some logging will be 
-                
+
             return result;
         }
+
+
 
         /// <summary>
         /// Generates token for registered and email-confirmed user
@@ -51,16 +53,13 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> LoginAsync(string email, string password)
         {
-            var (result, user) =  await userService.Find(with => {
-                                                                        with.Email = email;
-                                                                        with.PasswordToConfirm = password;
-                                                                        with.ConfirmedEmail = true; 
-                                                                  });
+            var (result, user) = await userService.Find(email, ops => ops.WithPassword(password)
+                                                                         .WithConfirmedEmail(true));
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
-                                                                                
-            return await tokenManager.GenerateTokens(user);
+
+            return await tokenFactory.GenerateTokens(user);
         }
 
 
@@ -72,10 +71,15 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public Task<AuthResult> RefreshTokenAsync(string jwtToken, string refreshToken)
         {
-            return tokenManager.RefreshTokens(jwtToken, refreshToken);
+            return tokenFactory.RefreshTokens(jwtToken, refreshToken);
         }
 
 
-        
+        public async Task<Result> ConfirmAccount(string userId, string confirmToken)
+        {
+            var result = await userService.ConfirmEmail(userId, confirmToken);
+            return result;
+        }
+
     }
 }

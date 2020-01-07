@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Schoolman.Student.Core.Application.Interfaces;
 using System;
@@ -122,12 +124,26 @@ namespace Schoolman.Student.Infrastructure.Helpers
         }
 
 
-        public static StringBuilder AddConfirmationToken(this StringBuilder htmlTemplate, string token)=>
-             htmlTemplate.Replace("<aspnet-confirmation-token/>", token);
+        public static StringBuilder AddConfirmationUrl(this StringBuilder htmlTemplate, string url)=>
+             htmlTemplate.Replace("aspnet-confirmation-url", url);
 
 
         public static StringBuilder AddUserName(this StringBuilder htmlTemplate, string token) =>
-             htmlTemplate.Replace("<aspnet-username/>", token);
+             htmlTemplate.Replace("aspnet-username", token);
+
+
+        public static string BuildConfirmationUrl(this UriBuilder builder, HttpRequest request,string userId, string token)
+        {
+
+            builder.Scheme = request.Scheme;
+            builder.Host = request.Host.Host;
+            builder.Path = "api/identity/confirm";
+            builder.Query = $"userId={userId}&confirmationToken={token}";
+            builder.Port = request.Host.Port ??
+                                request.Host.Port.Value;
+
+            return builder.Uri.ToString();
+        }
 
     }
 }

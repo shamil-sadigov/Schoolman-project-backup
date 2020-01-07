@@ -1,4 +1,4 @@
-﻿#define Server_Local
+﻿//#define Server_Local
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +13,7 @@ using Schoolman.Student.Infrastructure.AuthOptions;
 using Schoolman.Student.Infrastructure.Interface;
 using Schoolman.Student.Infrastructure.Services;
 using System.IO;
+using ConfirmationEmailService = Schoolman.Student.Infrastructure.Services.ConfirmationEmailService;
 
 namespace Schoolman.Student.Infrastructure
 {
@@ -42,8 +43,9 @@ namespace Schoolman.Student.Infrastructure
             // services
             services.AddTransient<IUserService<AppUser>, UserService>();
             services.AddScoped<IJwtFactory<AppUser>, JwtFactory>();
-            services.AddScoped<IConfirmationEmailService, ConfirmationEmailService>();
+            services.AddScoped<IEmailService<ConfirmationEmailBuilder>, ConfirmationEmailService>();
             services.AddScoped<IAuthService, AuthService>();
+
 
             // configurations
             services.Configure<EmailOptions>("Confirmation", ops =>
@@ -57,8 +59,6 @@ namespace Schoolman.Student.Infrastructure
                     template.Path = Path.Combine(rootPath, relativePath);
             });
 
-
-            // add authentication
 
             var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>();
             services.AddSingleton(jwtOptions);
@@ -79,10 +79,12 @@ namespace Schoolman.Student.Infrastructure
                 ops.TokenValidationParameters = (TokenValidationParameters)jwtOptions;
             });
 
-
-
-
-
+            services.AddHttpContextAccessor();
         }
+
+
+
     }
+
+
 }

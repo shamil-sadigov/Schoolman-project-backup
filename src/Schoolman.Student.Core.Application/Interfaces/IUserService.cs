@@ -11,9 +11,11 @@ namespace Schoolman.Student.Core.Application.Interfaces
     public interface IUserService<T> where T: class
     {
         Task<(Result result, T user)> CreateUser(string email, string password);
-        Task<Result> DeleteUser(string userId);
-        Task<(Result, T)> Find(Action<UserSearchOptions> searchOptions);
+        Task<Result> DeleteUser(string email);
         Task<Result> SendConfirmationEmail(T user);
-        Task<Result> ConfirmEmail(T user, string token);
+        Task<Result> ConfirmEmail(string userId, string token);
+        Task<(Result, T)> Find(string email, Action<UserSearchOptions> searchOptions = null);
+
+        //Task<(Result, T)> Find(Action<UserSearchOptions> searchOptions);
     }
 }

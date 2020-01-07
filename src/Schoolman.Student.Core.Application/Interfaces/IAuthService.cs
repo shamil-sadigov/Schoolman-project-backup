@@ -11,5 +11,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
         Task<Result> RegisterAsync(string email, string password);
         Task<AuthResult> LoginAsync(string email, string password);
         Task<AuthResult> RefreshTokenAsync(string jwtToken, string refreshToken);
+        Task<Result> ConfirmAccount(string userId, string confirmToken);
     }
 }

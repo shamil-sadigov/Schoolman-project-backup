@@ -47,7 +47,6 @@ namespace Schoolman.Student.Infrastructure.Services
             
             (string jwt, string jwtId) = GenerateJwt(claims, keyBytes);
             string refreshToken = await GenerateRefreshTokenAsync(jwtId, user.Id.ToString());
-
             return AuthResult.Success(jwt, refreshToken);
         }
 
@@ -99,10 +98,10 @@ namespace Schoolman.Student.Infrastructure.Services
         private List<Claim> GenerateClaims(AppUser user)
         {
             var claims = new List<Claim>
-               {
+            {
                     new Claim("UserID", user.Id),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email)
-               };
+            };
 
             return claims;
         }

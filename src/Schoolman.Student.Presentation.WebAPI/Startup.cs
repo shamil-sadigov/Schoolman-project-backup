@@ -52,10 +52,7 @@ namespace Schoolman.Student.WenApi
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthentication();
-
-
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -67,3 +64,4 @@ namespace Schoolman.Student.WenApi
         }
     }
 }
+ 

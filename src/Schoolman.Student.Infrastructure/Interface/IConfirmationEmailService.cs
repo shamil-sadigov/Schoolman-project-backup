@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Schoolman.Student.Infrastructure.Interface
 {
-    public interface IConfirmationEmailService:IEmailService
-    {
-        IConfirmationEmailService SetConfirmationOptions(string token, string username);
-    }
+    //[Obsolete]
+    //public interface IConfirmationEmailService:IEmailService
+    //{
+    //    IConfirmationEmailService SetConfirmationOptions(string token, string username);
+    //}
 }
