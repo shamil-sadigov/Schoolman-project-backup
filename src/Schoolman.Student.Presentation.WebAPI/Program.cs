@@ -17,8 +17,11 @@ namespace Schoolman.Student.WenApi
             CreateWebHostBuilder(args).Build().Run();
         }
 
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                //.UseUrls("https://192.168.10.210:5001",
+                //         "https://localhost:5001")
                 .UseStartup<Startup>();
     }
 }

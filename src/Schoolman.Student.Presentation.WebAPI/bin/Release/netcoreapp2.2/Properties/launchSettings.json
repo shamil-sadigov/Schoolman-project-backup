@@ -19,8 +19,8 @@
     },
     "Schoolman.Student.WenApi": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "api/identity/getvalues",
+      "launchBrowser": true,
+      "launchUrl": "",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

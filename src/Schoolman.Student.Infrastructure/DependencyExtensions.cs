@@ -10,7 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Infrastructure.AuthOptions;
-using Schoolman.Student.Infrastructure.Interface;
 using Schoolman.Student.Infrastructure.Services;
 using System.IO;
 using ConfirmationEmailService = Schoolman.Student.Infrastructure.Services.ConfirmationEmailService;
@@ -46,10 +45,9 @@ namespace Schoolman.Student.Infrastructure
             services.AddScoped<IEmailService<ConfirmationEmailBuilder>, ConfirmationEmailService>();
             services.AddScoped<IAuthService, AuthService>();
 
-
             // configurations
             services.Configure<EmailOptions>("Confirmation", ops =>
-                configuration.GetSection("EmailOptions:Yandex").Bind(ops));
+                configuration.GetSection("EmailOptions:SendInBlue").Bind(ops));
 
             services.Configure<EmailTemplate>("Confirmation", template =>
             {
@@ -59,8 +57,8 @@ namespace Schoolman.Student.Infrastructure
                     template.Path = Path.Combine(rootPath, relativePath);
             });
 
-
             var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>();
+
             services.AddSingleton(jwtOptions);
 
             services.Configure<RefreshTokenOptions>(ops =>

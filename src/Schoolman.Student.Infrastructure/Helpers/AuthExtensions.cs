@@ -24,22 +24,21 @@ namespace Schoolman.Student.Infrastructure.Helpers
             => Encoding.ASCII.GetBytes(securityKey);
         
 
+
         /// <summary>
         /// Get Unix time from Expiration claim. Throw exception if Expiration Claims has invalid format
         /// </summary>
         /// <param name="claims">User claims</param>
         /// <returns>Unix expiration time of JWT</returns>
-        public static TimeSpan GetTokenExpirationTime(this IEnumerable<Claim> claims)
+        public static long GetTokenExpirationTime(this IEnumerable<Claim> claims)
         {
-            var unixExpirationTime = 
+            var unixExpirationTime =
                 claims.FirstOrDefault(c => c.Type.Equals(JwtRegisteredClaimNames.Exp, StringComparison.OrdinalIgnoreCase))
                 .Value;
 
-           var parsedUnixTime=  long.Parse(unixExpirationTime);
-           return TimeSpan.FromSeconds(parsedUnixTime);
+            return long.Parse(unixExpirationTime);
+            
         }
-
-
 
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace Schoolman.Student.Infrastructure.Helpers
         /// </summary>
         /// <param name="claims"></param>
         /// <returns></returns>
-        public static string GetJWTIdentifier(this IEnumerable<Claim> claims)
+        public static string GetJti(this IEnumerable<Claim> claims)
         {
             var jti =
                 claims.FirstOrDefault(c => c.Type.Equals(JwtRegisteredClaimNames.Jti, StringComparison.OrdinalIgnoreCase))
@@ -63,21 +62,35 @@ namespace Schoolman.Student.Infrastructure.Helpers
         /// </summary>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        public static (bool success, string error, ClaimsPrincipal user) GetUserFromToken
+        public static (ClaimsPrincipal user, string error) GetUserFromToken
               (this string jwt, TokenValidationParameters validationParameters)
         {
+            // clone validationParameters since object is singleton-scoped
+            var validationParams = validationParameters.Clone();
+
+            // false because we need not to validate token lifetime
+            // if lifetime is true and token's valid time is expired
+            // then exception may be thrown in line 91
+
+            validationParams.ValidateLifetime = false;
             var jwtHandler = new JwtSecurityTokenHandler();
-
             if (!jwtHandler.CanReadToken(jwt))
-                return (false, "JWT is not in correct format" , null);
+                return (user: null, error: "JWT is not in correct format");
 
-            var principal = jwtHandler.ValidateToken(token: jwt, // clone validationParameters since object is singleton-scoped
-                                              validationParameters: validationParameters.Clone(), out SecurityToken token);
+            try
+            {
+                var principal = jwtHandler.ValidateToken(token: jwt, 
+                                                  validationParameters: validationParams, out SecurityToken token);
+                
+                if (principal == null)
+                    return (user: null, error: "JWT is not valid");
 
-            if (principal == null)
-                return (false, "JWT is not valid", null);
-
-            return (true, null, principal);
+                return (user: principal, error: null);
+            }
+            catch (ArgumentException)
+            {
+                return (user: null, error: "Invalid access token");
+            }
         }
 
 

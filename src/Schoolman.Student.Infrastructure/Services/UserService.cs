@@ -1,20 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Schoolman.Student.Core.Application;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using Schoolman.Student.Infrastructure.Helpers;
-using Schoolman.Student.Infrastructure.Interface;
 using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -27,7 +19,7 @@ namespace Schoolman.Student.Infrastructure.Services
         readonly EmailTemplate emailTemplate;
         private readonly HttpContext httpContext;
         private readonly UserManager<AppUser> userManager;
-
+        
 
 
         public UserService(UserManager<AppUser> userManager,

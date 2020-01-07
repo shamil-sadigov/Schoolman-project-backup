@@ -185,9 +185,9 @@ namespace Schoolman.Student.Infrastructure.Migrations
                     b.Property<string>("Token")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Created");
+                    b.Property<long>("Creation_time");
 
-                    b.Property<DateTimeOffset>("Expires");
+                    b.Property<long>("Expiration_time");
 
                     b.Property<string>("Jti")
                         .IsRequired();

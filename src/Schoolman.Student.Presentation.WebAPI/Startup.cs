@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,10 +30,45 @@ namespace Schoolman.Student.WenApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddSwaggerGen(c =>
+            var assemblyName = string.Concat(Assembly.GetExecutingAssembly().GetName().Name, ".xml");
+            var pathToAssembly = Path.Combine(AppContext.BaseDirectory, assemblyName);
+
+
+            services.AddSwaggerGen(ops =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                ops.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                ops.IncludeXmlComments(pathToAssembly);
+                ops.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Scheme = "Bearer"
+                });
+
+                ops.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                    {
+                         {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                },
+                                    Scheme = "Bearer",
+                                    Name = "Bearer",
+                                    In = ParameterLocation.Header,
+                            }, new List<string>()
+                         }
+                    });
             });
+
+
+
+
+
+
 
             services.AddInfrastructure(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -50,18 +87,19 @@ namespace Schoolman.Student.WenApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
+
             app.UseAuthentication();
             app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(ops =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                ops.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                ops.RoutePrefix = "";
             });
 
             app.UseMvc();
         }
     }
 }
- 
+

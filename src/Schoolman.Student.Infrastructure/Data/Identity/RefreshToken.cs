@@ -7,25 +7,24 @@ namespace Schoolman.Student.Infrastructure.Data.Identity
     {
         public string Token { get; set; } 
         public string Jti { get; set; }
-        public DateTime Created { get; set; }
-        public DateTimeOffset Expires { get; set; }
-
-        public RefreshToken()
-        {
-            Token = Guid.NewGuid().ToString();
-        }
+        /// <summary>
+        /// Unix format
+        /// </summary>
+        public long Creation_time { get; set; }
+        public long Expiration_time { get; set; }
 
         public string UserId { get; set; }
         public AppUser User { get; set; }
 
-        public static RefreshToken NewRefreshToken(string jti, string userId, RefreshTokenOptions refreshOptions)
+        public static RefreshToken NewRefreshToken(string jti, string userId, TimeSpan expirationTime)
         {
             return new RefreshToken()
             {
                 Jti = jti,
-                Created = DateTime.UtcNow,
+                Creation_time = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                 UserId = userId,
-                Expires = DateTime.UtcNow.Add(refreshOptions.ExpirationTime)
+                Expiration_time = DateTimeOffset.UtcNow.Add(expirationTime).ToUnixTimeSeconds(),
+                Token = Guid.NewGuid().ToString()
             };
         }
     }

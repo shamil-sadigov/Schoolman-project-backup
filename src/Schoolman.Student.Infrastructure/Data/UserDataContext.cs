@@ -42,7 +42,11 @@ namespace Schoolman.Student.Infrastructure
             builder.Entity<AppUser>()
                     .Property(u => u.LastName)
                     .HasMaxLength(60);
-                    
+
+
+            builder.Entity<RefreshToken>()
+                    .HasIndex(r => r.UserId);
+
 
             base.OnModelCreating(builder);
         }

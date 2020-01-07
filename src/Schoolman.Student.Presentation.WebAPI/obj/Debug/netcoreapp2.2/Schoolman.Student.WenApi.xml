@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Schoolman.Student.WenApi</name>
+    </assembly>
+    <members>
+        <member name="M:Schoolman.Student.WenApi.Controllers.IdentityController.Register(Schoolman.Student.WenApi.Controllers.UserDTO)">
+            <response code="200">User registered successfully</response>
+            <response code="400">Bad request</response>
+        </member>
+    </members>
+</doc>

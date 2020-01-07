@@ -5,18 +5,11 @@ using MimeKit.Text;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
-using Schoolman.Student.Infrastructure.Helpers;
-using Schoolman.Student.Infrastructure.Interface;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Schoolman.Student.Infrastructure.Services
 {
-
     public class ConfirmationEmailService : IEmailService<ConfirmationEmailBuilder>
     {
         readonly EmailOptions emailOptions;

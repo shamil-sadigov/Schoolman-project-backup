@@ -24,6 +24,9 @@ namespace Schoolman.Student.Infrastructure
             this.UserName = userName;
         }
 
+
+
+
     }
 
 }

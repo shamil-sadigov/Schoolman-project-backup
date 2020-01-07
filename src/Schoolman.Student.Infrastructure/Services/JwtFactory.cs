@@ -39,7 +39,7 @@ namespace Schoolman.Student.Infrastructure.Services
         /// </summary>
         /// <param name="user">User for whom tokens will be created for</param>
         /// <returns>JWT and Refresh tokens</returns>
-        public async Task<AuthResult> GenerateTokens(AppUser user)
+        public async Task<AuthResult> GenerateTokensAsync(AppUser user)
         {
             // no validation yet
             var claims = GenerateClaims(user);
@@ -51,28 +51,28 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
-        public async Task<AuthResult> RefreshTokens(string jwt, string refreshToken)
+        public async Task<AuthResult> RefreshTokensAsync(string jwt, string refreshToken)
         {
-            var (succeeded, error, user) = jwt.GetUserFromToken((TokenValidationParameters) jwtOptions); // explicit operator
+            var (user, error) = jwt.GetUserFromToken((TokenValidationParameters)jwtOptions); // explicit operator
 
-            if (!succeeded)
+            if (user == null)
                 return AuthResult.Failure(error);
-                
-            // time format in unix
-            var tokenExpireTime =  user.Claims.GetTokenExpirationTime();
-            var currentTime = TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
 
-            if (tokenExpireTime > currentTime)
+            // time format in unix
+            long token_time = user.Claims.GetTokenExpirationTime();
+            long current_time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            if (token_time > current_time)
                 return AuthResult.Failure("JWT hasn't expired yet");
 
-            string jti = user.Claims.GetJWTIdentifier();
+            string jti = user.Claims.GetJti();
 
             var storedRefreshToken = dataContext.RefreshTokens.FirstOrDefault(rt => rt.Token == refreshToken);
 
             if (storedRefreshToken == null)
                 return AuthResult.Failure("This refresh token doesn't exist");
 
-            if (storedRefreshToken.Expires.Offset < currentTime)
+            if (storedRefreshToken.Expiration_time < current_time)
                 return AuthResult.Failure("Refresh token has expired");
 
             if (storedRefreshToken.Jti != jti)
@@ -87,7 +87,6 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
-
         #region Local methods
 
         /// <summary>
@@ -99,8 +98,10 @@ namespace Schoolman.Student.Infrastructure.Services
         {
             var claims = new List<Claim>
             {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim("UserID", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Iss, jwtOptions.Issuer)
             };
 
             return claims;
@@ -135,14 +136,21 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <summary>
         /// Generates refresh token based on specified jti and userId and save it in database
         /// </summary>
-        /// <param name="jwtId"></param>
+        /// <param name="jti"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private async Task<string> GenerateRefreshTokenAsync(string jwtId, string userId)
+        private async Task<string> GenerateRefreshTokenAsync(string newJti, string userId)
         {
-            RefreshToken refreshToken = RefreshToken.NewRefreshToken(jwtId, userId, refreshTokenOptions);
-            await dataContext.AddAndSaveAsync(refreshToken);
-            return refreshToken.Token;
+
+            var refresh_token = dataContext.RefreshTokens.FirstOrDefault(u => u.UserId == userId);
+
+            if (refresh_token != null)
+                await dataContext.RemoveAndSaveAsync(refresh_token);
+
+
+            var new_refresh_token = RefreshToken.NewRefreshToken(newJti, userId, refreshTokenOptions.ExpirationTime);
+            await dataContext.AddAndSaveAsync(new_refresh_token);
+            return new_refresh_token.Token;
         }
 
         #endregion

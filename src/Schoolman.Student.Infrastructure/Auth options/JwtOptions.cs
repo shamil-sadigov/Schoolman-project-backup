@@ -22,10 +22,11 @@ namespace Schoolman.Student.Infrastructure.AuthOptions
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(ops.SecretKey.GetBytes()),
                 ValidIssuer = ops.Issuer,
+                ValidAudience = ops.Audience,
                 ValidateIssuer = true,
-                ValidateAudience = false,
+                ValidateAudience = true,
                 RequireExpirationTime = true,
-                ValidateLifetime = true,
+                ValidateLifetime = true
             };
         }
     }

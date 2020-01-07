@@ -30,15 +30,15 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<Result> RegisterAsync(string email, string password)
         {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+                return AuthResult.Failure("Email or password are invalid");
+
             var (result, newUser) = await userService.CreateUser(email, password);
 
             if (!result.Succeeded)
                 return result;
 
             result = await userService.SendConfirmationEmail(newUser);
-
-            //if(!result.Succeeded)
-            //    // some logging will be 
 
             return result;
         }
@@ -53,33 +53,45 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> LoginAsync(string email, string password)
         {
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+                return AuthResult.Failure("Email or password are invalid");
+
             var (result, user) = await userService.Find(email, ops => ops.WithPassword(password)
                                                                          .WithConfirmedEmail(true));
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
 
-            return await tokenFactory.GenerateTokens(user);
+            return await tokenFactory.GenerateTokensAsync(user);
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="jwtToken"></param>
+        /// <param name="accessToken"></param>
         /// <param name="refreshToken"></param>
         /// <returns></returns>
-        public Task<AuthResult> RefreshTokenAsync(string jwtToken, string refreshToken)
+        public async Task<AuthResult> RefreshTokenAsync(string accessToken, string refreshToken)
         {
-            return tokenFactory.RefreshTokens(jwtToken, refreshToken);
+            if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+                return AuthResult.Failure("Access-token or Refresh-token is invalid");
+
+            return await tokenFactory.RefreshTokensAsync(accessToken, refreshToken);
         }
 
 
-        public async Task<Result> ConfirmAccount(string userId, string confirmToken)
+        public async Task<Result> ConfirmAccountAsync(string userId, string confirmToken)
         {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(confirmToken))
+                return AuthResult.Failure("UserId or ConfirmaToken is invalid");
+
             var result = await userService.ConfirmEmail(userId, confirmToken);
             return result;
         }
+
+
 
     }
 }
