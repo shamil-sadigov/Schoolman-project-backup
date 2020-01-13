@@ -35,7 +35,7 @@ namespace Schoolman.Student.Infrastructure.Services
 
                 using (var smtp = new SmtpClient())
                 {
-                    smtp.LocalDomain = "locahost";
+                    //smtp.LocalDomain = "locahost";
                     await smtp.ConnectAsync(emailOptions.Host, emailOptions.Port, emailOptions.EnableSSL);
                     await smtp.AuthenticateAsync(emailOptions.Username, emailOptions.Password);
                     await smtp.SendAsync(message);

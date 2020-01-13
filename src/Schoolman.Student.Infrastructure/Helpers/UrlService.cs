@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Schoolman.Student.Infrastructure.Models;
 using System;
@@ -11,56 +12,55 @@ namespace Schoolman.Student.Infrastructure.Helpers
     {
         private readonly IOptionsMonitor<UrlOptions> urlSettings;
         private bool SpaHostUrl;
+        private Uri uri;
 
         public UrlService(IOptionsMonitor<UrlOptions> urlSettings)
         {
             this.urlSettings = urlSettings;
         }
 
-        public UrlService UseSpaHost()
+        /// <summary>
+        /// Designed for developing mode to user mainly angular localhost:4200 as based address to build verification email url
+        /// </summary>
+        /// <returns></returns>
+        public UrlService UseSpaUrlAddress()
         {
             SpaHostUrl = true;
             return this;
         }
 
-        public UrlService UseWebapiHost()
+        public UrlService UseWebapiUrlAddress()
         {
             SpaHostUrl = false;
             return this;
         }
 
 
-
         /// <summary>
-        /// By default, build url for Aspnet hosting url
+        /// By default, build url for Aspnet hosting url. Url building based on UrlOptions configure in appsettings
         /// </summary>
         /// <param name="webApiPath"></param>
         /// <returns></returns>
-        public string BuildConfirmationUrlWithQuery(string query)
+        public Uri BuildConfirmationUrl(string userId, string token)
         {
-            if (string.IsNullOrWhiteSpace(query))
-                throw new ArgumentNullException("Query must not be empty or null");
-
+           
             var builder = new UriBuilder();
+            UrlOptions urlOptions;
 
             if (SpaHostUrl)
-            {
-                UrlOptions spaUrlOptions = urlSettings.Get("Angular-AccountConfirmationUrl");
-                Build(builder, spaUrlOptions);
-            }
+                urlOptions = urlSettings.Get("Angular-AccountConfirmationUrl");
             else
-            {
-                UrlOptions spaUrlOptions = urlSettings.Get("Aspnet-AccountConfirmationUrl");
-                Build(builder, spaUrlOptions);
-            }
+                urlOptions = urlSettings.Get("Aspnet-AccountConfirmationUrl");
+            
 
-            builder.Query = query;
-
-            return builder.ToString();
+            BuildBaseAddress(builder, urlOptions);
+            builder.Query = $"userID={userId}&token={token}";
+            return uri = builder.Uri;
         }
 
+        #region Local methods
 
-        private void Build(UriBuilder uriBuilder, UrlOptions urlOptions)
+        private void BuildBaseAddress(UriBuilder uriBuilder, UrlOptions urlOptions)
         {
             if (urlOptions.IsNull())
                 throw new ArgumentNullException("Url options are not valid 😡");
@@ -71,8 +71,10 @@ namespace Schoolman.Student.Infrastructure.Helpers
 
             if (urlOptions.Port.HasValue)
                 uriBuilder.Port = urlOptions.Port.Value;
-
         }
 
+       
+
+        #endregion
     }
 }

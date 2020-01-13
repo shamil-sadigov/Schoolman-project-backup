@@ -26,6 +26,8 @@ namespace Schoolman.Student.Infrastructure.Services
 
             services.AddSingleton(jwtOptions);
 
+          
+
             services.AddAuthentication(ops =>
             {
                 ops.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,7 +37,7 @@ namespace Schoolman.Student.Infrastructure.Services
             .AddJwtBearer(ops =>
             {
                 ops.SaveToken = true;           // explicit operator
-                ops.TokenValidationParameters = (TokenValidationParameters)jwtOptions;
+                ops.TokenValidationParameters = (TokenValidationParameters) jwtOptions;
             });
 
             services.Configure<RefreshTokenOptions>(ops =>
@@ -47,7 +49,7 @@ namespace Schoolman.Student.Infrastructure.Services
             services.AddScoped<IEmailService<ConfirmationEmailBuilder>, ConfirmationEmailService>();
 
             services.Configure<EmailOptions>("Confirmation", ops =>
-                configuration.GetSection("EmailOptions:Yandex").Bind(ops));
+                configuration.GetSection("EmailOptions:SendInBlue").Bind(ops));
 
             services.Configure<EmailTemplate>("Confirmation", template =>
             {
@@ -81,7 +83,7 @@ namespace Schoolman.Student.Infrastructure.Services
 
                 urlOptions.Scheme = httpContext.Request.Scheme;
                 urlOptions.Host = httpContext.Request.Host.Host;
-                urlOptions.Path = configuration.GetSection("UrlOptions:Aspnet-AccountConfirmationUrl.Path")
+                urlOptions.Path = configuration.GetSection("UrlOptions:Aspnet-AccountConfirmationUrl:Path")
                                                .Value;
 
                 if (httpContext.Request.Host.Port.HasValue)

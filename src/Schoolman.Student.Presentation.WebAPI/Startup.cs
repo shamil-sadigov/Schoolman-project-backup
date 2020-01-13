@@ -46,7 +46,12 @@ namespace Schoolman.Student.WenApi
 
             services.AddSwaggerGen(ops =>
             {
-                ops.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                ops.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Schoolman.Student - WebAPI",
+                    Version = "v1"
+                    
+                });
                 ops.IncludeXmlComments(pathToAssembly);
                 ops.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
@@ -100,7 +105,7 @@ namespace Schoolman.Student.WenApi
 
             app.UseSwaggerUI(ops =>
             {
-                ops.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                ops.SwaggerEndpoint("/swagger/v1/swagger.json", "Schoolman.Student.WebAPI v1");
                 ops.RoutePrefix = "";
             });
 

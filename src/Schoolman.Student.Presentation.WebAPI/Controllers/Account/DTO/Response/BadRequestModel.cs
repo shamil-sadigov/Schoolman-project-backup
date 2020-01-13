@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 
 namespace Schoolman.Student.WenApi.Controllers.Identity.DTO.Response
 {
-    public class Register_ResponseModel_OnFail
+    /// <summary>
+    /// DTO
+    /// </summary>
+    public class BadRequestModel
     {
-        public Register_ResponseModel_OnFail()
+        public BadRequestModel()
         {
 
         }
 
-        public Register_ResponseModel_OnFail(string[] Errors)
+        public BadRequestModel(string[] Errors)
         {
             this.Errors = Errors;
         }

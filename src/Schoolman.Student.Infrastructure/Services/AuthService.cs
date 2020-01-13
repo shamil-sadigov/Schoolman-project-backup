@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Schoolman.Student.Core.Application;
+using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
@@ -29,21 +30,16 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<(Result, AppUser newUser)> RegisterAsync(string email, string password)
+        public async Task<(Result, AppUser newUser)> RegisterAsync(UserRegisterModel model, bool sendConfirmationEmail)
         {
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
-                return (AuthResult.Failure("Email or password are invalid"), newUser: null);
-
-
             // User creation
-            var (result, newUser) = await userService.CreateUser(email, password);
+            var (result, newUser) = await userService.CreateUser(model);
 
             if (!result.Succeeded)
                 return (result, newUser: null);
 
-
-            // temporary commented for testing mode
-            //result = await userService.SendConfirmationEmail(newUser);
+            if(sendConfirmationEmail)
+                result = await userService.SendConfirmationEmail(newUser);
 
             if (!result.Succeeded)
                 return (result, newUser: null);
@@ -60,6 +56,7 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> LoginAsync(string email, string password)
         {
+
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 return AuthResult.Failure("Email or password are invalid");
 
@@ -88,8 +85,7 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
-        
-
+       
         public async Task<Result> ConfirmAccountAsync(string userId, string confirmToken)
         {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(confirmToken))
@@ -98,5 +94,7 @@ namespace Schoolman.Student.Infrastructure.Services
             var result = await userService.ConfirmEmail(userId, confirmToken);
             return result;
         }
+
+
     }
 }

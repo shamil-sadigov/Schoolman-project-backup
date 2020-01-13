@@ -2,7 +2,10 @@
 
 namespace Schoolman.Student.WenApi.Controllers
 {
-    public class UserDTO
+    /// <summary>
+    /// DTO
+    /// </summary>
+    public class LoginModel
     {
         [Required]
         [EmailAddress]

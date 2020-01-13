@@ -19,8 +19,6 @@ namespace Schoolman.Student.Infrastructure.Services
         readonly EmailTemplate emailTemplate;
         private readonly HttpContext httpContext;
         private readonly UserManager<AppUser> userManager;
-        
-
 
         public UserService(UserManager<AppUser> userManager,
                  IEmailService<ConfirmationEmailBuilder> emailService,
@@ -36,20 +34,17 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
+        
         /// <summary>
         /// Creates user and returns creation result and userId. If creation is failed, see result errors.
         /// </summary>
-        /// <param name="email">User email</param>
-        /// <param name="password">User password</param>
         /// <returns>Creation result</returns>
-        public async Task<(Result result, AppUser user)> CreateUser(string email, string password)
+        public async Task<(Result result, AppUser user)> CreateUser(UserRegisterModel model)
         {
-            (bool IsUserValid, string error) = await ValidateUser(email, password);
+            if (await UserExists(model.Email))
+                return (Result.Failure("User with this email already registered"), user: null);
 
-            if (!IsUserValid)
-                return (Result.Failure(error), user: null);
-
-            return await TryCreateUserAsync(email, password);
+            return await TryCreateUserAsync(model);
         }
 
 
@@ -130,9 +125,13 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
+#if RELEASE
+#error Ensure you're using relevant email confirmation url based on server URL not SPA localhost
+#endif
         public async Task<Result> SendConfirmationEmail(AppUser user)
         {
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
             #region Url Encoding
 
             // generated token may contain some invalid characters such as '+' and '='
@@ -144,21 +143,19 @@ namespace Schoolman.Student.Infrastructure.Services
 
             #endregion
 
-#if RELEASE
-#error Ensure you're using relevant email confirmation url based on server URL not SPA localhost
-#endif
+            Uri confirmUrl = urlService.UseWebapiUrlAddress()
+                                       .BuildConfirmationUrl
+                                        (user.Id.ToString(), token);
 
-            string confirmUrl = urlService.UseSpaHost()
-                                          .BuildConfirmationUrl(user.Id, token);
+            var result = await emailService.SendAsync(ops => ops.ConfirmationUrl(confirmUrl.ToString())
+                                           .To(user.Email)
+                                           .Subject("Account Confirmation")
+                                           .Template(emailTemplate.Path));
 
-            var result = await emailService.SendAsync(ops => ops.ConfirmationUrl(confirmUrl)
-                                                                 .To(user.Email)
-                                                                 .Subject("Account Confirmation")
-                                                                 .Template(emailTemplate.Path));
+            // Some logging soon....
 
             return result;
         }
-
 
 
         public async Task<Result> ConfirmEmail(string userId, string token)
@@ -177,36 +174,37 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
-
-#region Local helper methods
+        #region Local helper methods
 
         /// <summary>
-        /// Verifies if email and password is valid, and whether user does exists.
+        /// Returns bool whethere User already registered or not
         /// </summary>
         /// <param name="email">User email</param>
         /// <param name="password">User password</param>
         /// <returns>Validation result</returns>
-        private async Task<(bool IsUserValid, string error)> ValidateUser(string email, string password)
+        private async Task<bool> UserExists(string email)
         {
             // Verify if user already exists
             var user = await userManager.FindByNameAsync(email);
             if (user != null)
-                return (false, "User already exists");
+                return true;
 
-            return (true, string.Empty);
+            return false;
         }
 
 
-        /// <summary>
-        /// Trying to create new user.
-        /// </summary>
-        /// <param name="email">User email</param>
-        /// <param name="password">User password</param>
-        /// <returns></returns>
-        private async Task<(Result result, AppUser newUser)> TryCreateUserAsync(string email, string password)
+        private async Task<(Result result, AppUser newUser)> TryCreateUserAsync(UserRegisterModel model)
         {
-            var newUser = new AppUser(email: email, userName: email);
-            var creation_result = await userManager.CreateAsync(newUser, password);
+            var newUser = new AppUser()
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.Password
+            };
+
+            var creation_result = await userManager.CreateAsync(newUser, model.Password);
 
             if (!creation_result.Succeeded)
             {
@@ -217,7 +215,6 @@ namespace Schoolman.Student.Infrastructure.Services
             return (Result.Success(), newUser);
         }
 
-    
-#endregion
+        #endregion
     }
 }

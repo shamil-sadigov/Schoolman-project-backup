@@ -166,21 +166,5 @@ namespace Schoolman.Student.Infrastructure.Helpers
             return builder.Uri.ToString();
         }
 
-        public static string BuildConfirmationUrl(this UrlService urlService, string userId, string token)=>
-            urlService.BuildConfirmationUrlWithQuery($"userId={userId}&confirmationToken={token}");
-
-
-
-
-
-        //public static string BuildConfirmationUrl(this UriBuilder builder, string userId, string token, ConfirmationUrlBuilder confirmationUrlBuilder)
-        //{
-        //    builder = confirmationUrlBuilder.BuildUrl(builder);
-        //    builder.Query = $"userId={userId}&confirmationToken={token}";
-        //    return builder.Uri.ToString();
-        //}
-
-
-
     }
 }

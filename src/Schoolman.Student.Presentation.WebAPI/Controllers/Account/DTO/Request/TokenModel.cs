@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Schoolman.Student.WenApi.Controllers.Identity.DTO
 {
-    public class TokenDTO
+    /// <summary>
+    /// DTO
+    /// </summary>
+    public class TokenModel
     {
         [Required]
         public string AccessToken { get; set; }

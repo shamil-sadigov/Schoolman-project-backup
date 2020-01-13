@@ -100,8 +100,7 @@ namespace Schoolman.Student.Infrastructure.Services
             {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim("UserID", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Iss, jwtOptions.Issuer)
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
             };
 
             return claims;
@@ -119,9 +118,11 @@ namespace Schoolman.Student.Infrastructure.Services
         {
             var tokenDesciptor = new SecurityTokenDescriptor()
             {
+                
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.Add(jwtOptions.ExpirationTime),
                 Audience = jwtOptions.Audience,
+                Issuer = jwtOptions.Issuer,
                 SigningCredentials = new SigningCredentials(key: new SymmetricSecurityKey(key),
                                                       algorithm: SecurityAlgorithms.HmacSha256)
             };
@@ -139,18 +140,16 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <param name="jti"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private async Task<string> GenerateRefreshTokenAsync(string newJti, string userId)
+        private async Task<string> GenerateRefreshTokenAsync(string jti, string userId)
         {
-
             var refresh_token = dataContext.RefreshTokens.FirstOrDefault(u => u.UserId == userId);
 
             if (refresh_token != null)
                 await dataContext.RemoveAndSaveAsync(refresh_token);
 
-
-            var new_refresh_token = RefreshToken.NewRefreshToken(newJti, userId, refreshTokenOptions.ExpirationTime);
-            await dataContext.AddAndSaveAsync(new_refresh_token);
-            return new_refresh_token.Token;
+            var new_refToken = RefreshToken.NewRefreshToken(jti, userId, refreshTokenOptions.ExpirationTime);
+            await dataContext.AddAndSaveAsync(new_refToken);
+            return new_refToken.Token;
         }
 
         #endregion

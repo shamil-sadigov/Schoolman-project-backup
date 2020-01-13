@@ -119,6 +119,10 @@
               "target": "Package",
               "version": "[2.2.0, )"
             },
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
             "Microsoft.EntityFrameworkCore.Relational": {
               "target": "Package",
               "version": "[2.2.6, )"

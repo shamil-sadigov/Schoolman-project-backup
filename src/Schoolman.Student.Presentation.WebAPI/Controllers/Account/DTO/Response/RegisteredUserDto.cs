@@ -2,16 +2,16 @@
 
 namespace Schoolman.Student.WenApi.Controllers.Identity.DTO.Response
 {
-    public class Register_ResponseModel_OnSuccess
+    public class UserRegisteredModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
 
-        public static explicit operator Register_ResponseModel_OnSuccess(AppUser appUser)
+        public static explicit operator UserRegisteredModel(AppUser appUser)
         {
-            return new Register_ResponseModel_OnSuccess()
+            return new UserRegisteredModel()
             {
                 Email = appUser.Email,
                 FirstName = appUser.FirstName,

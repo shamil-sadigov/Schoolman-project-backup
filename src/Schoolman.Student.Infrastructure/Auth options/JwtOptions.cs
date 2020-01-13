@@ -25,7 +25,13 @@ namespace Schoolman.Student.Infrastructure.AuthOptions
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 RequireExpirationTime = true,
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                
+                // By Default ClockSkew is 5 minutes
+                // This means that
+                // if your token is expired, it will be valid still for 5 minutes
+                // so set it to zero
+                ClockSkew = TimeSpan.Zero
             };
         }
     }

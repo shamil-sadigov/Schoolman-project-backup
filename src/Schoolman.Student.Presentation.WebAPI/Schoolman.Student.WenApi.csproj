@@ -18,6 +18,6 @@
     <ProjectReference Include="..\Schoolman.Student.Infrastructure\Schoolman.Student.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

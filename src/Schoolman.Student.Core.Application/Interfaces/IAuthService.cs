@@ -1,4 +1,5 @@
-﻿using Schoolman.Student.Core.Application.Models;
+﻿using Schoolman.Student.Core.Application.Common.Models;
+using Schoolman.Student.Core.Application.Models;
 using System.Threading.Tasks;
 
 namespace Schoolman.Student.Core.Application.Interfaces
@@ -8,7 +9,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
     /// </summary>
     public interface IAuthService<Tuser> where Tuser:class
     {
-        Task<(Result, Tuser newUser)> RegisterAsync(string email, string password);
+        Task<(Result, Tuser newUser)> RegisterAsync(UserRegisterModel model, bool sendConfirmationEmail);
         Task<AuthResult> LoginAsync(string email, string password);
         Task<AuthResult> RefreshTokenAsync(string jwtToken, string refreshToken);
         Task<Result> ConfirmAccountAsync(string userId, string confirmToken);
