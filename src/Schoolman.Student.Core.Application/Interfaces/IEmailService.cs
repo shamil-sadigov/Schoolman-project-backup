@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace Schoolman.Student.Core.Application.Interfaces
 {
-    //public interface IEmailService
-    //{
-    //    Task<Result> SendAsync(string email);
-    //}
-
-
     // Refined version
     public interface IEmailService<EmailBuilder> where EmailBuilder : IEmailBuilder
     {

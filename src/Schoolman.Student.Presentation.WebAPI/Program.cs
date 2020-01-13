@@ -20,7 +20,11 @@ namespace Schoolman.Student.WenApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                //.UseUrls("https://192.168.10.210:5001",
+                .ConfigureLogging(ops =>
+                {
+                    
+                })
+                //.UseUrls("https://192.168.10.18:5001",
                 //         "https://localhost:5001")
                 .UseStartup<Startup>();
     }

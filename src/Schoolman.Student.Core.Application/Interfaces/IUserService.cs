@@ -16,6 +16,5 @@ namespace Schoolman.Student.Core.Application.Interfaces
         Task<Result> ConfirmEmail(string userId, string token);
         Task<(Result, T)> Find(string email, Action<UserSearchOptions> searchOptions = null);
 
-        //Task<(Result, T)> Find(Action<UserSearchOptions> searchOptions);
     }
 }

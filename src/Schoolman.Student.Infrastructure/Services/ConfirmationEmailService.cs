@@ -6,6 +6,7 @@ using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Schoolman.Student.Infrastructure.Services
@@ -20,17 +21,18 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
-
         public async Task<Result> SendAsync(Action<ConfirmationEmailBuilder> sendOptions)
         {
+
             var emailBuilder = new ConfirmationEmailBuilder();
             sendOptions(emailBuilder);
             Email email = emailBuilder.Build();
-            MimeMessage message = BuildMessage(email);
 
-            
+
             try
             {
+                MimeMessage message = BuildMessage(email);
+
                 using (var smtp = new SmtpClient())
                 {
                     smtp.LocalDomain = "locahost";
@@ -43,7 +45,9 @@ namespace Schoolman.Student.Infrastructure.Services
             catch (Exception ex)
             {
 #if DEBUG
-                throw ex;
+                //throw ex;
+
+                return Result.Failure("Could send message to this email. Ensure you provided a valid email");
 #endif
             }
 

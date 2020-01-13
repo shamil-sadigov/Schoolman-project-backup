@@ -14,8 +14,8 @@ namespace Schoolman.Student.Infrastructure.Services
 {
     public class UserService : IUserService<AppUser>
     {
-        //private readonly IConfirmationEmailService emailService;
         private readonly IEmailService<ConfirmationEmailBuilder> emailService;
+        private readonly UrlService urlService;
         readonly EmailTemplate emailTemplate;
         private readonly HttpContext httpContext;
         private readonly UserManager<AppUser> userManager;
@@ -23,14 +23,14 @@ namespace Schoolman.Student.Infrastructure.Services
 
 
         public UserService(UserManager<AppUser> userManager,
-                 //IConfirmationEmailService emailService,
                  IEmailService<ConfirmationEmailBuilder> emailService,
                  IOptionsMonitor<EmailTemplate> templateOps, 
-                 IHttpContextAccessor httpContextAccessor)
+                 IHttpContextAccessor httpContextAccessor,
+                 Helpers.UrlService confirmationUrlBuilder)
         {
             this.userManager = userManager;
             this.emailService = emailService;
-            //this.emailService = emailService;
+            this.urlService = confirmationUrlBuilder;
             emailTemplate = templateOps.Get("Confirmation");
             httpContext =  httpContextAccessor.HttpContext;
         }
@@ -104,9 +104,6 @@ namespace Schoolman.Student.Infrastructure.Services
 
         //    return (Result.Success(), user);
         //}
-
-
-
         public async Task<(Result, AppUser)> Find(string email, Action<UserSearchOptions> searchOptions = null)
         {
             var user = await userManager.FindByEmailAsync(email);
@@ -133,11 +130,9 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
 
-
         public async Task<Result> SendConfirmationEmail(AppUser user)
         {
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-
             #region Url Encoding
 
             // generated token may contain some invalid characters such as '+' and '='
@@ -149,8 +144,12 @@ namespace Schoolman.Student.Infrastructure.Services
 
             #endregion
 
-            var confirmUrl = new UriBuilder()
-                            .BuildConfirmationUrl(httpContext.Request, user.Id, token);
+#if RELEASE
+#error Ensure you're using relevant email confirmation url based on server URL not SPA localhost
+#endif
+
+            string confirmUrl = urlService.UseSpaHost()
+                                          .BuildConfirmationUrl(user.Id, token);
 
             var result = await emailService.SendAsync(ops => ops.ConfirmationUrl(confirmUrl)
                                                                  .To(user.Email)
@@ -162,11 +161,8 @@ namespace Schoolman.Student.Infrastructure.Services
 
 
 
-
-
         public async Task<Result> ConfirmEmail(string userId, string token)
         {
-
             var user = await  userManager.FindByIdAsync(userId);
 
             if (user == null)
@@ -182,7 +178,7 @@ namespace Schoolman.Student.Infrastructure.Services
 
 
 
-        #region Local helper methods
+#region Local helper methods
 
         /// <summary>
         /// Verifies if email and password is valid, and whether user does exists.
@@ -192,10 +188,6 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns>Validation result</returns>
         private async Task<(bool IsUserValid, string error)> ValidateUser(string email, string password)
         {
-            // Verify if email and password is valid
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-                return (false, "Email or password is invalid");
-
             // Verify if user already exists
             var user = await userManager.FindByNameAsync(email);
             if (user != null)
@@ -226,6 +218,6 @@ namespace Schoolman.Student.Infrastructure.Services
         }
 
     
-        #endregion
+#endregion
     }
 }

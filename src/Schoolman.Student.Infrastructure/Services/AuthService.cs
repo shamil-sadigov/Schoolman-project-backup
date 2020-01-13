@@ -10,7 +10,7 @@ namespace Schoolman.Student.Infrastructure.Services
     /// <summary>
     /// Service for user authentication
     /// </summary>
-    public class AuthService : IAuthService
+    public class AuthService : IAuthService<AppUser>
     {
         private readonly IUserService<AppUser> userService;
         private readonly IJwtFactory<AppUser> tokenFactory;
@@ -22,29 +22,36 @@ namespace Schoolman.Student.Infrastructure.Services
             this.tokenFactory = tokenFactory;
         }
 
+
         /// <summary>
         /// Registers user and return registration result
         /// </summary>
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<Result> RegisterAsync(string email, string password)
+        public async Task<(Result, AppUser newUser)> RegisterAsync(string email, string password)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-                return AuthResult.Failure("Email or password are invalid");
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                return (AuthResult.Failure("Email or password are invalid"), newUser: null);
 
+
+            // User creation
             var (result, newUser) = await userService.CreateUser(email, password);
 
             if (!result.Succeeded)
-                return result;
+                return (result, newUser: null);
 
-            result = await userService.SendConfirmationEmail(newUser);
 
-            return result;
+            // temporary commented for testing mode
+            //result = await userService.SendConfirmationEmail(newUser);
+
+            if (!result.Succeeded)
+                return (result, newUser: null);
+            else
+                return (result, newUser);
         }
 
-
-
+        
         /// <summary>
         /// Generates token for registered and email-confirmed user
         /// </summary>
@@ -53,12 +60,11 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> LoginAsync(string email, string password)
         {
-
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 return AuthResult.Failure("Email or password are invalid");
 
             var (result, user) = await userService.Find(email, ops => ops.WithPassword(password)
-                                                                         .WithConfirmedEmail(true));
+                                                                         .WithConfirmedEmail(false));
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
@@ -75,23 +81,22 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> RefreshTokenAsync(string accessToken, string refreshToken)
         {
-            if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+            if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
                 return AuthResult.Failure("Access-token or Refresh-token is invalid");
 
             return await tokenFactory.RefreshTokensAsync(accessToken, refreshToken);
         }
 
 
+        
+
         public async Task<Result> ConfirmAccountAsync(string userId, string confirmToken)
         {
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(confirmToken))
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(confirmToken))
                 return AuthResult.Failure("UserId or ConfirmaToken is invalid");
 
             var result = await userService.ConfirmEmail(userId, confirmToken);
             return result;
         }
-
-
-
     }
 }

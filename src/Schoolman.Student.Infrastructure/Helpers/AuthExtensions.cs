@@ -22,7 +22,7 @@ namespace Schoolman.Student.Infrastructure.Helpers
         /// <returns></returns>
         public static byte[] GetBytes(this string securityKey)
             => Encoding.ASCII.GetBytes(securityKey);
-        
+
 
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Schoolman.Student.Infrastructure.Helpers
                 .Value;
 
             return long.Parse(unixExpirationTime);
-            
+
         }
 
 
@@ -79,9 +79,8 @@ namespace Schoolman.Student.Infrastructure.Helpers
 
             try
             {
-                var principal = jwtHandler.ValidateToken(token: jwt, 
+                var principal = jwtHandler.ValidateToken(token: jwt,
                                                   validationParameters: validationParams, out SecurityToken token);
-                
                 if (principal == null)
                     return (user: null, error: "JWT is not valid");
 
@@ -115,7 +114,7 @@ namespace Schoolman.Student.Infrastructure.Helpers
         /// <param name="db"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public static async Task<int> RemoveAndSaveAsync<T>(this DbContext db, T entity) where T:class
+        public static async Task<int> RemoveAndSaveAsync<T>(this DbContext db, T entity) where T : class
         {
             db.Set<T>().Remove(entity);
             return await db.SaveChangesAsync();
@@ -137,7 +136,7 @@ namespace Schoolman.Student.Infrastructure.Helpers
         }
 
 
-        public static StringBuilder AddConfirmationUrl(this StringBuilder htmlTemplate, string url)=>
+        public static StringBuilder AddConfirmationUrl(this StringBuilder htmlTemplate, string url) =>
              htmlTemplate.Replace("aspnet-confirmation-url", url);
 
 
@@ -145,18 +144,43 @@ namespace Schoolman.Student.Infrastructure.Helpers
              htmlTemplate.Replace("aspnet-username", token);
 
 
-        public static string BuildConfirmationUrl(this UriBuilder builder, HttpRequest request,string userId, string token)
+        // ⛔️
+        [Obsolete]
+        /// <summary>
+        /// Returns confirmation url based on webapi host
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="request"></param>
+        /// <param name="userId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static string BuildConfirmationUrl(this UriBuilder builder, HttpRequest request, string userId, string token)
         {
-
             builder.Scheme = request.Scheme;
             builder.Host = request.Host.Host;
-            builder.Path = "api/identity/confirm";
+            builder.Path = "api/account/confirm";
             builder.Query = $"userId={userId}&confirmationToken={token}";
-            builder.Port = request.Host.Port ??
-                                request.Host.Port.Value;
+            if (request.Host.Port.HasValue)
+                builder.Port = request.Host.Port.Value;
 
             return builder.Uri.ToString();
         }
+
+        public static string BuildConfirmationUrl(this UrlService urlService, string userId, string token)=>
+            urlService.BuildConfirmationUrlWithQuery($"userId={userId}&confirmationToken={token}");
+
+
+
+
+
+        //public static string BuildConfirmationUrl(this UriBuilder builder, string userId, string token, ConfirmationUrlBuilder confirmationUrlBuilder)
+        //{
+        //    builder = confirmationUrlBuilder.BuildUrl(builder);
+        //    builder.Query = $"userId={userId}&confirmationToken={token}";
+        //    return builder.Uri.ToString();
+        //}
+
+
 
     }
 }

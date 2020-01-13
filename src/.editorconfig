@@ -26,3 +26,6 @@ dotnet_diagnostic.RS1004.severity = none
 
 # RS1009: Only internal implementations of this interface are allowed.
 dotnet_diagnostic.RS1009.severity = none
+
+# CA1819: Properties should not return arrays
+dotnet_diagnostic.CA1819.severity = none

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Schoolman.Student.WenApi</name>
+    </assembly>
+    <members>
+        <member name="M:Schoolman.Student.WenApi.Controllers.AccountController.Register(Schoolman.Student.WenApi.Controllers.UserDTO)">
+            <summary>
+            Registers user and sends confirmation email
+            </summary>
+            
+            <remarks>
+            <b style="color: #f14d2f;align-contentalign-content:;" > 
+            Password Must have:</b> <br/> <br/> 
+            Digit (0123456789) <br/>
+            Lowecase character (a-z) <br/>
+            Non-Alphanumeric character (!@#$ ....) <br/>
+            Length >=8 <br/>
+            </remarks>
+            
+            <response code="200">Success</response>
+            <response code="400">Bad request</response>
+        </member>
+        <member name="M:Schoolman.Student.WenApi.Controllers.AccountController.Login(Schoolman.Student.WenApi.Controllers.UserDTO)">
+            <summary>
+            Login user and return access and refresh tokens
+            </summary>
+            <remarks>
+            <b style="color: #f14d2f;align-contentalign-content: ;" > 
+            Attention Attention</b> <br/> <br/> 
+            User must be registered before Login <br/>
+            </remarks>
+            <response code="200">Success</response>
+            <response code="400">Bad request</response>
+        </member>
+        <member name="P:Schoolman.Student.WenApi.Controllers.Identity.DTO.Response.RegisterResponseModel_Success.Error">
+            <summary>
+            
+            </summary>
+            <example> Email is invalid</example>
+        </member>
+        <member name="P:Schoolman.Student.WenApi.Controllers.AuthDTO.AccessToken">
+            <summary>
+            JWT
+            </summary>
+            <example>eyJhb6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjAwLCJodHRwOi8vdG9wdGFsY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWAQK_ZXw</example>
+        </member>
+        <member name="P:Schoolman.Student.WenApi.Controllers.AuthDTO.RefreshToken">
+            <summary>
+            Refresh Token
+            </summary>
+            <example>6F9619FF-8B86-D011-B42D-00CF4FC964FF</example>
+        </member>
+        <member name="P:Schoolman.Student.WenApi.Controllers.AuthSuccessModel.AccessToken">
+            <example>eyJhb6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjAwLCJodHRwOi8vdG9wdGFsY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWAQK_ZXw</example>
+        </member>
+        <member name="P:Schoolman.Student.WenApi.Controllers.AuthSuccessModel.RefreshToken">
+            <example>6F9619FF-8B86-D011-B42D-00CF4FC964FF</example>
+        </member>
+        <member name="P:Schoolman.Student.WenApi.Controllers.AuthFailModel.Error">
+            <example> User doesnt existt</example>
+        </member>
+    </members>
+</doc>

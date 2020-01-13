@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +31,18 @@ namespace Schoolman.Student.WenApi
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(ops =>
+            {
+                ops.AddPolicy("EnableCORS", corsOps => corsOps.AllowAnyOrigin()
+                                                              .AllowAnyMethod()
+                                                              .AllowAnyHeader()
+                                                              .AllowCredentials()
+                                                              .Build());
+            });
+
+
             var assemblyName = string.Concat(Assembly.GetExecutingAssembly().GetName().Name, ".xml");
             var pathToAssembly = Path.Combine(AppContext.BaseDirectory, assemblyName);
-
 
             services.AddSwaggerGen(ops =>
             {
@@ -64,12 +74,6 @@ namespace Schoolman.Student.WenApi
                     });
             });
 
-
-
-
-
-
-
             services.AddInfrastructure(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -77,17 +81,19 @@ namespace Schoolman.Student.WenApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
-            app.UseHttpsRedirection();
+            //}
+
+            app.UseCors("EnableCORS");
+
+            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseSwagger();
