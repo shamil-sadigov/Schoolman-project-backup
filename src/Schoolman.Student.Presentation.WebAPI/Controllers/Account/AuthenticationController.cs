@@ -18,12 +18,11 @@ namespace Schoolman.Student.WenApi.Controllers
     
     public partial class AccountController : ControllerBase
     {
-        private readonly IAuthService<AppUser> authAservice;        
+        private readonly IAuthService<AppUser> authenticationService;        
         public AccountController(IAuthService<AppUser> authAservice)
         {
-            this.authAservice = authAservice;
+            this.authenticationService = authAservice;
         }
-
 
 
         /// <remarks>
@@ -50,7 +49,8 @@ namespace Schoolman.Student.WenApi.Controllers
                 return BadRequest(new BadRequestModel(errors));
             }
 
-            var (result, newUser) = await authAservice.RegisterAsync(model, sendConfirmationEmail: true);
+            var (result, newUser) = await authenticationService
+                                          .RegisterUserAsync(model, sendConfirmationEmail: true);
 
             if (result.Succeeded)
                 return Ok((UserRegisteredModel) newUser);
@@ -73,11 +73,10 @@ namespace Schoolman.Student.WenApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestModel))]
         public async Task<IActionResult> Login([FromBody] LoginModel dto)
         {
-            var result = await authAservice.LoginAsync(dto.Email, dto.Password);
+            var result = await authenticationService.LoginUserAsync(dto.Email, dto.Password);
 
             if (result.Succeeded)
                 return Ok(new LoginSuccess(result.JwtToken, result.RefreshToken));
-
 
             return BadRequest( new BadRequestModel(result.Errors));
         }
@@ -93,7 +92,7 @@ namespace Schoolman.Student.WenApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(LoginFail))]
         public async Task<IActionResult> RefreshTokens([FromBody] TokenModel dto)
         {
-            var result = await authAservice.RefreshTokenAsync(dto.AccessToken, dto.RefreshToken);
+            var result = await authenticationService.RefreshTokenAsync(dto.AccessToken, dto.RefreshToken);
 
             if (result.Succeeded)
                 return Ok(new LoginSuccess(result.JwtToken, result.RefreshToken));
@@ -109,9 +108,9 @@ namespace Schoolman.Student.WenApi.Controllers
         /// <response code="400">Bad request => Cases: userId or token are not valid </response>
         [ApiExplorerSettings(IgnoreApi = false)]
         [HttpGet]
-        public async Task<IActionResult> Confirm(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            var result = await authAservice.ConfirmAccountAsync(userId, token);
+            var result = await authenticationService.ConfirmEmailAsync(userId, token);
 
             if (result.Succeeded)
                 return Ok("Congratulation! You dind't lie, your email address confirmed!");

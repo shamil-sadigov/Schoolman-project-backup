@@ -9,9 +9,9 @@ namespace Schoolman.Student.Core.Application.Interfaces
     /// </summary>
     public interface IAuthService<Tuser> where Tuser:class
     {
-        Task<(Result, Tuser newUser)> RegisterAsync(UserRegisterModel model, bool sendConfirmationEmail);
-        Task<AuthResult> LoginAsync(string email, string password);
+        Task<(Result, Tuser newUser)> RegisterUserAsync(UserRegisterModel model, bool sendConfirmationEmail);
+        Task<AuthResult> LoginUserAsync(string email, string password);
         Task<AuthResult> RefreshTokenAsync(string jwtToken, string refreshToken);
-        Task<Result> ConfirmAccountAsync(string userId, string confirmToken);
+        Task<Result> ConfirmEmailAsync(string userId, string confirmToken);
     }
 }

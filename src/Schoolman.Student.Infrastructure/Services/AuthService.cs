@@ -30,7 +30,7 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<(Result, AppUser newUser)> RegisterAsync(UserRegisterModel model, bool sendConfirmationEmail)
+        public async Task<(Result, AppUser newUser)> RegisterUserAsync(UserRegisterModel model, bool sendConfirmationEmail)
         {
             // User creation
             var (result, newUser) = await userService.CreateUser(model);
@@ -54,7 +54,7 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<AuthResult> LoginAsync(string email, string password)
+        public async Task<AuthResult> LoginUserAsync(string email, string password)
         {
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
@@ -86,7 +86,7 @@ namespace Schoolman.Student.Infrastructure.Services
 
 
        
-        public async Task<Result> ConfirmAccountAsync(string userId, string confirmToken)
+        public async Task<Result> ConfirmEmailAsync(string userId, string confirmToken)
         {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(confirmToken))
                 return AuthResult.Failure("UserId or ConfirmaToken is invalid");
