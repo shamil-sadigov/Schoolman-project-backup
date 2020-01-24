@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Schoolman.Student.Infrastructure.Data.Identity;
 using System;
+using System.Linq;
 
 namespace Schoolman.Student.Infrastructure
 {
@@ -12,7 +13,7 @@ namespace Schoolman.Student.Infrastructure
 
         public UserDataContext(DbContextOptions<UserDataContext> ops) : base(ops)
         {
-           
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -22,6 +23,9 @@ namespace Schoolman.Student.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+
+
             builder.Entity<RefreshToken>()
                    .HasKey(r => r.Token);
 
@@ -37,6 +41,9 @@ namespace Schoolman.Student.Infrastructure
             builder.Entity<AppUser>()
                     .Property(u => u.FirstName)
                     .HasMaxLength(60);
+
+            builder.Entity<AppUser>()
+                   .HasIndex(u => u.Email);
 
 
             builder.Entity<AppUser>()

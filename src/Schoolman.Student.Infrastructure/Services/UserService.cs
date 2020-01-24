@@ -56,7 +56,7 @@ namespace Schoolman.Student.Infrastructure.Services
         public async Task<Result> DeleteUser(string email)
         {
             var userToDelete = await userManager.FindByEmailAsync(email);
-            
+
             if (userToDelete == null)
                 return Result.Failure("User doens't exist found");
 
@@ -70,41 +70,14 @@ namespace Schoolman.Student.Infrastructure.Services
 
 
 
-        ///// <summary>
-        ///// Finds user based on options
-        ///// </summary>
-        ///// <param name="configureOptions"></param>
-        ///// <returns></returns>
-        //public async Task<(Result, AppUser)> Find(Action<UserSearchOptions> configureOptions)
-        //{
-        //    configureOptions(options);
-            
-        //    if(string.IsNullOrEmpty(options.Email))
-        //        return (Result.Failure("Email is not valid"), null);
-
-        //    // Check user by Email
-        //    var user = await userManager.FindByEmailAsync(options.Email);
-        //    if(user == null)
-        //        return (Result.Failure("User doesn't exists"), null);
-
-        //    // Check if Password valid
-        //    if (!string.IsNullOrEmpty(options.PasswordToConfirm))
-        //        if (!await userManager.CheckPasswordAsync(user, options.PasswordToConfirm))
-        //            return (Result.Failure("Password is not valid"), null);
-
-        //    // Check if email confirmed
-        //    if (options.ConfirmedEmail)
-        //        if (!await userManager.IsEmailConfirmedAsync(user))
-        //            return (Result.Failure("Email is not confirmed"), null);
-
-        //    return (Result.Success(), user);
-        //}
         public async Task<(Result, AppUser)> Find(string email, Action<UserSearchOptions> searchOptions = null)
         {
             var user = await userManager.FindByEmailAsync(email);
 
-            if(user == null)
-                return (Result.Failure("User doesn't exists"), null);
+            if (user == null)
+                //return (Result.Failure("User is not registered"), null);
+                return (Result.Failure("Adam balasi kimi email gonder"), null);
+            // We say this so that not to allow user to know about wether Email exist or not
 
             if (searchOptions != null)
             {
@@ -113,10 +86,12 @@ namespace Schoolman.Student.Infrastructure.Services
 
                 // Is password valid ?
                 if(!await userManager.CheckPasswordAsync(user, userOptions.Password))
-                    return (Result.Failure("Password is not valid"), null);
+                    //return (Result.Failure("Password is not valid"), null); 
+                    return (Result.Failure("Adam balasi kimi email parol yaz"), null);
+                    // We say this so that not to allow user to know about wether Email exist or not
 
                 // Is email confirmed ?
-                if(userOptions.ConfirmedEmail)
+                if (userOptions.ConfirmedEmail)
                 if(!await userManager.IsEmailConfirmedAsync(user))
                     return (Result.Failure("Email is not confirmed"), null);
             }
@@ -143,7 +118,7 @@ namespace Schoolman.Student.Infrastructure.Services
 
             #endregion
 
-            Uri confirmUrl = urlService.UseWebapiUrlAddress()
+            Uri confirmUrl = urlService.UseSpaUrlAddress()
                                        .BuildConfirmationUrl
                                         (user.Id.ToString(), token);
 
@@ -165,7 +140,8 @@ namespace Schoolman.Student.Infrastructure.Services
             if (user == null)
                 return Result.Failure("User doesn't exists");
 
-            var result = await userManager.ConfirmEmailAsync(user, token);
+            var encodedToken = HttpUtility.UrlDecode(token);
+            var result = await userManager.ConfirmEmailAsync(user, encodedToken);
 
             if (!result.Succeeded)
                 return Result.Failure(result.Errors.Select(e=> e.Description).ToArray());
@@ -201,7 +177,7 @@ namespace Schoolman.Student.Infrastructure.Services
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                PhoneNumber = model.Password
+                PhoneNumber = model.PhoneNumber
             };
 
             var creation_result = await userManager.CreateAsync(newUser, model.Password);

@@ -3,6 +3,7 @@ using Schoolman.Student.Core.Application;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
+using Schoolman.Student.Infrastructure.Helpers;
 using System;
 using System.Threading.Tasks;
 
@@ -56,12 +57,11 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> LoginUserAsync(string email, string password)
         {
-
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            if(Is.NullOrWhiteSpace(email, password))
                 return AuthResult.Failure("Email or password are invalid");
 
             var (result, user) = await userService.Find(email, ops => ops.WithPassword(password)
-                                                                         .WithConfirmedEmail(false));
+                                                                         .WithConfirmedEmail(true));
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
@@ -78,7 +78,7 @@ namespace Schoolman.Student.Infrastructure.Services
         /// <returns></returns>
         public async Task<AuthResult> RefreshTokenAsync(string accessToken, string refreshToken)
         {
-            if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
+            if (Is.NullOrWhiteSpace(accessToken, refreshToken))
                 return AuthResult.Failure("Access-token or Refresh-token is invalid");
 
             return await tokenFactory.RefreshTokensAsync(accessToken, refreshToken);
@@ -88,13 +88,11 @@ namespace Schoolman.Student.Infrastructure.Services
        
         public async Task<Result> ConfirmEmailAsync(string userId, string confirmToken)
         {
-            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(confirmToken))
+            if (Is.NullOrWhiteSpace(userId, confirmToken))
                 return AuthResult.Failure("UserId or ConfirmaToken is invalid");
 
             var result = await userService.ConfirmEmail(userId, confirmToken);
             return result;
         }
-
-
     }
 }

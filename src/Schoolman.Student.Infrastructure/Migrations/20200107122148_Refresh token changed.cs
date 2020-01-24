@@ -14,6 +14,7 @@ namespace Schoolman.Student.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "Expires",
                 table: "RefreshTokens");
+            
 
             migrationBuilder.AddColumn<long>(
                 name: "Created_unixTime",

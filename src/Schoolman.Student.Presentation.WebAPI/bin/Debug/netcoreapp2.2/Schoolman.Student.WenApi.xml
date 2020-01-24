@@ -4,12 +4,12 @@
         <name>Schoolman.Student.WenApi</name>
     </assembly>
     <members>
-        <member name="T:Schoolman.Student.WenApi.Controllers.AccountController">
+        <member name="T:Schoolman.Student.WenApi.Controllers.AuthenticationController">
             <summary>
             Testing
             </summary>
         </member>
-        <member name="M:Schoolman.Student.WenApi.Controllers.AccountController.Register(Schoolman.Student.Core.Application.Common.Models.UserRegisterModel)">
+        <member name="M:Schoolman.Student.WenApi.Controllers.AuthenticationController.Register(Schoolman.Student.Core.Application.Common.Models.UserRegisterModel)">
             <remarks>
             This action registers new user and sends confirmation email
             <br/><br/> 
@@ -24,7 +24,7 @@
             <response code="200">Success request => New user registered and returned</response>
             <response code="400">Bad request. Cases: Email is not valid, Firstname or Lastname is empty, Password doesn't meet specified requirements and so on...</response>
         </member>
-        <member name="M:Schoolman.Student.WenApi.Controllers.AccountController.Login(Schoolman.Student.WenApi.Controllers.LoginModel)">
+        <member name="M:Schoolman.Student.WenApi.Controllers.AuthenticationController.Login(Schoolman.Student.WenApi.Controllers.LoginModel)">
             <remarks>
             This action returns access tokens (JWT + Refresh Token)
              <br/> <br/> 
@@ -35,14 +35,14 @@
             <response code="200">Success request => Access tokens created and returned</response>
             <response code="400">Bad request => Cases: User is not registered, Email is not valid, Password is not valid and so on...</response>
         </member>
-        <member name="M:Schoolman.Student.WenApi.Controllers.AccountController.RefreshTokens(Schoolman.Student.WenApi.Controllers.Identity.DTO.TokenModel)">
+        <member name="M:Schoolman.Student.WenApi.Controllers.AuthenticationController.RefreshTokens(Schoolman.Student.WenApi.Controllers.Identity.DTO.TokenModel)">
             <remarks>
             This action take outdated tokens and returns new ones
             </remarks>
             <response code="200">Success request => New access tokens are returned</response>
             <response code="400">Bad request => Cases:Refresh token expired, JWT is not valid and so on...</response>
         </member>
-        <member name="M:Schoolman.Student.WenApi.Controllers.AccountController.Confirm(System.String,System.String)">
+        <member name="M:Schoolman.Student.WenApi.Controllers.AuthenticationController.ConfirmEmail(System.String,System.String)">
             <remarks>
             This action confirms new user's email
             </remarks>

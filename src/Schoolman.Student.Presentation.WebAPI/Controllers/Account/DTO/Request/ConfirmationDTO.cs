@@ -1,6 +1,6 @@
 ﻿namespace Schoolman.Student.WenApi.Controllers
 {
-    public partial class AccountController
+    public partial class AuthenticationController
     {
         public class ConfirmationDTO
         {

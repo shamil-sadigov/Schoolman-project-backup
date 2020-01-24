@@ -37,5 +37,14 @@ namespace Schoolman.Student.WenApi.Controllers.Courses
         {
             return Ok(context.Users.Select(u=> u.Email).ToList());
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetNiceStatusCode()
+        {
+            return StatusCode(500, new { error = "Qaqa, paxmeldeyem"});
+        }
+
     }
 }
