@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Schoolman.Student.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,9 +56,9 @@ namespace Schoolman.Student.WenApi
                 });
 
                 ops.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                    {
-                         {
-                            new OpenApiSecurityScheme
+                {
+                     {
+                         new OpenApiSecurityScheme
                             {
                                 Reference = new OpenApiReference
                                 {
@@ -67,9 +68,9 @@ namespace Schoolman.Student.WenApi
                                     Scheme = "Bearer",
                                     Name = "Bearer",
                                     In = ParameterLocation.Header,
-                            }, new List<string>()
-                         }
-                    });
+                         }, new List<string>()
+                     }
+                });
             });
 
             services.AddInfrastructure(Configuration);

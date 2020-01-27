@@ -15,6 +15,7 @@ namespace Schoolman.Student.Infrastructure.Helpers
 {
     internal static class AuthExtensions
     {
+        // migrated
         /// <summary>
         /// Returns bytes of secret keywork in ASCI 
         /// </summary>
@@ -93,6 +94,18 @@ namespace Schoolman.Student.Infrastructure.Helpers
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// Simple method for merging addition and saving entity in database
         /// </summary>
@@ -105,6 +118,11 @@ namespace Schoolman.Student.Infrastructure.Helpers
             await db.Set<T>().AddAsync(entity);
             return await db.SaveChangesAsync();
         }
+
+
+
+
+
 
 
         /// <summary>

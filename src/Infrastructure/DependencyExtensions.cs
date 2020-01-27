@@ -31,7 +31,6 @@ namespace Schoolman.Student.Infrastructure
 #if Server_Local
                 ops.UseMySql(configuration.GetConnectionString("LocalServer"));
 #else
-
                 ops.UseMySql(configuration.GetConnectionString("RemoteServer"));
                 //ops.UseMySql(configuration.GetConnectionString("RemoteServer"));
 #endif

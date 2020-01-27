@@ -1,0 +1,11 @@
+{
+  "JwtOptions": {
+    "SecretKey": "CreedenceClearwaterRevival",
+    "ExpirationTime": "00:59:00",
+    "Issuer": "Schoolman.Student",
+    "Audience": "Schoolman.Student"
+  },
+  "RefreshTokenOptions": {
+    "ExpirationTime": "90.00:00:00"
+  }
+}

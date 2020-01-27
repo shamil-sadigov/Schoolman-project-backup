@@ -1,0 +1,11 @@
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Core.Application.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Core.Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Core.Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Core.Domain.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Core.Domain.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Core.Application.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Core.Application.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Core.Application.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Core.Application.csproj.CopyComplete
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Core.Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Core.Application.pdb

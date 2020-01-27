@@ -1,0 +1,3 @@
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Authentication\obj\Debug\netcoreapp3.1\Infrastructure.Authentication.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Authentication\obj\Debug\netcoreapp3.1\Infrastructure.Authentication.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Authentication\obj\Debug\netcoreapp3.1\Infrastructure.Authentication.AssemblyInfo.cs
