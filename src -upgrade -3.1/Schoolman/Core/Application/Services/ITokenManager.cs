@@ -15,7 +15,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<AuthResult> GenerateTokensAsync(User user);
+        Task<AuthResult> GenerateNewTokensAsync(User user);
 
         /// <summary>
         /// Get tokens and refresh them.

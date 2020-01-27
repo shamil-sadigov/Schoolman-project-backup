@@ -67,7 +67,7 @@ namespace Authentication.Services
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
 
-            return await tokenManager.GenerateTokensAsync(user);
+            return await tokenManager.GenerateNewTokensAsync(user);
         }
 
 

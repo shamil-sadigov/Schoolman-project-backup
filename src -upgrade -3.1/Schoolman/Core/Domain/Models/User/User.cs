@@ -6,8 +6,8 @@ namespace Domain
 {
     public class User:IdentityUser
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        #region Ctor
+
         public User()
         {
             UserRoleTenants = new HashSet<UserRoleTenant>();
@@ -16,6 +16,13 @@ namespace Domain
             Tokens = new HashSet<UserToken>();
         }
 
+        #endregion
+
+
+        public RefreshToken RefreshToken { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+       
         public ICollection<UserRoleTenant> UserRoleTenants { get; set; }
         public ICollection<UserClaim> Claims { get; set; }
         public ICollection<UserLogin> Logins { get; set; }

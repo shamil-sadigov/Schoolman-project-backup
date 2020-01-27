@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Authentication.Helpers;
+using Microsoft.IdentityModel.Tokens;
 using System;
 
 namespace Authentication.Options

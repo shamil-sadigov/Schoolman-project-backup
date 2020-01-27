@@ -9,3 +9,17 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Authentication\bin\Debug\netcoreapp3.1\Application.pdb
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Authentication\bin\Debug\netcoreapp3.1\Domain.pdb
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Authentication\obj\Debug\netcoreapp3.1\Authentication.csproj.CopyComplete
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\obj\Debug\netcoreapp3.1\Authentication.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\obj\Debug\netcoreapp3.1\Authentication.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\obj\Debug\netcoreapp3.1\Authentication.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\authentication-settings.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\Authentication.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\Authentication.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\Authentication.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\Domain.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\bin\Debug\netcoreapp3.1\Domain.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\obj\Debug\netcoreapp3.1\Authentication.csproj.CopyComplete
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\obj\Debug\netcoreapp3.1\Authentication.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Authentication\obj\Debug\netcoreapp3.1\Authentication.pdb

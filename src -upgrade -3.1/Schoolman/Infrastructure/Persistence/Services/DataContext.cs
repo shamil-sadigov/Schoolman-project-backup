@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Persistence.Contexts
 {
-    public class TenantContext:IdentityDbContext<User,Role, string,
+    public class DataContext:IdentityDbContext<User,Role, string,
                                                  UserClaim,
                                                  UserRoleTenant,
                                                  UserLogin,
@@ -16,11 +16,10 @@ namespace Persistence.Contexts
                                                  UserToken>
     {
 
-        public TenantContext(DbContextOptions<TenantContext> ops):base(ops)
+        public DataContext(DbContextOptions<DataContext> ops):base(ops)
         {
 
         }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

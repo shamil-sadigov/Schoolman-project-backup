@@ -38,7 +38,7 @@ namespace Authentication.Services
         /// </summary>
         /// <param name="user">User for whom tokens will be created for</param>
         /// <returns>JWT and Refresh tokens</returns>
-        public async Task<AuthResult> GenerateTokensAsync(User user)
+        public async Task<AuthResult> GenerateNewTokensAsync(User user)
         {
             // no validation yet
             var claims = GenerateClaims(user);

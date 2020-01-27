@@ -17,6 +17,7 @@ namespace Persistence.Configurations
             user.Property(model => model.PhoneNumber).HasMaxLength(50);
             user.Property(model => model.FirstName).HasMaxLength(50);
             user.Property(model => model.LastName).HasMaxLength(50);
+            user.OwnsOne(model => model.RefreshToken);
 
         }
     }
