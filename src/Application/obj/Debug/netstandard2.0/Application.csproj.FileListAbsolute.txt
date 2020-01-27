@@ -1,0 +1,8 @@
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\bin\Debug\netstandard2.0\Application.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\bin\Debug\netstandard2.0\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\bin\Debug\netstandard2.0\Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\obj\Debug\netstandard2.0\Application.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\obj\Debug\netstandard2.0\Application.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\obj\Debug\netstandard2.0\Application.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\obj\Debug\netstandard2.0\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src\Application\obj\Debug\netstandard2.0\Application.pdb
