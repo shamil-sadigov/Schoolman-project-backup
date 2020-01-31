@@ -10,8 +10,8 @@ namespace Schoolman.Student.Core.Application.Models
     /// </summary>
     public class Result
     {
-        public bool Succeeded { get; private set; }
-        public string[] Errors { get; private set; }
+        public bool Succeeded { get; protected set; }
+        public string[] Errors { get; protected set; }
 
         protected Result(bool succeeded, string[] errors)
             => (Succeeded, Errors) = (succeeded, errors);
@@ -23,4 +23,31 @@ namespace Schoolman.Student.Core.Application.Models
             new Result(false, errors);
 
     }
+
+
+    public class Result<T> : Result where T:class
+    {
+        public T Response;
+
+        private Result(T response, bool succeeded, string[] errors):base(succeeded, errors)
+        {
+            Response = response;
+        }
+
+
+        public static Result<T> Success(T reponse)
+        {
+            return new Result<T>(reponse, true, Array.Empty<string>());
+        }
+
+        public new static Result<T> Failure(params string[] errors)
+        {
+            return new Result<T>(null, true, Array.Empty<string>());
+        }
+
+
+    }
+
+
+
 }

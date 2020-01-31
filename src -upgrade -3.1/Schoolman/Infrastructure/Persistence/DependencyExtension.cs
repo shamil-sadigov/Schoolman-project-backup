@@ -25,9 +25,12 @@ namespace Persistence
                                                        reloadOnChange: true)
                                                        .Build();
 
+
             #endregion
 
             #region Identity configuration
+
+
 
             services.AddIdentity<User, Role>(ops =>
             {
@@ -38,19 +41,25 @@ namespace Persistence
                 ops.SignIn.RequireConfirmedPhoneNumber = false;
                 ops.Password.RequiredUniqueChars = 0;
             })
-           .AddEntityFrameworkStores<DataContext>()
+           .AddEntityFrameworkStores<SchoolmanContext>()
            .AddDefaultTokenProviders();
+
+
 
             #endregion
 
             #region Database configuration
 
-            services.AddDbContext<DataContext>(ops =>
-            {
-                ops.UseMySql(configuration.GetConnectionString("RemoteServer"));
-            });
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            services.AddDbContext<SchoolmanContext>(ops =>
+            {
+                ops.UseMySql(configuration.GetConnectionString("RemoteServer"));
+                //ops.UseMySql(configuration.GetConnectionString("Server=192.168.10.18;Port=3306;Database=schoolman_student_test;Uid=shamil.benzeine; Pwd=workbenchGibson1414@"));
+
+            });
+
 
             #endregion
         }

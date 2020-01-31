@@ -59,15 +59,21 @@ namespace Authentication.Services
         public async Task<AuthResult> LoginUserAsync(string email, string password)
         {
             if (Assert.Is.NullOrWhiteSpace(email, password))
-                return AuthResult.Failure("Email or password are invalid");
+                return AuthResult.Failure("User credentials invalid");
 
-            var (result, user) = await userManager.Find(email, ops => ops.WithPassword(password)
-                                                                         .WithConfirmedEmail(true));
+            var user = await userManager.FindUserAsync(u => u.Email == email);
+
+            if (user == null)
+                return AuthResult.Failure("User credentials invalid");
+
+
+            var result = await userManager.CheckUserAsync(user, ops => ops.PasswordToConfirm(password)
+                                                                          .ShouldConfirmEmail(true));
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
 
-            return await tokenManager.GenerateNewTokensAsync(user);
+            return await tokenManager.GenerateTokensAsync(user.Id);
         }
 
 

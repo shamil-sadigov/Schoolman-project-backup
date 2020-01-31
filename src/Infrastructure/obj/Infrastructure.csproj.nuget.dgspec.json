@@ -29,14 +29,7 @@
         },
         "frameworks": {
           "netstandard2.0": {
-            "projectReferences": {
-              "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src\\Schoolman.Student.Core.Application\\Code.Application.csproj": {
-                "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src\\Schoolman.Student.Core.Application\\Code.Application.csproj"
-              },
-              "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src\\Schoolman.Student.Core.Domain\\Schoolman.Student.Core.Domain\\Core.Domain.csproj": {
-                "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src\\Schoolman.Student.Core.Domain\\Schoolman.Student.Core.Domain\\Core.Domain.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {

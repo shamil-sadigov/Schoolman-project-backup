@@ -9,7 +9,15 @@ namespace Domain.Models
 
     public class RefreshToken
     {
+
+
+
+
         public string Token { get; set; }
         public string AccessTokenId { get; set; }
+
+        public long IssueTime { get; set; }
+        public long ExpirationTime { get; set; }
+
     }
 }

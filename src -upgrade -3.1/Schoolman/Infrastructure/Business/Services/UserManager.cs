@@ -1,7 +1,9 @@
 ﻿using Application.Models;
+using Application.Services;
 using Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
@@ -9,6 +11,7 @@ using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,21 +23,21 @@ namespace Business.Services
     {
         private readonly IEmailService<ConfirmationEmailBuilder> emailService;
         private readonly UrlService urlService;
-        readonly EmailTemplate emailTemplate;
-        private readonly HttpContext httpContext;
+        private readonly IRepository<User> userRepository;
+        private readonly EmailTemplate emailTemplate;
         private readonly UserManager<User> userManager;
 
         public UserManager(UserManager<User> userManager,
                  IEmailService<ConfirmationEmailBuilder> emailService,
                  IOptionsMonitor<EmailTemplate> templateOps,
-                 IHttpContextAccessor httpContextAccessor,
-                 UrlService confirmationUrlBuilder)
+                 UrlService confirmationUrlBuilder,
+                 IRepository<User> userRepository)
         {
             this.userManager = userManager;
             this.emailService = emailService;
             this.urlService = confirmationUrlBuilder;
+            this.userRepository = userRepository;
             emailTemplate = templateOps.Get("Confirmation");
-            httpContext = httpContextAccessor.HttpContext;
         }
 
 
@@ -62,7 +65,7 @@ namespace Business.Services
             var userToDelete = await userManager.FindByEmailAsync(email);
 
             if (userToDelete == null)
-                return Result.Failure("User doens't exist found");
+                return Result.Failure("User doens't exist");
 
             var deletionResult = await userManager.DeleteAsync(userToDelete);
 
@@ -73,35 +76,40 @@ namespace Business.Services
         }
 
 
+        // return first use in collection
 
-        public async Task<(Result, User)> Find(string email, Action<UserSearchOptions> searchOptions = null)
+        public async Task<User> FindUserAsync(Expression<Func<User, bool>> expression)
+              => await userRepository.Collection.AsNoTracking().SingleOrDefaultAsync(expression);
+        
+
+
+
+        public async Task<Result> CheckUserAsync(User user, Action<UserAssertOptions> predicate)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            var userOptions = new UserAssertOptions();
 
-            if (user == null)
-                //return (Result.Failure("User is not registered"), null);
-                return (Result.Failure("Adam balasi kimi email gonder"), null);
-            // We say this so that not to allow user to know about wether Email exist or not
+            predicate?.Invoke(userOptions);
 
-            if (searchOptions != null)
-            {
-                var userOptions = new UserSearchOptions();
-                searchOptions(userOptions);
-
-                // Is password valid ?
+            if (userOptions.Password != null)
                 if (!await userManager.CheckPasswordAsync(user, userOptions.Password))
-                    //return (Result.Failure("Password is not valid"), null); 
-                    return (Result.Failure("Adam balasi kimi email parol yaz"), null);
-                // We say this so that not to allow user to know about wether Email exist or not
+                    return Result.Failure("User credentials invalid");
 
-                // Is email confirmed ?
-                if (userOptions.ConfirmedEmail)
-                    if (!await userManager.IsEmailConfirmedAsync(user))
-                        return (Result.Failure("Email is not confirmed"), null);
-            }
 
-            return (Result.Success(), user);
+            if (userOptions.ConfirmEmail)
+                if (!await userManager.IsEmailConfirmedAsync(user))
+                    return Result.Failure("Email is not confirmed");
+
+            return Result.Success();
         }
+
+
+
+
+
+
+
+
+
 
 
 #if RELEASE

@@ -1,14 +1,12 @@
 ﻿using Domain;
 using Domain.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Reflection;
 
 namespace Persistence.Contexts
 {
-    public class DataContext:IdentityDbContext<User,Role, string,
+    public class SchoolmanContext:IdentityDbContext<User,Role, string,
                                                  UserClaim,
                                                  UserRoleTenant,
                                                  UserLogin,
@@ -16,7 +14,7 @@ namespace Persistence.Contexts
                                                  UserToken>
     {
 
-        public DataContext(DbContextOptions<DataContext> ops):base(ops)
+        public SchoolmanContext(DbContextOptions<SchoolmanContext> ops):base(ops)
         {
 
         }
@@ -26,13 +24,11 @@ namespace Persistence.Contexts
             base.OnConfiguring(optionsBuilder);
         }
 
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
 
     }
 }

@@ -11,24 +11,33 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<UserRoleTenant> userRoleTenant)
         {
+            userRoleTenant.Property(model => model.RelationId)
+                          .ValueGeneratedOnAdd()
+                          .IsRequired();
+
+            userRoleTenant.HasIndex(model => model.RelationId);
+
             userRoleTenant.HasOne(urt => urt.Tenant)
-                          .WithMany(t => t.UserRoleTenants)
+                          .WithMany("_userRoleTenantRelation")
+                          //.WithMany(t => t.UserRoleTenantRelation)
                           .HasForeignKey(urt => urt.TenantId)
-                          .OnDelete(DeleteBehavior.SetNull);
+                          .OnDelete(DeleteBehavior.Restrict);
 
             userRoleTenant.HasOne(urt => urt.Role)
-                         .WithMany(t => t.UserRoleTenants)
+                          .WithMany("_userRoleTenantRelation")
+                         //.WithMany(t => t.UserRoleTenantRelation)
                          .HasForeignKey(urt => urt.RoleId)
-                         .OnDelete(DeleteBehavior.SetNull);
+                         .OnDelete(DeleteBehavior.Restrict);
 
             userRoleTenant.HasOne(urt => urt.User)
-                         .WithMany(t => t.UserRoleTenants)
+                          //.WithMany(t => t.UserRoleTenantRelation)
+                          .WithMany("_userRoleTenantRelation")
                          .HasForeignKey(urt => urt.UserId)
                          .OnDelete(DeleteBehavior.Cascade);
 
             userRoleTenant.HasKey(model => new { model.UserId, model.RoleId, model.TenantId });
 
-            userRoleTenant.ToTable("UserRoleTenants");
+            userRoleTenant.ToTable("UserRoleTenantRelations");
         }
     }
 }

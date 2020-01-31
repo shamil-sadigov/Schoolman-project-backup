@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
@@ -10,8 +11,32 @@ namespace Domain
 
         public Tenant()
         {
-            UserRoleTenants = new HashSet<UserRoleTenant>();
+            _userRoleTenantRelation = new HashSet<UserRoleTenant>();
         }
-        public ICollection<UserRoleTenant> UserRoleTenants { get; set; }
+
+        [NotMapped]
+        public IEnumerable<User> Users
+        {
+            get
+            {
+                foreach (var relation in _userRoleTenantRelation)
+                    yield return relation.User;
+
+            }
+        }
+
+
+        [NotMapped]
+        public IEnumerable<Role> Roles
+        {
+            get
+            {
+                foreach (var relation in _userRoleTenantRelation)
+                    yield return relation.Role;
+
+            }
+        }
+
+        private ICollection<UserRoleTenant> _userRoleTenantRelation { get; set; }
     }
 }

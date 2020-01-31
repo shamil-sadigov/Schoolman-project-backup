@@ -1,4 +1,5 @@
-﻿using Authentication.Options;
+﻿using Application.Services;
+using Authentication.Options;
 using Authentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +19,11 @@ namespace Authentication
             IConfiguration configuration = BuildConfiguration("authentication-settings.json");
 
             services.AddJwtAuthentication(configuration);
-            services.AddScoped<ITokenManager, TokenManager>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenManager, TokenManager>();
+            services.AddScoped<ITokenValidator<TokenValidationParameters>, TokenValidator>();
+            services.AddScoped<ITokenClaimsBuilder, JwtClaimsBuilder>();
+
         }
 
         #region Private methods

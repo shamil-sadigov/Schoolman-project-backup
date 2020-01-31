@@ -10,6 +10,7 @@ namespace Domain.Models
     /// </summary>
     public class UserRoleTenant:IdentityUserRole<string>
     {
+        public string RelationId { get; set; }
 
         public User User { get; set; }
         public Role Role { get; set; }

@@ -17,8 +17,13 @@ namespace Persistence.Configurations
             user.Property(model => model.PhoneNumber).HasMaxLength(50);
             user.Property(model => model.FirstName).HasMaxLength(50);
             user.Property(model => model.LastName).HasMaxLength(50);
-            user.OwnsOne(model => model.RefreshToken);
-
+            user.OwnsOne(model => model.RefreshToken, rt=> 
+            {
+                rt.Property(rt => rt.AccessTokenId).HasColumnName("AccessTokenId");
+                rt.Property(rt => rt.IssueTime).HasColumnName("IssueTime");
+                rt.Property(rt => rt.ExpirationTime).HasColumnName("ExpirationTime");
+                //rt.Property(rt => rt.).HasColumnName("AccessTokenId");
+            });
         }
     }
 }

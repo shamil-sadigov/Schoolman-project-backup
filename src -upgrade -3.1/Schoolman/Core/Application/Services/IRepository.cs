@@ -8,7 +8,7 @@ namespace Application.Services
 {
     public interface IRepository<T> where T: class
     {
-        DbSet<T> Set();
+        DbSet<T> Collection { get; }
         Task<int> SaveChangesAsync();
     }
 }

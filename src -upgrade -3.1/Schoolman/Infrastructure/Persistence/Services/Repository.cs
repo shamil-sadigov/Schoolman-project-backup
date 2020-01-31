@@ -1,5 +1,4 @@
 ﻿using Application.Services;
-using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using System;
@@ -11,24 +10,21 @@ namespace Persistence.Services
 {
     public class Repository<T> : IRepository<T> where T: class
     {
-        private readonly DataContext dataContext;
-
-        public Repository(DataContext dataContext)
+        private readonly SchoolmanContext context;
+        public Repository(SchoolmanContext context)
         {
-            this.dataContext = dataContext;
+            this.context = context;
         }
 
 
-        public DbSet<T> Set()
+        public DbSet<T> Collection
         {
-            return dataContext.Set<T>();
+            get => context.Set<T>();
         }
 
         public async Task<int> SaveChangesAsync()
         {
-            return await dataContext.SaveChangesAsync();
+            return await context.SaveChangesAsync();
         }
-
-       
     }
 }
