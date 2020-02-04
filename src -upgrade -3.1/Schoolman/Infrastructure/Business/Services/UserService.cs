@@ -50,9 +50,6 @@ namespace Business.Services
         /// <returns>Creation result</returns>
         public async Task<Result<User>> CreateUser(User user, string password)
         {
-
-#warning Check whether userManager generate Id by deffault
-
             var creation_result = await userManager.CreateAsync(user,password);
             
             if (!creation_result.Succeeded)

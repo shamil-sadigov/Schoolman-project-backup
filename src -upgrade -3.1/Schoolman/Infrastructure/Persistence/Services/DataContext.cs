@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Persistence.Contexts
 {
-    public class SchoolmanContext:IdentityDbContext<User,Role, string,
+    public class SchoolmanContext : IdentityDbContext<User, Role, string,
                                                  UserClaim,
                                                  UserRoleTenant,
                                                  UserLogin,
@@ -14,7 +14,7 @@ namespace Persistence.Contexts
                                                  UserToken>
     {
 
-        public SchoolmanContext(DbContextOptions<SchoolmanContext> ops):base(ops)
+        public SchoolmanContext(DbContextOptions<SchoolmanContext> ops) : base(ops)
         {
 
         }

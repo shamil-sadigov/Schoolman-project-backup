@@ -1,0 +1,5 @@
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\SharedTestLibrary\bin\Debug\netcoreapp3.1\SharedTestLibrary.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\SharedTestLibrary\bin\Debug\netcoreapp3.1\SharedTestLibrary.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\SharedTestLibrary\obj\Debug\netcoreapp3.1\SharedTestLibrary.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\SharedTestLibrary\obj\Debug\netcoreapp3.1\SharedTestLibrary.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\SharedTestLibrary\obj\Debug\netcoreapp3.1\SharedTestLibrary.csprojAssemblyReference.cache
