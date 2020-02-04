@@ -15,10 +15,10 @@ namespace Authentication.Services
     /// </summary>
     public class AuthService : IAuthService
     {
-        private readonly IUserManager userManager;
+        private readonly IUserService userManager;
         private readonly ITokenManager tokenManager;
 
-        public AuthService(IUserManager userService,
+        public AuthService(IUserService userService,
                            ITokenManager tokenManager)
         {
             this.userManager = userService;

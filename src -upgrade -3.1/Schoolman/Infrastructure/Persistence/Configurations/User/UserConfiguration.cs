@@ -19,10 +19,8 @@ namespace Persistence.Configurations
             user.Property(model => model.LastName).HasMaxLength(50);
             user.OwnsOne(model => model.RefreshToken, rt=> 
             {
-                rt.Property(rt => rt.AccessTokenId).HasColumnName("AccessTokenId");
-                rt.Property(rt => rt.IssueTime).HasColumnName("IssueTime");
-                rt.Property(rt => rt.ExpirationTime).HasColumnName("ExpirationTime");
-                //rt.Property(rt => rt.).HasColumnName("AccessTokenId");
+                rt.Property(rt => rt.Token).HasMaxLength(256);
+                rt.ToTable("RefreshTokens");
             });
         }
     }

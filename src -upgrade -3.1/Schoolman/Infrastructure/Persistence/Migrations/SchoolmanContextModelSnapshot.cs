@@ -313,23 +313,21 @@ namespace Persistence.Migrations
                                 .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                             b1.Property<string>("AccessTokenId")
-                                .HasColumnName("AccessTokenId")
                                 .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                             b1.Property<long>("ExpirationTime")
-                                .HasColumnName("ExpirationTime")
                                 .HasColumnType("bigint");
 
                             b1.Property<long>("IssueTime")
-                                .HasColumnName("IssueTime")
                                 .HasColumnType("bigint");
 
                             b1.Property<string>("Token")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
+                                .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                                .HasMaxLength(256);
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Users");
+                            b1.ToTable("RefreshTokens");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

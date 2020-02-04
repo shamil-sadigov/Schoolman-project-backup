@@ -25,6 +25,5 @@ namespace Schoolman.Student.Core.Application.Models
             ConfirmEmail = confirmed;
             return this;
         }
-
     }
 }

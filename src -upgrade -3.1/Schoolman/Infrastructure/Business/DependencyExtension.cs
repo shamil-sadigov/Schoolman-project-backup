@@ -20,7 +20,7 @@ namespace Authentication
             services.AddHttpContextAccessor();
 
             services.AddTransient<IConfirmationEmailService, ConfirmationEmailService>();
-            services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<UrlService>();
 
             services.AddEmailOptions(configuration);

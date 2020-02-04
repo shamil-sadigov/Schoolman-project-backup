@@ -1,7 +1,0 @@
-{
-  "ConnectionStrings": {
-    "RemoteServer": "Server=192.168.10.18;Port=3306;Database=schoolman_student_test;Uid=shamil.benzeine; Pwd=workbenchGibson1414@",
-    "LocalServer": "Server=localhost;Port=3306;Database=schoolman_multitenant;Uid=root; Pwd=mysqlGibson1414@",
-    "LocalServer-MSSQL": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Schoolman_test;Integrated Security=True;Connect Timeout=30;"
-  }
-}

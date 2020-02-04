@@ -25,8 +25,5 @@ namespace Application.Models
         public string PhoneNumber { get; set; }
 
 
-            
-
-
     }
 }
