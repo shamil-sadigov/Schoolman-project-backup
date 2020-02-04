@@ -15,7 +15,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<Result<AuthenticationCredentials>> GenerateTokensAsync(string userId);
+        Task<Result<AuthenticationCredential>> GenerateTokensAsync(string userId);
 
         /// <summary>
         /// Get tokens and refresh them.
@@ -23,6 +23,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// <param name="jwt"></param>
         /// <param name="refreshToken"></param>
         /// <returns></returns>
-        Task<Result<AuthenticationCredentials>> RefreshTokensAsync(string acessToken, string refreshToken);
+        Task<Result<AuthenticationCredential>> RefreshTokensAsync(string acessToken, string refreshToken);
     }
 }

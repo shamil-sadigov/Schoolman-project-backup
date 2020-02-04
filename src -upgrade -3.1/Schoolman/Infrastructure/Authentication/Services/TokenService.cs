@@ -48,7 +48,7 @@ namespace Authentication.Services
         /// </summary>
         /// <param name="user">User for whom tokens will be created for</param>
         /// <returns>JWT and Refresh tokens</returns>
-        public async Task<Result<AuthenticationCredentials>> GenerateTokensAsync(string userId)
+        public async Task<Result<AuthenticationCredential>> GenerateTokensAsync(string userId)
         {
             var user = await userRepository.Collection.FindAsync(userId);
 
@@ -56,17 +56,17 @@ namespace Authentication.Services
 
             await userRepository.SaveChangesAsync();
 
-            var credentials = new AuthenticationCredentials();
+            var credentials = new AuthenticationCredential();
 
             credentials.AccessToken = jwt;
-            credentials.AccessToken = refreshtoken;
+            credentials.RefresthToken = refreshtoken;
 
 
-            return Result<AuthenticationCredentials>.Success(credentials);
+            return Result<AuthenticationCredential>.Success(credentials);
         }
 
 
-        public async Task<Result<AuthenticationCredentials>> RefreshTokensAsync(string accessToken, string refreshToken)
+        public async Task<Result<AuthenticationCredential>> RefreshTokensAsync(string accessToken, string refreshToken)
         {
 
             #region Validation section
@@ -74,13 +74,13 @@ namespace Authentication.Services
             Result<Claim[]> validationResult = validator.ValidateAccessToken(accessToken, (TokenValidationParameters)jwtOptions);
 
             if (!validationResult.Succeeded)
-                return Result<AuthenticationCredentials>.Failure(validationResult.Errors);
+                return Result<AuthenticationCredential>.Failure(validationResult.Errors);
 
             User user = await userRepository.Collection.SingleOrDefaultAsync
                 (usr => usr.RefreshToken.Token == refreshToken);
 
             if (user == null)
-                return Result<AuthenticationCredentials>.Failure("Refresh token is not valid");
+                return Result<AuthenticationCredential>.Failure("Refresh token is not valid");
 
 
             Claim[] tokenClaims = validationResult.Response;
@@ -90,7 +90,7 @@ namespace Authentication.Services
             Result refTokenValidationResult = validator.ValidateRefreshToken(user.RefreshToken, accessTokenId);
 
             if (!refTokenValidationResult.Succeeded)
-                return Result<AuthenticationCredentials>.Failure(refTokenValidationResult.Errors);
+                return Result<AuthenticationCredential>.Failure(refTokenValidationResult.Errors);
 
             #endregion
 
@@ -102,10 +102,10 @@ namespace Authentication.Services
 
 
 
-            var credentials = new AuthenticationCredentials();
+            var credentials = new AuthenticationCredential();
             credentials.AccessToken = jwt;
-            credentials.AccessToken = refreshtoken;
-            return Result<AuthenticationCredentials>.Success(credentials);
+            credentials.RefresthToken = refreshtoken;
+            return Result<AuthenticationCredential>.Success(credentials);
 
             #endregion
         }

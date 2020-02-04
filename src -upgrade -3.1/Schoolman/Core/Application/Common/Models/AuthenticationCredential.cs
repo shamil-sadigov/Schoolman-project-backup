@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Application.Common.Models
 {
-    public class AuthenticationCredentials
+    public class AuthenticationCredential
     {
         public string AccessToken { get; set; }
         public string RefresthToken { get; set; }
