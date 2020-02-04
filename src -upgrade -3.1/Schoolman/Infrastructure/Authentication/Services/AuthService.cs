@@ -1,4 +1,5 @@
 ﻿using Application.Common.Helpers;
+using Application.Common.Models;
 using Application.Models;
 using Domain;
 using Schoolman.Student.Core.Application.Interfaces;
@@ -15,14 +16,14 @@ namespace Authentication.Services
     /// </summary>
     public class AuthService : IAuthService
     {
-        private readonly IUserService userManager;
-        private readonly ITokenManager tokenManager;
+        private readonly IUserService userService;
+        private readonly ITokenService tokenService;
 
         public AuthService(IUserService userService,
-                           ITokenManager tokenManager)
+                           ITokenService tokenService)
         {
-            this.userManager = userService;
-            this.tokenManager = tokenManager;
+            this.userService = userService;
+            this.tokenService = tokenService;
         }
 
 
@@ -32,21 +33,23 @@ namespace Authentication.Services
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<(Result, User newUser)> RegisterUserAsync(UserRegisterModel model, bool sendConfirmationEmail)
+        public async Task<Result<User>> RegisterUserAsync(UserRegisterModel model, bool sendConfirmationEmail)
         {
             // User creation
-            var (result, newUser) = await userManager.CreateUser(model);
+            Result<User> userCreationResult = await userService.CreateUser(model);
 
-            if (!result.Succeeded)
-                return (result, newUser: null);
+            if (!userCreationResult.Succeeded)
+                return userCreationResult;
 
             if (sendConfirmationEmail)
-                result = await userManager.SendConfirmationEmail(newUser);
+            {
+                Result emailSendingResult = await userService.SendConfirmationEmail(userCreationResult.Response);
 
-            if (!result.Succeeded)
-                return (result, newUser: null);
-            else
-                return (result, newUser);
+                if (!emailSendingResult.Succeeded)
+                    return Result<User>.Failure(emailSendingResult.Errors);
+            }
+
+            return Result<User>.Success(userCreationResult.Response);
         }
 
 
@@ -56,22 +59,22 @@ namespace Authentication.Services
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<AuthResult> LoginUserAsync(string email, string password)
+        public async Task<Result<AuthenticationCredentials>> LoginUserAsync(string email, string password)
         {
             if (Assert.Is.NullOrWhiteSpace(email, password))
-                return AuthResult.Failure("User credentials invalid");
+                return Result<AuthenticationCredentials>.Failure("User credentials invalid");
 
-            var user = await userManager.FindUserAsync(u => u.Email == email);
+            var user = await userService.FindUserAsync(u => u.Email == email);
 
             if (user == null)
-                return AuthResult.Failure("User credentials invalid");
+                return Result<AuthenticationCredentials>.Failure("User credentials invalid");
 
-            var result = await userManager.CheckUserAsync(user, ops => ops.ConfirmPassword(password)
+            var result = await userService.CheckUserAsync(user, ops => ops.ConfirmPassword(password)
                                                                           .ConfirmedEmail(true));
             if (!result.Succeeded)
-                return AuthResult.Failure(result.Errors);
+                return Result<AuthenticationCredentials>.Failure(result.Errors);
 
-            return await tokenManager.GenerateTokensAsync(user.Id);
+            return await tokenService.GenerateTokensAsync(user.Id);
         }
 
 
@@ -81,12 +84,12 @@ namespace Authentication.Services
         /// <param name="accessToken"></param>
         /// <param name="refreshToken"></param>
         /// <returns></returns>
-        public async Task<AuthResult> RefreshTokenAsync(string accessToken, string refreshToken)
+        public async Task<Result<AuthenticationCredentials>> RefreshTokenAsync(string accessToken, string refreshToken)
         {
             if (Assert.Is.NullOrWhiteSpace(accessToken, refreshToken))
-                return AuthResult.Failure("Access-token or Refresh-token is invalid");
+                return Result<AuthenticationCredentials>.Failure("Access-token or Refresh-token is invalid");
 
-            return await tokenManager.RefreshTokensAsync(accessToken, refreshToken);
+            return await tokenService.RefreshTokensAsync(accessToken, refreshToken);
         }
 
 
@@ -94,9 +97,9 @@ namespace Authentication.Services
         public async Task<Result> ConfirmEmailAsync(string userId, string confirmToken)
         {
             if (Assert.Is.NullOrWhiteSpace(userId, confirmToken))
-                return AuthResult.Failure("UserId or ConfirmaToken is invalid");
+                return Result<AuthenticationCredentials>.Failure("UserId or ConfirmaToken is invalid");
 
-            var result = await userManager.ConfirmEmail(userId, confirmToken);
+            var result = await userService.ConfirmEmail(userId, confirmToken);
             return result;
         }
     }

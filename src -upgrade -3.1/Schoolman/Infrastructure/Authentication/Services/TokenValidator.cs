@@ -45,13 +45,13 @@ namespace Authentication.Services
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
             if (refreshToken.Token == null)
-                return AuthResult.Failure("Refresh token doesn't exist");
+                return Result.Failure("Refresh token doesn't exist");
 
             if (refreshToken.ExpirationTime < currentTime)
-                return AuthResult.Failure("Refresh token has been expired");
+                return Result.Failure("Refresh token has been expired");
 
             if (refreshToken.AccessTokenId != accessTokenId)
-                return AuthResult.Failure("Refresh token doesn't match with Access token");
+                return Result.Failure("Refresh token doesn't match with Access token");
 
             return Result.Success();
         }

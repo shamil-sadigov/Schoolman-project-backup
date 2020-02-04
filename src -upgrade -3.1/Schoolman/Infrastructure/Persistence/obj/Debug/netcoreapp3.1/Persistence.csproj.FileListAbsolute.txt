@@ -28,3 +28,6 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.csproj.CopyComplete
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\business-settings.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Business.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Business.pdb

@@ -20,7 +20,7 @@ namespace Authentication
 
             services.AddJwtAuthentication(configuration);
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<ITokenManager, TokenManager>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenValidator<TokenValidationParameters>, TokenValidator>();
             services.AddScoped<ITokenClaimsBuilder, JwtClaimsBuilder>();
 

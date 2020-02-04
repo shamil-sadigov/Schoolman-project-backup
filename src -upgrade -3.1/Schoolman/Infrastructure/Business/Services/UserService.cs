@@ -48,10 +48,10 @@ namespace Business.Services
         /// Creates user and returns creation result and userId. If creation is failed, see result errors.
         /// </summary>
         /// <returns>Creation result</returns>
-        public async Task<(Result result, User user)> CreateUser(UserRegisterModel model)
+        public async Task<Result<User>> CreateUser(UserRegisterModel model)
         {
             if (await UserExists(model.Email))
-                return (Result.Failure("User with this email already registered"), user: null);
+                return Result<User>.Failure("User with this email already registered");
 
             return await TryCreateUserAsync(model);
         }
@@ -163,7 +163,7 @@ namespace Business.Services
         }
 
 
-        private async Task<(Result result, User newUser)> TryCreateUserAsync(UserRegisterModel model)
+        private async Task<Result<User>> TryCreateUserAsync(UserRegisterModel model)
         {
             var newUser = new User()
             {
@@ -179,10 +179,10 @@ namespace Business.Services
             if (!creation_result.Succeeded)
             {
                 var errors = creation_result.Errors.Select(e => e.Description).ToArray();
-                return (Result.Failure(errors), newUser: null);
+                return Result<User>.Failure(errors);
             }
 
-            return (Result.Success(), newUser);
+            return Result<User>.Success(newUser);
         }
 
         #endregion

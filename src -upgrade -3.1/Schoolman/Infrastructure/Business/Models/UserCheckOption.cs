@@ -13,7 +13,7 @@ namespace Business.Options
     public class UserCheckOption: IUserCheckOptions
     {
         private readonly UserManager<User> userManager;
-        List<ISpecification<User>> specifications;
+        readonly List<ISpecification<User>> specifications;
 
         public UserCheckOption(UserManager<User> userManager)
         {
@@ -35,7 +35,6 @@ namespace Business.Options
             specifications.Add(emailConfirmedSpec);
             return this;
         }
-
 
         internal async Task<Result> IsCheckPassed(User user)
         {
