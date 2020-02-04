@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using Application.Common.Helpers;
+using Application.Models;
 using Domain;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Models;
@@ -18,7 +19,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
         Task<Result> DeleteUser(string email);
         Task<Result> SendConfirmationEmail(User user);
         Task<Result> ConfirmEmail(string userId, string token);
-        Task<Result> CheckUserAsync(User user, Action<UserAssertOptions> predicate);
+        Task<Result> CheckUserAsync(User user, Action<IUserCheckOptions> predicate);
         Task<User> FindUserAsync(Expression<Func<User, bool>> expression);
     }
 }

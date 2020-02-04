@@ -1,5 +1,7 @@
-﻿using Application.Models;
+﻿using Application.Common.Helpers;
+using Application.Models;
 using Application.Services;
+using Business.Options;
 using Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -83,32 +85,12 @@ namespace Business.Services
         
 
 
-
-        public async Task<Result> CheckUserAsync(User user, Action<UserAssertOptions> predicate)
+        public async Task<Result> CheckUserAsync(User user, Action<IUserCheckOptions> predicate)
         {
-            var userOptions = new UserAssertOptions();
-
+            var userOptions = new UserCheckOption(userManager);
             predicate?.Invoke(userOptions);
-
-            if (userOptions.Password != null)
-                if (!await userManager.CheckPasswordAsync(user, userOptions.Password))
-                    return Result.Failure("User credentials invalid");
-
-
-            if (userOptions.ConfirmEmail)
-                if (!await userManager.IsEmailConfirmedAsync(user))
-                    return Result.Failure("Email is not confirmed");
-
-            return Result.Success();
+            return await userOptions.IsCheckPassed(user);
         }
-
-
-
-
-
-
-
-
 
 
 

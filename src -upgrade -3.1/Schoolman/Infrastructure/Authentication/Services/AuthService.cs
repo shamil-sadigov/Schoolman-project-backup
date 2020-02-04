@@ -66,10 +66,8 @@ namespace Authentication.Services
             if (user == null)
                 return AuthResult.Failure("User credentials invalid");
 
-
-            var result = await userManager.CheckUserAsync(user, ops => ops.PasswordToConfirm(password)
-                                                                          .ShouldConfirmEmail(true));
-
+            var result = await userManager.CheckUserAsync(user, ops => ops.ConfirmPassword(password)
+                                                                          .ConfirmedEmail(true));
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors);
 
