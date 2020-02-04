@@ -15,7 +15,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
     /// </summary>
     public interface IUserService
     {
-        Task<Result<User>> CreateUser(UserRegisterModel userRegisterModel);
+        Task<Result<User>> CreateUser(User userRegisterModel, string password);
         Task<Result> DeleteUser(string email);
         Task<Result> SendConfirmationEmail(User user);
         Task<Result> ConfirmEmail(string userId, string token);

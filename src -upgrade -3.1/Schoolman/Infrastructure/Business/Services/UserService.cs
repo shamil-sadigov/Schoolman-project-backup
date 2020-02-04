@@ -48,12 +48,20 @@ namespace Business.Services
         /// Creates user and returns creation result and userId. If creation is failed, see result errors.
         /// </summary>
         /// <returns>Creation result</returns>
-        public async Task<Result<User>> CreateUser(UserRegisterModel model)
+        public async Task<Result<User>> CreateUser(User user, string password)
         {
-            if (await UserExists(model.Email))
-                return Result<User>.Failure("User with this email already registered");
 
-            return await TryCreateUserAsync(model);
+#warning Check whether userManager generate Id by deffault
+
+            var creation_result = await userManager.CreateAsync(user,password);
+            
+            if (!creation_result.Succeeded)
+            {
+                var errors = creation_result.Errors.Select(e => e.Description).ToArray();
+                return Result<User>.Failure(errors);
+            }
+
+            return Result<User>.Success(user);
         }
 
 
@@ -163,27 +171,6 @@ namespace Business.Services
         }
 
 
-        private async Task<Result<User>> TryCreateUserAsync(UserRegisterModel model)
-        {
-            var newUser = new User()
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber
-            };
-
-            var creation_result = await userManager.CreateAsync(newUser, model.Password);
-
-            if (!creation_result.Succeeded)
-            {
-                var errors = creation_result.Errors.Select(e => e.Description).ToArray();
-                return Result<User>.Failure(errors);
-            }
-
-            return Result<User>.Success(newUser);
-        }
 
         #endregion
     }
