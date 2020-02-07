@@ -37,10 +37,8 @@ namespace Application.Users.UserRegistration
                 RuleFor(model => model.Email)
                 .MustAsync(async (email, token ) =>
                 {
-                    var user = await userRepository.Collection.FirstOrDefaultAsync(user => user.Email == email);
-                    // if user with this email doesn't exists
-                    // then user can be registered
-                    return user == null ? true : false;
+                    bool userExist = await userRepository.Set.AnyAsync(user => user.Email == email);
+                    return !userExist;
                 });
             });
 

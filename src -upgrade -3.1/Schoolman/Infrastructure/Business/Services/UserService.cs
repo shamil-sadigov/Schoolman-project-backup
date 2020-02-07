@@ -1,6 +1,8 @@
 ﻿using Application.Common.Helpers;
 using Application.Models;
 using Application.Services;
+using Application.Users;
+using AutoMapper;
 using Business.Options;
 using Domain;
 using Microsoft.AspNetCore.Http;
@@ -23,42 +25,48 @@ namespace Business.Services
 
     public class UserService : IUserService
     {
-        private readonly IEmailService<ConfirmationEmailBuilder> emailService;
         private readonly UrlService urlService;
         private readonly IRepository<User> userRepository;
+        private readonly IMapper mapper;
         private readonly EmailTemplate emailTemplate;
         private readonly UserManager<User> userManager;
+        private readonly IConfirmationEmailService emailService;
 
         public UserService(UserManager<User> userManager,
-                 IEmailService<ConfirmationEmailBuilder> emailService,
+                 IConfirmationEmailService emailService,
                  IOptionsMonitor<EmailTemplate> templateOps,
                  UrlService confirmationUrlBuilder,
-                 IRepository<User> userRepository)
+                 IRepository<User> userRepository,
+                 IMapper mapper)
         {
             this.userManager = userManager;
             this.emailService = emailService;
             this.urlService = confirmationUrlBuilder;
             this.userRepository = userRepository;
+            this.mapper = mapper;
             emailTemplate = templateOps.Get("Confirmation");
         }
-
 
 
         /// <summary>
         /// Creates user and returns creation result and userId. If creation is failed, see result errors.
         /// </summary>
         /// <returns>Creation result</returns>
-        public async Task<Result<User>> CreateUser(User user, string password)
+        public async Task<Result<User>> CreateAsync(UserRegistrationRequest userDto, string password)
         {
-            var creation_result = await userManager.CreateAsync(user,password);
-            
-            if (!creation_result.Succeeded)
+            // password and Id are empty
+            // will be added by userService
+            var newUser = mapper.Map<User>(userDto);
+
+            var creationResult = await userManager.CreateAsync(newUser, userDto.Password);
+
+            if (!creationResult.Succeeded)
             {
-                var errors = creation_result.Errors.Select(e => e.Description).ToArray();
+                var errors = creationResult.Errors.Select(e => e.Description).ToArray();
                 return Result<User>.Failure(errors);
             }
 
-            return Result<User>.Success(user);
+            return Result<User>.Success(newUser);
         }
 
 
@@ -67,7 +75,7 @@ namespace Business.Services
         /// </summary>
         /// <param name="userId">User identifier</param>
         /// <returns>Deletion result</returns>
-        public async Task<Result> DeleteUser(string email)
+        public async Task<Result> DeleteAsync(string email)
         {
             var userToDelete = await userManager.FindByEmailAsync(email);
 
@@ -76,21 +84,15 @@ namespace Business.Services
 
             var deletionResult = await userManager.DeleteAsync(userToDelete);
 
-            if (deletionResult.Succeeded)
-                return Result.Success();
-
-            return Result.Failure(deletionResult.Errors.Select(s => s.Description).ToArray());
+            return Result.Success();
         }
 
 
-        // return first use in collection
-
-        public async Task<User> FindUserAsync(Expression<Func<User, bool>> expression)
-              => await userRepository.Collection.AsNoTracking().SingleOrDefaultAsync(expression);
-        
+        public async Task<User> FindAsync(Expression<Func<User, bool>> expression)
+              => await userRepository.Set.AsNoTracking().SingleOrDefaultAsync(expression);
 
 
-        public async Task<Result> CheckUserAsync(User user, Action<IUserCheckOptions> predicate)
+        public async Task<Result> ExistAsync(User user, Action<IUserCheckOptions> predicate)
         {
             var userOptions = new UserCheckOption(userManager);
             predicate?.Invoke(userOptions);
@@ -99,10 +101,13 @@ namespace Business.Services
 
 
 
+
+
+
 #if RELEASE
 #error Ensure you're using relevant email confirmation url based on server URL not SPA localhost
 #endif
-        public async Task<Result> SendConfirmationEmail(User user)
+        public async Task<Result> SendConfirmationEmailAsync(User user)
         {
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -132,7 +137,7 @@ namespace Business.Services
         }
 
 
-        public async Task<Result> ConfirmEmail(string userId, string token)
+        public async Task<Result> ConfirmEmailAsync(string userId, string token)
         {
             var user = await userManager.FindByIdAsync(userId);
 
@@ -151,23 +156,17 @@ namespace Business.Services
 
         #region Local helper methods
 
-        /// <summary>
-        /// Returns bool whethere User already registered or not
-        /// </summary>
-        /// <param name="email">User email</param>
-        /// <param name="password">User password</param>
-        /// <returns>Validation result</returns>
-        private async Task<bool> UserExists(string email)
-        {
-            // Verify if user already exists
-            var user = await userManager.FindByNameAsync(email);
-            if (user != null)
-                return true;
+        public async Task<bool> CheckPasswordAsync(User user, string password) =>
+            await userManager.CheckPasswordAsync(user, password);
+        
 
-            return false;
-        }
+        public async Task<bool> ExistAsync(Expression<Func<User, bool>> predicate)
+            => await userRepository.Set.AsNoTracking().AnyAsync(predicate);
 
 
+        public async Task<User> GetById(string userId) =>
+            await userRepository.Set.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+        
 
         #endregion
     }

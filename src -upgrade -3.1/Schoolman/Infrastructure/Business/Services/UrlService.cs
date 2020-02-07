@@ -30,7 +30,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
             return this;
         }
 
-
         /// <summary>
         /// By default, build url for Aspnet hosting url. Url building based on UrlOptions configure in appsettings
         /// </summary>
@@ -38,7 +37,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// <returns></returns>
         public Uri BuildConfirmationUrl(string userId, string token)
         {
-
             var builder = new UriBuilder();
             UrlOptions urlOptions;
 
@@ -47,14 +45,12 @@ namespace Schoolman.Student.Core.Application.Interfaces
             else
                 urlOptions = urlSettings.Get("Aspnet-AccountConfirmationUrl");
 
-
             BuildBaseAddress(builder, urlOptions);
             builder.Query = $"userID={userId}&token={token}";
             return uri = builder.Uri;
         }
 
         #region Local methods
-
         private void BuildBaseAddress(UriBuilder uriBuilder, UrlOptions urlOptions)
         {
             if (urlOptions.IsNull())
@@ -67,10 +63,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
             if (urlOptions.Port.HasValue)
                 uriBuilder.Port = urlOptions.Port.Value;
         }
-
-
-
         #endregion
     }
-
 }

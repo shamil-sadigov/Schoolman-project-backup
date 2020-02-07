@@ -6,8 +6,6 @@ using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 
@@ -25,11 +23,9 @@ namespace Business.Services
 
         public async Task<Result> SendAsync(Action<IConfirmationEmailBuilder> sendOptions)
         {
-
             var emailBuilder = new ConfirmationEmailBuilder();
             sendOptions(emailBuilder);
             Email email = emailBuilder.Build();
-
 
             try
             {
@@ -48,13 +44,11 @@ namespace Business.Services
             {
 #if DEBUG
                 //throw ex;
-
                 return Result.Failure("Could send message to this email. Ensure you provided a valid email");
 #endif
             }
 
             return Result.Success();
-
         }
 
         private MimeMessage BuildMessage(Email email)

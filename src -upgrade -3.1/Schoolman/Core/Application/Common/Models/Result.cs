@@ -22,6 +22,25 @@ namespace Schoolman.Student.Core.Application.Models
         public static Result Failure(params string[] errors) =>
             new Result(false, errors);
 
+
+
+        /// <summary>
+        /// Return wether result suceeded
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator bool(Result result)
+        {
+            return result.Succeeded;
+        }
+
+        /// <summary>
+        /// Returns only errors
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator string[](Result result)
+        {
+            return result.Errors;
+        }
     }
 
 
@@ -42,10 +61,36 @@ namespace Schoolman.Student.Core.Application.Models
 
         public new static Result<T> Failure(params string[] errors)
         {
-            return new Result<T>(null, true, Array.Empty<string>());
+            return new Result<T>(null, false, Array.Empty<string>());
         }
 
 
+
+
+
+        public static implicit operator T (Result<T> result)
+        {
+            return result.Response;
+        }
+
+
+        /// <summary>
+        /// Return wether result suceeded
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator bool(Result<T> result)
+        {
+            return result.Succeeded;
+        }
+
+        /// <summary>
+        /// Returns only errors
+        /// </summary>
+        /// <param name="result"></param>
+        public static implicit operator string[](Result<T> result)
+        {
+            return result.Errors;
+        }
     }
 
 

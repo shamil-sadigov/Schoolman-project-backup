@@ -1586,7 +1586,8 @@
           "Domain": "1.0.0",
           "FluentValidation.AspNetCore": "8.6.1",
           "MediatR.Extensions.Microsoft.DependencyInjection": "8.0.0",
-          "Microsoft.EntityFrameworkCore": "3.1.1"
+          "Microsoft.EntityFrameworkCore": "3.1.1",
+          "Microsoft.IdentityModel.Tokens": "5.6.0"
         },
         "compile": {
           "bin/placeholder/Application.dll": {}

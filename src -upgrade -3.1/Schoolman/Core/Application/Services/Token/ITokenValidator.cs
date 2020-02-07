@@ -1,15 +1,13 @@
-﻿using Domain.Models;
-using Schoolman.Student.Core.Application.Models;
+﻿using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Application.Services.Token
 {
-    public interface ITokenValidator<T>
+    public interface ITokenValidator<Token, Result> where Result: class
     {
-        Result<Claim[]> ValidateAccessToken(string accessToken, T validationParameters);
-        Result ValidateRefreshToken(RefreshToken refreshToken, string accessTokenId);
+        Task<Result> ValidateTokenAsync(Token token);
     }
 }

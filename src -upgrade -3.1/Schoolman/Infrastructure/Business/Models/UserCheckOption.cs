@@ -21,7 +21,7 @@ namespace Business.Options
             this.userManager = userManager;
         }
 
-        public IUserCheckOptions ConfirmPassword(string password)
+        public IUserCheckOptions WithPassword(string password)
         {
             var passwordSpec = new PasswordValidSpecification(userManager);
             passwordSpec.SetPassword(password);
@@ -29,12 +29,13 @@ namespace Business.Options
             return this;
         }
 
-        public IUserCheckOptions ConfirmedEmail(bool confirmed)
+        public IUserCheckOptions WithConfirmedEmail()
         {
             var emailConfirmedSpec = new EmailConfirmedSpecification(userManager);
             specifications.Add(emailConfirmedSpec);
             return this;
         }
+
 
         internal async Task<Result> IsCheckPassed(User user)
         {
@@ -50,5 +51,7 @@ namespace Business.Options
 
             return result;
         }
+
+        
     }
 }

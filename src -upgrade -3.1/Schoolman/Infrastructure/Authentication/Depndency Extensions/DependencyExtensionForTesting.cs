@@ -26,9 +26,9 @@ namespace Authentication
 
             services.AddJwtAuthentication(configuration);
             services.AddScoped<IAuthService, AuthenticationService>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<ITokenValidator<TokenValidationParameters>, TokenValidator>();
-            services.AddScoped<ITokenClaimsBuilder, JwtClaimsBuilder>();
+            services.AddScoped<IAuthTokenService, TokenService>();
+            services.AddScoped<IAuthTokenValidator<TokenValidationParameters>, TokenValidator>();
+            services.AddScoped<IAuthTokenClaimService, JwtClaimsBuilder>();
         }
     }
 }

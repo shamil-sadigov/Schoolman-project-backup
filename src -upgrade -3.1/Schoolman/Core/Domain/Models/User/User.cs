@@ -1,11 +1,12 @@
 ﻿using Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
-    public class User:IdentityUser
+    public class User:IdentityUser, IBaseEntity<string>, IAuditableEntity,IDeleteableEntity
     {
         #region Ctor
 
@@ -31,7 +32,6 @@ namespace Domain
             {
                 foreach (var relation in _userRoleTenantRelation)
                     yield return relation.Role;
-                
             }
         }
 
@@ -47,6 +47,12 @@ namespace Domain
         }
 
 
+        public string CreatedBy { get; set; }
+        public DateTime Created { get; set; }
+        public string LastModifiedBy { get; set; }
+        public DateTime? LastModified { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         #region Navigation Properties
 
@@ -54,9 +60,7 @@ namespace Domain
         public ICollection<UserClaim> Claims { get; set; }
         public ICollection<UserLogin> Logins { get; set; }
         public ICollection<UserToken> Tokens { get; set; }
-
+      
         #endregion
-
-
     }
 }

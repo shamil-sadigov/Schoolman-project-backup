@@ -24,7 +24,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
         private void SetEmailBody()
         {
             var htmlMessage = new StringBuilder
-                               (File.ReadAllText(emailTemplatePath))
+                               (File.ReadAllText(emailTemplatePath), capacity: 8000)
                                .AddConfirmationUrl(url)
                                .AddUserName(email.To);
 

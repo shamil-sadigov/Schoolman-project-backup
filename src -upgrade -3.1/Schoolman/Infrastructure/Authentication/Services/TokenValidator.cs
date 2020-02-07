@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Authentication.Services
 {
-    public class TokenValidator : ITokenValidator<TokenValidationParameters>
+    public class TokenValidator : IAuthTokenValidator<TokenValidationParameters>
     {
         public Result<Claim[]> ValidateAccessToken(string accessToken, TokenValidationParameters validationParameters)
         {

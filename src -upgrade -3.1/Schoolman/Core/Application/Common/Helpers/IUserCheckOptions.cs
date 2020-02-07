@@ -6,7 +6,7 @@ namespace Application.Common.Helpers
 {
     public interface IUserCheckOptions
     {
-        IUserCheckOptions ConfirmPassword(string password);
-        IUserCheckOptions ConfirmedEmail(bool confirmed);
+        IUserCheckOptions WithPassword(string password);
+        IUserCheckOptions WithConfirmedEmail();
     }
 }
