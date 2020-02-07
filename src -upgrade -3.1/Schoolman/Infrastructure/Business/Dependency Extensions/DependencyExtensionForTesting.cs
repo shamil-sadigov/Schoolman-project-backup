@@ -19,7 +19,7 @@ namespace Authentication
             IConfiguration configuration = BuildConfiguration("business-settings.json");
             services.AddHttpContextAccessor();
 
-            services.AddTransient<IConfirmationEmailService, ConfirmationEmailService>();
+            services.AddTransient<IEmailConfirmationService, ConfirmationEmailService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<UrlService>();
 

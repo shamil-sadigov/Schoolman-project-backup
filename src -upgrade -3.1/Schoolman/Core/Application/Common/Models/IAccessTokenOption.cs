@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Application.Common.Models
 {
-    public interface IAccessTokenOption
+    public interface IAccessTokenOptions
     {
         public string Issuer { get; set; }
         public string Audience { get; set; }
         public string SecretKey { get; set; }
         public TimeSpan ExpirationTime { get; set; }
     }
+
 }

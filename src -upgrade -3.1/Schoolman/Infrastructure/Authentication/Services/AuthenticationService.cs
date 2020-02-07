@@ -19,11 +19,11 @@ namespace Authentication.Services
     public class AuthenticationService : IAuthService
     {
         private readonly IUserService userService;
-        private readonly IAuthenticationTokenService tokenService;
+        private readonly IAuthenticationTokenServiceOld tokenService;
         private readonly IMapper mapper;
 
         public AuthenticationService(IUserService userService,
-                                     IAuthenticationTokenService tokenService,
+                                     IAuthenticationTokenServiceOld tokenService,
                                      IMapper mapper)
         {
             this.userService = userService;
@@ -41,7 +41,7 @@ namespace Authentication.Services
         public async Task<Result<User>> RegisterUserAsync(UserRegistrationRequest model)
         {
             // User creation
-            Result<User> userCreationResult = await userService.CreateAsync(newUser, model.Password);
+            Result<User> userCreationResult = await userService.CreateAsync(model, model.Password);
             if (!userCreationResult.Succeeded)
                 return userCreationResult;
 
@@ -61,22 +61,22 @@ namespace Authentication.Services
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<Result<AuthenticationCredential>> LoginUserAsync(string email, string password)
+        public async Task<Result<AuthenticationTokens>> LoginUserAsync(string email, string password)
         {
             if (Assert.Is.NullOrWhiteSpace(email, password))
-                return Result<AuthenticationCredential>.Failure("User credentials invalid");
+                return Result<AuthenticationTokens>.Failure("User credentials invalid");
 
             var user = await userService.FindAsync(u => u.Email == email);
 
             if (user == null)
-                return Result<AuthenticationCredential>.Failure("User credentials invalid");
+                return Result<AuthenticationTokens>.Failure("User credentials invalid");
 
             
 
             var result = await userService.ExistAsync(user, ops => ops.WithPassword(password)
                                                                           .WithConfirmedEmail());
             if (!result.Succeeded)
-                return Result<AuthenticationCredential>.Failure(result.Errors);
+                return Result<AuthenticationTokens>.Failure(result.Errors);
 
             return await tokenService.GenerateAuthenticationTokensAsync(user.Id);
         }

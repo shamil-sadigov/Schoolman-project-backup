@@ -11,6 +11,7 @@ using System.Text;
 
 namespace Authentication.Services
 {
+    [Obsolete]
     public class TokenValidator : IAuthTokenValidator<TokenValidationParameters>
     {
         public Result<Claim[]> ValidateAccessToken(string accessToken, TokenValidationParameters validationParameters)
@@ -49,9 +50,6 @@ namespace Authentication.Services
 
             if (refreshToken.ExpirationTime < currentTime)
                 return Result.Failure("Refresh token has been expired");
-
-            if (refreshToken.AccessTokenId != accessTokenId)
-                return Result.Failure("Refresh token doesn't match with Access token");
 
             return Result.Success();
         }

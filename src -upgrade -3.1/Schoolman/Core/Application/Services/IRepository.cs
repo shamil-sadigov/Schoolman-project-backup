@@ -10,5 +10,6 @@ namespace Application.Services
     {
         DbSet<T> Set { get; }
         Task<int> SaveChangesAsync();
+        DbContext Context { get; }
     }
 }

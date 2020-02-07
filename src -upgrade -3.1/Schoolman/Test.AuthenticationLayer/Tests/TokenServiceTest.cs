@@ -32,7 +32,7 @@ namespace Test.AuthenticationLayer
         [Fact(DisplayName = "TokenService.GenerateTokenAsync() => Doesn't generate token for non existing user")]
         public async Task TokenService_Doesnt_GenerateTokens_For_NonExisting_User()
         {
-            Result<AuthenticationCredential> credentials 
+            Result<AuthenticationTokens> credentials 
                 = await tokenService.GenerateAuthenticationTokensAsync("Not existing Id");
 
             Assert.False(credentials.Succeeded, "TokenService should not created token since no user existed with such Id");
@@ -58,7 +58,7 @@ namespace Test.AuthenticationLayer
             #region Generate tokens and Assert generation succeeded
 
             // Act
-            Result<AuthenticationCredential> tokenGenerationResult = 
+            Result<AuthenticationTokens> tokenGenerationResult = 
                 await tokenService.GenerateAuthenticationTokensAsync(user.Id);
 
             // Assertion
@@ -108,7 +108,7 @@ namespace Test.AuthenticationLayer
             #region Generate tokens and Assert generation succeeded
 
             // Act
-            Result<AuthenticationCredential> tokenGenerationResult = await tokenService.GenerateAuthenticationTokensAsync(user.Id);
+            Result<AuthenticationTokens> tokenGenerationResult = await tokenService.GenerateAuthenticationTokensAsync(user.Id);
 
             // Assertion
             Assert.True(tokenGenerationResult.Succeeded, "TokenService should generate tokens for user");

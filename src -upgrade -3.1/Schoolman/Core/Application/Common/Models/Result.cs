@@ -41,6 +41,12 @@ namespace Schoolman.Student.Core.Application.Models
         {
             return result.Errors;
         }
+
+
+        public static implicit operator Result(bool succeeede)
+        {
+            return Result.Success();
+        }
     }
 
 

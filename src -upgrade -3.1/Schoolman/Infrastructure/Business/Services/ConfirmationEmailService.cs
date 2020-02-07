@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Services
 {
-    public class ConfirmationEmailService : IConfirmationEmailService
+    public class ConfirmationEmailService : IEmailConfirmationService
     {
         readonly EmailOptions emailOptions;
 
@@ -21,7 +21,7 @@ namespace Business.Services
         }
 
 
-        public async Task<Result> SendAsync(Action<IConfirmationEmailBuilder> sendOptions)
+        public async Task<Result> SendEmailAsync(Action<IConfirmationEmailBuilder> sendOptions)
         {
             var emailBuilder = new ConfirmationEmailBuilder();
             sendOptions(emailBuilder);

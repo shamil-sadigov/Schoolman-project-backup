@@ -16,6 +16,7 @@ namespace Business.Speficiations
         public EmailConfirmedSpecification(UserManager<User> userManager)
         {
             this.userManager = userManager;
+
         }
 
 

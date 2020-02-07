@@ -9,7 +9,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
     // Refined version
     public interface IEmailService<EmailBuilder> where EmailBuilder : IEmailBuilder
     {
-        Task<Result> SendAsync(Action<EmailBuilder> sendOptions);
+        Task<Result> SendEmailAsync(Action<EmailBuilder> sendOptions);
     }
 
 

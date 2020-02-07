@@ -22,9 +22,11 @@ namespace Persistence.Services
             get => context.Set<T>();
         }
 
-        public async virtual Task<int> SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
             return await context.SaveChangesAsync();
         }
+
+        public DbContext Context { get => context; }
     }
 }

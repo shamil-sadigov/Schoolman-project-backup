@@ -2080,6 +2080,7 @@
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
           "Application": "1.0.0",
+          "Business": "1.0.0",
           "Microsoft.AspNetCore.Authentication": "2.2.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.1",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.1",

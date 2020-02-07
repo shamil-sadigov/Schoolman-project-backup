@@ -8,7 +8,7 @@ namespace Authentication.Options
     /// <summary>
     /// Jwt Options that should be configure in Startup.cs and appsettings.json
     /// </summary>
-    public class JwtOptions: IAccessTokenOption
+    public class JwtOptions: IAccessTokenOptions
     {
         public string Issuer { get; set; }
         public string Audience { get; set; }

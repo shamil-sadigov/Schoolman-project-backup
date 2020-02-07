@@ -5,6 +5,7 @@ using Application.Users;
 using AutoMapper;
 using Business.Options;
 using Domain;
+using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,10 +31,10 @@ namespace Business.Services
         private readonly IMapper mapper;
         private readonly EmailTemplate emailTemplate;
         private readonly UserManager<User> userManager;
-        private readonly IConfirmationEmailService emailService;
+        private readonly IEmailConfirmationService emailService;
 
         public UserService(UserManager<User> userManager,
-                 IConfirmationEmailService emailService,
+                 IEmailConfirmationService emailService,
                  IOptionsMonitor<EmailTemplate> templateOps,
                  UrlService confirmationUrlBuilder,
                  IRepository<User> userRepository,
@@ -107,6 +108,8 @@ namespace Business.Services
 #if RELEASE
 #error Ensure you're using relevant email confirmation url based on server URL not SPA localhost
 #endif
+
+        [Obsolete]
         public async Task<Result> SendConfirmationEmailAsync(User user)
         {
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -126,7 +129,7 @@ namespace Business.Services
                                        .BuildConfirmationUrl
                                         (user.Id.ToString(), token);
 
-            var result = await emailService.SendAsync(ops => ops.ConfirmationUrl(confirmUrl.ToString())
+            var result = await emailService.SendEmailAsync(ops => ops.ConfirmationUrl(confirmUrl.ToString())
                                            .To(user.Email)
                                            .Subject("Account Confirmation")
                                            .Template(emailTemplate.Path));
@@ -136,7 +139,7 @@ namespace Business.Services
             return result;
         }
 
-
+        [Obsolete]
         public async Task<Result> ConfirmEmailAsync(string userId, string token)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -166,7 +169,16 @@ namespace Business.Services
 
         public async Task<User> GetById(string userId) =>
             await userRepository.Set.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
-        
+
+        public async Task<int> UpdateRefreshTokenAsync(User user, RefreshToken refreshToken)
+        {
+            user.RefreshToken = refreshToken;
+            userRepository.Context.Entry(user).State = EntityState.Modified;
+            return await userRepository.SaveChangesAsync();
+
+
+        }
+
 
         #endregion
     }
