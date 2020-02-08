@@ -1613,6 +1613,20 @@
           }
         }
       },
+      "Seq.Extensions.Logging/4.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "1.0.2",
+          "Microsoft.Extensions.DependencyInjection": "2.0.0",
+          "Microsoft.Extensions.Logging": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Seq.Extensions.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Seq.Extensions.Logging.dll": {}
+        }
+      },
       "System.AppContext/4.1.0": {
         "type": "package",
         "dependencies": {
@@ -3329,7 +3343,8 @@
           "FluentValidation.AspNetCore": "8.6.1",
           "MediatR.Extensions.Microsoft.DependencyInjection": "8.0.0",
           "Microsoft.EntityFrameworkCore": "3.1.1",
-          "Microsoft.IdentityModel.Tokens": "5.6.0"
+          "Microsoft.IdentityModel.Tokens": "5.6.0",
+          "Seq.Extensions.Logging": "4.0.2"
         },
         "compile": {
           "bin/placeholder/Application.dll": {}
@@ -5467,6 +5482,27 @@
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512",
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.nuspec",
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
+      ]
+    },
+    "Seq.Extensions.Logging/4.0.2": {
+      "sha512": "GUcgINpHNCBqqoiKMyzdGInYeQ1l32KjerwVmMAAG+k0kLQbWcCLQW/smOYis1TC//sKp815FyI9ujya+B7llw==",
+      "type": "package",
+      "path": "seq.extensions.logging/4.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Seq.Extensions.Logging.dll",
+        "lib/net45/Seq.Extensions.Logging.xml",
+        "lib/net46/Seq.Extensions.Logging.dll",
+        "lib/net46/Seq.Extensions.Logging.xml",
+        "lib/net461/Seq.Extensions.Logging.dll",
+        "lib/net461/Seq.Extensions.Logging.xml",
+        "lib/netstandard1.3/Seq.Extensions.Logging.dll",
+        "lib/netstandard1.3/Seq.Extensions.Logging.xml",
+        "lib/netstandard2.0/Seq.Extensions.Logging.dll",
+        "lib/netstandard2.0/Seq.Extensions.Logging.xml",
+        "seq.extensions.logging.4.0.2.nupkg.sha512",
+        "seq.extensions.logging.nuspec"
       ]
     },
     "System.AppContext/4.1.0": {

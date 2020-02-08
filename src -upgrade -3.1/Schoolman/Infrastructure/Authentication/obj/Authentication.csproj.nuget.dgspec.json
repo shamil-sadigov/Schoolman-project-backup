@@ -64,6 +64,10 @@
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
               "version": "[5.6.0, )"
+            },
+            "Seq.Extensions.Logging": {
+              "target": "Package",
+              "version": "[4.0.2, )"
             }
           },
           "imports": [

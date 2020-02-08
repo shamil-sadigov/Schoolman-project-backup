@@ -115,7 +115,7 @@ namespace Business.Services
         public async Task<User> FindAsync(string id)
            => await userRepository.Set.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
 
-        public async Task<User> FindFirstAsync(Expression<Func<User, bool>> expression)
+        public async Task<User> FindAsync(Expression<Func<User, bool>> expression)
               => await userRepository.Set.AsNoTracking().SingleOrDefaultAsync(expression);
 
         public IAsyncEnumerable<User> FindRangeAsync(Expression<Func<User, bool>> predicate)

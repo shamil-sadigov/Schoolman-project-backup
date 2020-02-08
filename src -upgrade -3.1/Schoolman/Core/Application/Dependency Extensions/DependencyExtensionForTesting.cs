@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,6 +25,7 @@ namespace Application.Extensions
         /// <param name="services"></param>
         public static void AddApplicationLayerForTesting(this IServiceCollection services)
         {
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSeq());
             services.AddMediatR(typeof(DependencyExtension).Assembly);
             services.AddAutoMapper(typeof(DependencyExtension));
         }

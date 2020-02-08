@@ -4,6 +4,7 @@ using Application.Users;
 using Application.Users.User_Login;
 using AutoMapper;
 using Domain;
+using Microsoft.Extensions.Logging;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
@@ -20,16 +21,19 @@ namespace Authentication.Services
         private readonly IAuthenticationTokenServiceRefined tokenService;
         private readonly IEmailConfirmationManager emailConfirmationManager;
         private readonly IMapper mapper;
+        private readonly ILogger<AuthenticationService> logger;
 
         public AuthenticationService(IUserService userService,
                                      IAuthenticationTokenServiceRefined tokenService,
                                      IEmailConfirmationManager emailConfirmationManager,
-                                     IMapper mapper)
+                                     IMapper mapper,
+                                     ILogger<AuthenticationService> logger)
         {
             this.userService = userService;
             this.tokenService = tokenService;
             this.emailConfirmationManager = emailConfirmationManager;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
 
@@ -37,14 +41,22 @@ namespace Authentication.Services
         public async Task<Result<AuthenticationTokens>> LoginUserAsync(UserLoginRequest request)
         {
             User user = await userService.FindAsync(WithConfirmedEmail(request.Email));
-
             if (user != null)
             {
                 if (!await userService.CheckPasswordAsync(user, request.Password))
+                {
+                    logger.LogWarning("Login failed: User provided invalid password. " +
+                                      "User.Id {Id}, User.Email {Email} ", 
+                                       user.Id, user.Email);
+
                     return Result<AuthenticationTokens>.Failure("Invalid login credentials");
+                }
 
                 return await tokenService.GenerateAuthenticationTokensAsync(user);
             }
+
+            logger.LogWarning("Login failed: User provided nonexistent Email. " +
+                              "User.Email {Email}", request.Email);
 
             return Result<AuthenticationTokens>.Failure("Invalid login credentials");
         }
@@ -57,9 +69,19 @@ namespace Authentication.Services
             Result<User> userCreationResult = await userService.CreateAsync(request, request.Password);
 
             if (!userCreationResult.Succeeded)
+            {
+                logger.LogWarning("Registraion failed: User provided invalid registration values. " +
+                                  "User.Email {Email}. Validation Errors: {@Errors}", 
+                                      request.Email, userCreationResult.Errors);
+
                 return userCreationResult;
+            }
 
             User createdUser = userCreationResult.Response;
+
+            logger.LogInformation("Registration succeeded: New user have been registered." +
+                                  "UserId {Id}, Email {Email}", 
+                                    createdUser.Id, createdUser.Email);
 
             #endregion
 
@@ -70,7 +92,16 @@ namespace Authentication.Services
             bool emailSent = await emailConfirmationManager.SendConfirmationEmailAsync(createdUser, token);
 
             if (!emailSent)
+            {
+                logger.LogWarning("Sending confirmation email failed: UserId {Id}, Email {Email}",
+                                  createdUser.Id, createdUser.Email);
+
                 return Result<User>.Failure("Sending confirmation email failed");
+            }
+
+
+            logger.LogInformation("Confirmation email sent to new registered user: UserId {Id}, Email {Email}",
+                                   createdUser.Id, createdUser.Email);
 
             #endregion
 

@@ -12,7 +12,7 @@ namespace Application.Services
         #region Reading
 
         Task<Type> FindAsync(string id);
-        Task<Type> FindFirstAsync(Expression<Func<Type, bool>> predicate);
+        Task<Type> FindAsync(Expression<Func<Type, bool>> predicate);
         IAsyncEnumerable<Type> FindRangeAsync(Expression<Func<Type, bool>> predicate);
 
         Task<bool> ExistAsync(Expression<Func<Type, bool>> Predicate);
