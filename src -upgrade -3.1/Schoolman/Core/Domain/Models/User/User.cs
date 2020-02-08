@@ -6,13 +6,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain
 {
-    public class User:IdentityUser, IBaseEntity<string>, IAuditableEntity,IDeleteableEntity
+    public class User : UserBase
     {
         #region Ctor
 
         public User()
         {
-            _userRoleTenantRelation = new HashSet<UserRoleTenant>();
+            _userRoleCompany = new HashSet<UserRoleCompany>();
             Claims = new HashSet<UserClaim>();
             Logins = new HashSet<UserLogin>();
             Tokens = new HashSet<UserToken>();
@@ -21,46 +21,40 @@ namespace Domain
 
         #endregion
 
+        // Owned entity
         public RefreshToken RefreshToken { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        
+
         [NotMapped]
         public IEnumerable<Role> Roles
         {
             get
             {
-                foreach (var relation in _userRoleTenantRelation)
+                foreach (var relation in _userRoleCompany)
                     yield return relation.Role;
             }
         }
 
         [NotMapped]
-        public IEnumerable<Tenant> Tenants
+        public IEnumerable<Company> Tenants
         {
             get
             {
-                foreach (var relation in _userRoleTenantRelation)
-                    yield return relation.Tenant;
+                foreach (var relation in _userRoleCompany)
+                    yield return relation.Company;
 
             }
         }
 
 
-        public string CreatedBy { get; set; }
-        public DateTime Created { get; set; }
-        public string LastModifiedBy { get; set; }
-        public DateTime? LastModified { get; set; }
-
-        public bool IsDeleted { get; set; }
-
         #region Navigation Properties
 
-        private ICollection<UserRoleTenant> _userRoleTenantRelation { get; set; }
+        private ICollection<UserRoleCompany> _userRoleCompany { get; set; }
         public ICollection<UserClaim> Claims { get; set; }
         public ICollection<UserLogin> Logins { get; set; }
         public ICollection<UserToken> Tokens { get; set; }
-      
+
         #endregion
     }
 }

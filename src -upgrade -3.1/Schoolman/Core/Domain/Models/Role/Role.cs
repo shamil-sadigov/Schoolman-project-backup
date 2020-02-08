@@ -9,7 +9,7 @@ namespace Domain
     {
         public Role()
         {
-            _userRoleTenantRelation = new HashSet<UserRoleTenant>();
+            _userRoleCompany = new HashSet<UserRoleCompany>();
         }
 
         [NotMapped]
@@ -17,23 +17,23 @@ namespace Domain
         {
             get
             {
-                foreach (var relation in _userRoleTenantRelation)
+                foreach (var relation in _userRoleCompany)
                     yield return relation.User;
             }
         }
 
         [NotMapped]
-        public IEnumerable<Tenant> Tenants
+        public IEnumerable<Company> Tenants
         {
             get
             {
-                foreach (var relation in _userRoleTenantRelation)
-                    yield return relation.Tenant;
+                foreach (var relation in _userRoleCompany)
+                    yield return relation.Company;
             }
         }
 
 
-        private ICollection<UserRoleTenant> _userRoleTenantRelation { get; set; }
+        private ICollection<UserRoleCompany> _userRoleCompany { get; set; }
         public ICollection<RoleClaim> Claims { get; set; }
     }
 }

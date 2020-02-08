@@ -8,8 +8,5 @@ namespace Domain.Models
     public class UserClaim:IdentityUserClaim<string>
     {
         public User User { get; set; }
-
     }
-
-
 }
