@@ -22,7 +22,6 @@ namespace Schoolman.Student.Core.Application.Interfaces
         Task<Result> DeleteAsync(string email);
         [Obsolete]
         Task<Result> SendConfirmationEmailAsync(User user);
-
         [Obsolete]
         Task<Result> ConfirmEmailAsync(string userId, string token);
         Task<bool> ExistAsync(Expression<Func<User, bool>> Predicate);

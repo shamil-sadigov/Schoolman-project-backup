@@ -17,6 +17,8 @@ namespace Persistence.Configurations
             builder.Property(model => model.Id).ValueGeneratedOnAdd();
             builder.Property(model => model.Created).ValueGeneratedOnAdd();
             builder.Property(model => model.LastModified).ValueGeneratedOnUpdate();
+
+            builder.HasQueryFilter(model => !model.IsDeleted);
         }
     }
 }
