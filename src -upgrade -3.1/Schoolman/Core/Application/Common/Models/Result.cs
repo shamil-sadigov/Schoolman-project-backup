@@ -97,6 +97,17 @@ namespace Schoolman.Student.Core.Application.Models
         {
             return result.Errors;
         }
+
+        public static implicit operator Result<T>(T response)
+        {
+            return Result<T>.Success(response);
+        }
+
+        public static implicit operator Result<T>(string error)
+        {
+            return Result<T>.Failure(error);
+        }
+
     }
 
 

@@ -1,85 +1,85 @@
-﻿using Application.Common.Helpers;
-using Application.Common.Models;
-using Application.Models;
+﻿using Application.Common.Models;
+using Application.Services.Token.Validators.User_Token_Validator;
 using Application.Users;
+using Application.Users.User_Login;
 using AutoMapper;
 using Domain;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Authentication.Services
 {
-    /// <summary>
-    /// Service for user authentication
-    /// </summary>
     public class AuthenticationService : IAuthService
     {
         private readonly IUserService userService;
-        private readonly IAuthenticationTokenServiceOld tokenService;
+        private readonly IAuthenticationTokenServiceRefined tokenService;
+        private readonly IEmailConfirmationManager emailConfirmationManager;
         private readonly IMapper mapper;
 
         public AuthenticationService(IUserService userService,
-                                     IAuthenticationTokenServiceOld tokenService,
+                                     IAuthenticationTokenServiceRefined tokenService,
+                                     IEmailConfirmationManager emailConfirmationManager,
                                      IMapper mapper)
         {
             this.userService = userService;
             this.tokenService = tokenService;
+            this.emailConfirmationManager = emailConfirmationManager;
             this.mapper = mapper;
         }
 
 
-        /// <summary>
-        /// Registers user and return registration result
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public async Task<Result<User>> RegisterUserAsync(UserRegistrationRequest model)
+
+        public async Task<Result<AuthenticationTokens>> LoginUserAsync(UserLoginRequest request)
         {
-            // User creation
-            Result<User> userCreationResult = await userService.CreateAsync(model, model.Password);
+            User user = await userService.FindAsync(WithConfirmedEmail(request.Email));
+
+            if (user != null)
+            {
+                if (!await userService.CheckPasswordAsync(user, request.Password))
+                    return Result<AuthenticationTokens>.Failure("Invalid login credentials");
+
+                return await tokenService.GenerateAuthenticationTokensAsync(user);
+            }
+
+            return Result<AuthenticationTokens>.Failure("Invalid login credentials");
+        }
+
+        public async Task<Result<User>> RegisterUserAsync(UserRegistrationRequest request)
+        {
+            
+            #region Creating User
+
+            Result<User> userCreationResult = await userService.CreateAsync(request, request.Password);
+
             if (!userCreationResult.Succeeded)
                 return userCreationResult;
 
-            // Send email to created User
-            Result emailSendingResult = await userService.SendConfirmationEmailAsync(userCreationResult.Response);
-            if (!emailSendingResult.Succeeded)
-                return Result<User>.Failure(emailSendingResult.Errors);
+            User createdUser = userCreationResult.Response;
 
+            #endregion
 
-            return Result<User>.Success(userCreationResult.Response);
+            #region Sending Email
+
+            var emailParameters = new EmailTokenCreationParameters(createdUser);
+            string token = await emailConfirmationManager.GenerateTokenAsync(emailParameters);
+            bool emailSent = await emailConfirmationManager.SendConfirmationEmailAsync(createdUser, token);
+
+            if (!emailSent)
+                return Result<User>.Failure("Sending confirmation email failed");
+
+            #endregion
+
+            return createdUser;
         }
 
 
-        /// <summary>
-        /// Generates token for registered and email-confirmed user
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public async Task<Result<AuthenticationTokens>> LoginUserAsync(string email, string password)
-        {
-            if (Assert.Is.NullOrWhiteSpace(email, password))
-                return Result<AuthenticationTokens>.Failure("User credentials invalid");
-
-            var user = await userService.FindAsync(u => u.Email == email);
-
-            if (user == null)
-                return Result<AuthenticationTokens>.Failure("User credentials invalid");
-
-            
-
-            var result = await userService.ExistAsync(user, ops => ops.WithPassword(password)
-                                                                          .WithConfirmedEmail());
-            if (!result.Succeeded)
-                return Result<AuthenticationTokens>.Failure(result.Errors);
-
-            return await tokenService.GenerateAuthenticationTokensAsync(user.Id);
-        }
-
+        // Soon will be wrapped in Specification pattern
+        private Expression<Func<User, bool>> WithConfirmedEmail(string email)
+            => user => user.Email == email && user.EmailConfirmed;
     }
 }

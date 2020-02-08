@@ -1,6 +1,7 @@
 ﻿using Application.Common.Models;
 using Application.Models;
 using Application.Users;
+using Application.Users.User_Login;
 using Domain;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Models;
@@ -13,7 +14,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
     /// </summary>
     public interface IAuthService
     {
-        Task<Result<User>> RegisterUserAsync(UserRegistrationRequest model);
-        Task<Result<AuthenticationTokens>> LoginUserAsync(string email, string password);
+        Task<Result<User>> RegisterUserAsync(UserRegistrationRequest request);
+        Task<Result<AuthenticationTokens>> LoginUserAsync(UserLoginRequest request);
     }
 }

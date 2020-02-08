@@ -2,6 +2,7 @@
 using Authentication.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 
 namespace Authentication.Options
 {
@@ -21,7 +22,7 @@ namespace Authentication.Options
 
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(ops.SecretKey.GetBytes()),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ops.SecretKey)),
                 ValidIssuer = ops.Issuer,
                 ValidAudience = ops.Audience,
                 ValidateIssuer = true,
@@ -32,7 +33,7 @@ namespace Authentication.Options
                 // By Default ClockSkew is 5 minutes
                 // This means that
                 // if your token is expired, it will be valid still for 5 minutes
-                // so set it to zero
+                // so let us set it to zero
                 ClockSkew = TimeSpan.Zero
             };
         }

@@ -84,11 +84,11 @@ namespace Test.BusinessLayer
 
             }, "Proud Mary 13@#");
 
-            bool isDeleted = await userService.DeleteAsync(createdUser.Email);
+            bool isDeleted = await userService.DeletedAsync(createdUser.Email);
 
             Assert.True(isDeleted, "IUserService.DeleteUser => Should delete newly created user");
             
-            isDeleted = await userService.DeleteAsync(createdUser.Email);
+            isDeleted = await userService.DeletedAsync(createdUser.Email);
 
             Assert.False(isDeleted, "IUserSerivce.DeleteUser => Shouldn't delete user since user has already been deleted");
         }

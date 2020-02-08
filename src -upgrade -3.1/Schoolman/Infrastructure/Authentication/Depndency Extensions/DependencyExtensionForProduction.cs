@@ -24,7 +24,7 @@ namespace Authentication
             IConfiguration configuration = BuildConfiguration("authentication-settings.json");
 
             services.AddJwtAuthentication(configuration);
-            services.AddScoped<IAuthService, AuthenticationService>();
+            services.AddScoped<IAuthService, AuthenticationServiceOLD>();
             services.AddScoped<IAuthTokenService, TokenService>();
             services.AddScoped<IAuthTokenValidator<TokenValidationParameters>, TokenValidator>();
             services.AddScoped<IAuthTokenClaimService, JwtClaimsBuilder>();
