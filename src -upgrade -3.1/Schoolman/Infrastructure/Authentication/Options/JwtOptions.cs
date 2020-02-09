@@ -1,5 +1,4 @@
 ﻿using Application.Common.Models;
-using Authentication.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;

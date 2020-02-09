@@ -1,6 +1,8 @@
 ﻿using Application.Services;
+using Application.Services.Token;
 using Authentication.Options;
 using Authentication.Services;
+using Authentication.Services.New_services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,9 +27,14 @@ namespace Authentication
             IConfiguration configuration = BuildConfiguration("authentication-settings.json");
 
             services.AddJwtAuthentication(configuration);
-            services.AddScoped<IAuthService, AuthenticationServiceOLD>();
-            services.AddScoped<IAuthTokenService, TokenService>();
-            services.AddScoped<IAuthTokenValidator<TokenValidationParameters>, TokenValidator>();
+
+            services.AddScoped<IAccessTokenService, AccessTokenService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+
+            services.AddScoped<IAuthTokenService, AuthTokenService>();
+
+            services.AddScoped<IAuthService, AuthService>();
+
             services.AddScoped<IAuthTokenClaimService, JwtClaimsBuilder>();
         }
     }

@@ -1,7 +1,9 @@
 ﻿using Application.Common.Models;
 using Application.Services.Token;
 using Application.Services.Token.Validators.Access_Token_Validator;
+using Authentication.Options;
 using Domain;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
@@ -17,10 +19,13 @@ namespace Authentication.Services.New_services
     public class AccessTokenService : IAccessTokenService
     {
         private readonly IAuthTokenClaimService claimsService;
+        private readonly JwtOptions jwtOptions;
 
-        public AccessTokenService(IAuthTokenClaimService claimsBuilder)
+        public AccessTokenService(IAuthTokenClaimService claimsBuilder,
+                                  IOptionsMonitor<JwtOptions> jwtOptions)
         {
             claimsService = claimsBuilder;
+            this.jwtOptions = jwtOptions.CurrentValue;
         }
 
 
@@ -30,24 +35,20 @@ namespace Authentication.Services.New_services
         }
 
 
-        public Task<Result<string>> GenerateTokenAsync(AccessTokenCreationParameters parameters)
+        public Task<Result<string>> GenerateTokenAsync(User user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
-            // Arrange
-            User user = parameters.User;
-            IAccessTokenOptions accessTokenOption = parameters.Options;
-
 
             Claim[] claims = claimsService.BuildClaims(user);
-            byte[] secretKeyBytes = Encoding.UTF8.GetBytes(accessTokenOption.SecretKey);
+            byte[] secretKeyBytes = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
 
             var tokenDesciptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.Add(accessTokenOption.ExpirationTime),
-                Audience = accessTokenOption.Audience,
-                Issuer = accessTokenOption.Issuer,
+                Expires = DateTime.UtcNow.Add(jwtOptions.ExpirationTime),
+                Audience = jwtOptions.Audience,
+                Issuer = jwtOptions.Issuer,
                 SigningCredentials = new SigningCredentials(key: new SymmetricSecurityKey(secretKeyBytes),
                                                          algorithm: SecurityAlgorithms.HmacSha256)
             };
@@ -58,12 +59,12 @@ namespace Authentication.Services.New_services
         }
 
       
-
-        public async Task<Result<ClaimsPrincipal>> ValidateTokenAsync(AccessTokenValidationParameters accessTokenValidation)
+        // todo: Add jwt time validation
+        public async Task<Result<ClaimsPrincipal>> ValidateTokenAsync(string accessToken)
         {
-            // Arrange
-            string accessToken = accessTokenValidation.AccessToken;
-            TokenValidationParameters validationParams = accessTokenValidation.ValidationParameters;
+
+            // No worries. Just explicit conversion operator
+            TokenValidationParameters validationParams = (TokenValidationParameters) jwtOptions;
 
 
             validationParams.ValidateLifetime = false;
@@ -76,6 +77,8 @@ namespace Authentication.Services.New_services
             {
                 var principal = jwtHandler.ValidateToken(token: accessToken,
                                          validationParameters: validationParams, out SecurityToken token);
+
+
 
                 if (principal == null)
                     return Result<ClaimsPrincipal>.Failure("Access token is not valid");

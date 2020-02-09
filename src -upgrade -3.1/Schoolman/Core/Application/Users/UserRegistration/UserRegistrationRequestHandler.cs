@@ -3,6 +3,7 @@ using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System.Collections;
@@ -15,14 +16,17 @@ namespace Application.Users
 {
     public class UserRegistrationRequestHandler : IRequestHandler<UserRegistrationRequest, Result>
     {
-        private readonly IValidator<UserRegistrationRequest> validator;
+        private readonly IValidator<UserRegistrationRequest> userValidator;
         private readonly IAuthService authenticationService;
+        private readonly ILogger<UserRegistrationRequestHandler> logger;
 
         public UserRegistrationRequestHandler(IValidator<UserRegistrationRequest> validator,
-                                              IAuthService authenticationService)
+                                              IAuthService authenticationService,
+                                              ILogger<UserRegistrationRequestHandler> logger)
         {
-            this.validator = validator;
+            this.userValidator = validator;
             this.authenticationService = authenticationService;
+            this.logger = logger;
         }
 
 
@@ -31,20 +35,26 @@ namespace Application.Users
             #region User Validation
 
             // Validate properties
-            var validationResult = validator.Validate(request);
+            var validationResult = userValidator.Validate(request);
 
             if (!validationResult.IsValid)
             {
                 string[] errors = validationResult.Errors.Select(e => e.ErrorMessage).ToArray();
+
+                logger.LogInformation("User validation failed: User.Email {Email}, Errors {@errors}",
+                    validationResult.Errors);
                 return Result.Failure(errors);
             }
 
             // Validate email doesnt exists in DB
-            var emailValidationResult = await validator.ValidateAsync(request, ruleSet: "EmailDoesntExistInDb");
+            var emailValidationResult = await userValidator.ValidateAsync(request, ruleSet: "EmailDoesntExistInDb");
 
             if (!emailValidationResult.IsValid)
             {
                 string[] errors = emailValidationResult.Errors.Select(e => e.ErrorMessage).ToArray();
+                logger.LogInformation("User validation failed: Invalid email." +
+                                      "User.Email {Email}, Errors {@errors}",
+                                        validationResult.Errors);
                 return Result.Failure(errors);
             }
 

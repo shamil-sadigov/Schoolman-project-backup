@@ -1,6 +1,8 @@
 ﻿using Application.Services;
+using Application.Services.Token;
 using Authentication.Options;
 using Authentication.Services;
+using Authentication.Services.New_services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,13 +26,14 @@ namespace Authentication
             IConfiguration configuration = BuildConfiguration("authentication-settings.json");
 
             services.AddJwtAuthentication(configuration);
-            services.AddScoped<IAuthService, AuthenticationServiceOLD>();
-            services.AddScoped<IAuthTokenService, TokenService>();
-            services.AddScoped<IAuthTokenValidator<TokenValidationParameters>, TokenValidator>();
-            services.AddScoped<IAuthTokenClaimService, JwtClaimsBuilder>();
+
+            services.AddTransient<IAccessTokenService, AccessTokenService>();
+            services.AddTransient<IRefreshTokenService, RefreshTokenService>();
+            services.AddTransient<IAuthTokenClaimService, JwtClaimsBuilder>();
+            services.AddTransient<IAuthTokenService, AuthTokenService>();
+
+            services.AddScoped<IAuthService, AuthService>();
         }
-
-
 
         #region Private methods
 
@@ -42,8 +45,18 @@ namespace Authentication
 
         private static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+
+            services.Configure<RefreshTokenOptions>(ops =>
+                configuration.GetSection(nameof(RefreshTokenOptions)).Bind(ops));
+
+            services.Configure<JwtOptions>(ops =>
+                configuration.GetSection(nameof(JwtOptions)).Bind(ops));
+
+
             JwtOptions jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>();
-            services.AddSingleton(jwtOptions);
+
+            // // to delete
+            //services.AddSingleton(jwtOptions);
 
             services.AddAuthentication(ops =>
             {
@@ -57,13 +70,11 @@ namespace Authentication
                 ops.TokenValidationParameters = (TokenValidationParameters)jwtOptions;
             });
 
-            services.Configure<RefreshTokenOptions>(ops =>
-                configuration.GetSection(nameof(RefreshTokenOptions)).Bind(ops));
+            
         }
 
 
         #endregion
-
     }
 
 

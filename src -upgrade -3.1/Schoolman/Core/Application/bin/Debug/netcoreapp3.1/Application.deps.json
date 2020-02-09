@@ -13,7 +13,8 @@
           "FluentValidation.AspNetCore": "8.6.1",
           "MediatR.Extensions.Microsoft.DependencyInjection": "8.0.0",
           "Microsoft.EntityFrameworkCore": "3.1.1",
-          "Microsoft.IdentityModel.Tokens": "5.6.0"
+          "Microsoft.IdentityModel.Tokens": "5.6.0",
+          "Seq.Extensions.Logging": "4.0.2"
         },
         "runtime": {
           "Application.dll": {}
@@ -364,6 +365,19 @@
           "lib/netstandard1.3/Newtonsoft.Json.dll": {
             "assemblyVersion": "10.0.0.0",
             "fileVersion": "10.0.1.20720"
+          }
+        }
+      },
+      "Seq.Extensions.Logging/4.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "3.1.1",
+          "Microsoft.Extensions.DependencyInjection": "3.1.1",
+          "Microsoft.Extensions.Logging": "3.1.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Seq.Extensions.Logging.dll": {
+            "assemblyVersion": "4.0.2.0",
+            "fileVersion": "4.0.2.0"
           }
         }
       },
@@ -995,6 +1009,13 @@
       "sha512": "sha512-ebWzW9j2nwxQeBo59As2TYn7nYr9BHicqqCwHOD1Vdo+50HBtLPuqdiCYJcLdTRknpYis/DSEOQz5KmZxwrIAg==",
       "path": "newtonsoft.json/10.0.1",
       "hashPath": "newtonsoft.json.10.0.1.nupkg.sha512"
+    },
+    "Seq.Extensions.Logging/4.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GUcgINpHNCBqqoiKMyzdGInYeQ1l32KjerwVmMAAG+k0kLQbWcCLQW/smOYis1TC//sKp815FyI9ujya+B7llw==",
+      "path": "seq.extensions.logging/4.0.2",
+      "hashPath": "seq.extensions.logging.4.0.2.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",

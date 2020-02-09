@@ -217,6 +217,10 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
               "version": "[5.6.0, )"
@@ -371,9 +375,6 @@
               },
               "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Domain\\Domain.csproj": {
                 "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Domain\\Domain.csproj"
-              },
-              "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj": {
-                "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj"
               }
             }
           }

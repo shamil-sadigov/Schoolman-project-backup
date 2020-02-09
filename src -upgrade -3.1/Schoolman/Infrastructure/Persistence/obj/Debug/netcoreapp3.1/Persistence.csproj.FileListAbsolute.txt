@@ -12,7 +12,9 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Persistence\obj\Debug\netcoreapp3.1\Persistence.pdb
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Persistence\bin\Debug\netcoreapp3.1\Persistence.runtimeconfig.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Persistence\bin\Debug\netcoreapp3.1\Persistence.runtimeconfig.dev.json
-C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\business-settings.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.csprojAssemblyReference.cache
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\persistence-settings.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Persistence.deps.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Persistence.runtimeconfig.json
@@ -20,14 +22,9 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Persistence.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Persistence.pdb
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Application.dll
-C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Business.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Domain.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Application.pdb
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Domain.pdb
-C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\bin\Debug\netcoreapp3.1\Business.pdb
-C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.csprojAssemblyReference.cache
-C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.AssemblyInfoInputs.cache
-C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.AssemblyInfo.cs
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.csproj.CopyComplete
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Infrastructure\Persistence\obj\Debug\netcoreapp3.1\Persistence.pdb

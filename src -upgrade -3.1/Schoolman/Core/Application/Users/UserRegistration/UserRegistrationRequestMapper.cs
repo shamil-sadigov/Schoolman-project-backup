@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Users.UserRegistration
 {
-    class UserRegistrationRequestMapper:Profile
+    public class UserRegistrationRequestMapper:Profile
     {
         /// <summary>
         /// Mapper from UserRegistrationRequest to User

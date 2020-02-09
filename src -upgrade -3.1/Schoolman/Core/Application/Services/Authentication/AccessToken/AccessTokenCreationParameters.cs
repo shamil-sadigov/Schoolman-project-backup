@@ -9,12 +9,10 @@ namespace Application.Services.Token.Validators.Access_Token_Validator
     public class AccessTokenCreationParameters
     {
         public User User { get; set; }
-        public IAccessTokenOptions Options { get; set; }
 
-        public AccessTokenCreationParameters(User user, IAccessTokenOptions options)
+        public AccessTokenCreationParameters(User user)
         {
             User = user;
-            Options = options;
         }
     }
 }

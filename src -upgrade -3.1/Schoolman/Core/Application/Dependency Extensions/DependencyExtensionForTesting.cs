@@ -28,6 +28,8 @@ namespace Application.Extensions
             services.AddLogging(loggingBuilder => loggingBuilder.AddSeq());
             services.AddMediatR(typeof(DependencyExtension).Assembly);
             services.AddAutoMapper(typeof(DependencyExtension));
+            services.AddHttpContextAccessor();
+
         }
     }
 }

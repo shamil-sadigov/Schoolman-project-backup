@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Test.BusinessLayer
 {
-    public class UrlServiceTest : BasicTest
+    public class UrlServiceTest : TestBase
     {
         private readonly UrlService urlService;
         public UrlServiceTest(TestWebAppFactory testWebAppFactory):base(testWebAppFactory)

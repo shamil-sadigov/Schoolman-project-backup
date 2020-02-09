@@ -7323,6 +7323,7 @@
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 3.1.1",
       "Microsoft.Extensions.Configuration.Json >= 3.1.1",
       "Microsoft.Extensions.DependencyInjection >= 3.1.1",
+      "Microsoft.Extensions.Options >= 3.1.1",
       "Microsoft.IdentityModel.Tokens >= 5.6.0",
       "System.IdentityModel.Tokens.Jwt >= 5.6.0"
     ]
@@ -7392,6 +7393,10 @@
             "version": "[3.1.1, )"
           },
           "Microsoft.Extensions.DependencyInjection": {
+            "target": "Package",
+            "version": "[3.1.1, )"
+          },
+          "Microsoft.Extensions.Options": {
             "target": "Package",
             "version": "[3.1.1, )"
           },

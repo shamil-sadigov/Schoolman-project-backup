@@ -1,10 +1,14 @@
-﻿using Business.Services;
+﻿using Application.Services;
+using Application.Services.Token.Validators.User_Token_Validator;
+using Authentication.Services.EmailConfirmation;
+using Business.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
+using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,16 +21,18 @@ namespace Authentication
         public static void AddBusinessLayerForTesting(this IServiceCollection services)
         {
             IConfiguration configuration = BuildConfiguration("business-settings.json");
-            services.AddHttpContextAccessor();
 
-            services.AddTransient<IEmailConfirmationService, ConfirmationEmailService>();
+            services.AddTransient<IEmailSender<IConfirmationEmailBuilder>, ConfirmationEmailSender>();
+            services.AddTransient<IConfirmationEmailManager, ConfirmationEmailManager>();
+
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IUserService, UserService>();
+
             services.AddTransient<UrlService>();
 
             services.AddEmailOptionsForTesting(configuration);
             services.AddUrlOptions(configuration);
         }
-
 
         #region Private methods
 
@@ -46,10 +52,10 @@ namespace Authentication
                 template.Path = Path.Combine(rootPath, relativePath);
             });
         }
+        #endregion
 
     }
 
-    #endregion
 
 
 }

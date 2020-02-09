@@ -87,8 +87,8 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\WebApi.exe
-C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\authentication-settings.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\business-settings.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\authentication-settings.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\persistence-settings.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\WebApi.deps.json
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\WebApi.runtimeconfig.json
@@ -144,6 +144,7 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\Pomelo.JsonObject.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\Seq.Extensions.Logging.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\System.Security.Cryptography.Pkcs.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Web\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Cryptography.Pkcs.dll

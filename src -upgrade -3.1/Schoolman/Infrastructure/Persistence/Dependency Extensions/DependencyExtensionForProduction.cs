@@ -30,8 +30,6 @@ namespace Persistence
 
             #region Identity configuration
 
-
-
             services.AddIdentity<User, Role>(ops =>
             {
                 ops.User.RequireUniqueEmail = true;
@@ -50,14 +48,11 @@ namespace Persistence
 
             #region Database configuration
 
-
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             services.AddDbContext<SchoolmanContext>(ops =>
             {
-                ops.UseMySql(configuration.GetConnectionString("RemoteServer"));
-                //ops.UseMySql(configuration.GetConnectionString("Server=192.168.10.18;Port=3306;Database=schoolman_student_test;Uid=shamil.benzeine; Pwd=workbenchGibson1414@"));
-
+                ops.UseMySql(configuration.GetConnectionString("LocalServer-MySql"));
             });
 
 

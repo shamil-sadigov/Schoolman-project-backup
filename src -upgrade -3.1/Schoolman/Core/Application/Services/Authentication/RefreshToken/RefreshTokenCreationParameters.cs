@@ -6,12 +6,10 @@ namespace Application.Services.Token
     public class RefreshTokenCreationParameters
     {
         public User User { get; set; }
-        public IRefreshTokenOptions Options { get; }
 
-        public RefreshTokenCreationParameters(User user, IRefreshTokenOptions refreshTokenOptions)
+        public RefreshTokenCreationParameters(User user)
         {
             User = user;
-            Options = refreshTokenOptions;
         }
     }
 }

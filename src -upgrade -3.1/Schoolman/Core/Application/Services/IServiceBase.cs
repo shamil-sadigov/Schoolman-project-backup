@@ -7,31 +7,31 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public interface IServiceBase<Type>
+    public interface IServiceBase<TEntity, TKey> where TEntity : class, new()
     {
         #region Reading
 
-        Task<Type> FindAsync(string id);
-        Task<Type> FindAsync(Expression<Func<Type, bool>> predicate);
-        IAsyncEnumerable<Type> FindRangeAsync(Expression<Func<Type, bool>> predicate);
+        Task<TEntity> FindAsync(TKey id);
+        Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        IAsyncEnumerable<TEntity> FindRangeAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task<bool> ExistAsync(Expression<Func<Type, bool>> Predicate);
+        Task<bool> ExistAsync(Expression<Func<TEntity, bool>> Predicate);
 
         #endregion
 
         #region Deleting
 
-        Task<Result> DeleteAsync(string userId);
-        Task<Result> DeleteAsync(Type user);
-        Task<Result> DeleteAsync(Expression<Func<Type, bool>> expression);
-        Task<Result> DeleteRangeAsync(IEnumerable<Type> user);
+        Task<Result> DeleteAsync(TKey id);
+        Task<Result> DeleteAsync(TEntity user);
+        Task<Result> DeleteAsync(Expression<Func<TEntity, bool>> expression);
+        Task<Result> DeleteRangeAsync(IEnumerable<TEntity> user);
 
         #endregion
 
         #region Updating
 
-        Task<Result> UpdateAsync(Type entity);
-        Task<Result> UpdateRange(IEnumerable<Type> entites);
+        Task<Result> UpdateAsync(TEntity entity);
+        Task<Result> UpdateRange(IEnumerable<TEntity> entites);
 
         #endregion
     }

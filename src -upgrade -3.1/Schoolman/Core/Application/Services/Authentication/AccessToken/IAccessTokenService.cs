@@ -6,8 +6,8 @@ using System.Security.Claims;
 namespace Application.Services.Token
 {
     public interface IAccessTokenService:
-        ITokenValidator<AccessTokenValidationParameters, Result<ClaimsPrincipal>>,
-        ITokenFactory<AccessTokenCreationParameters, Result<string>>
+        ITokenValidator<string, Result<ClaimsPrincipal>>,
+        ITokenFactory<User, Result<string>>
     {
         string GetUserIdFromClaims(ClaimsPrincipal tokenClaims);
     }

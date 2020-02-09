@@ -5,7 +5,9 @@ using Domain;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Persistence.Helpers;
 using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
@@ -18,19 +20,20 @@ using System.Threading.Tasks;
 namespace Business.Services
 {
 
-    public class UserService : IUserService
+    public class UserService : ServiceBase<User,string>, IUserService
     {
-        private readonly IRepository<User> userRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<UserService> logger;
         private readonly UserManager<User> userManager;
 
-        public UserService(UserManager<User> userManager,
+        public UserService (UserManager<User> userManager,
                            IRepository<User> userRepository,
-                           IMapper mapper)
+                           IMapper mapper,
+                           ILogger<UserService> logger):base(userRepository)
         {
             this.userManager = userManager;
-            this.userRepository = userRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
 
@@ -48,10 +51,12 @@ namespace Business.Services
 
             if (!creationResult.Succeeded)
             {
+                logger.LogInformation("User creation failed: User.Email {Email}. Validation Errors: {@Errors}",
+                                     userDto.Email, creationResult.Errors);
+
                 var errors = creationResult.Errors.Select(e => e.Description).ToArray();
                 return Result<User>.Failure(errors);
             }
-
             return Result<User>.Success(newUser);
         }
 
@@ -59,88 +64,13 @@ namespace Business.Services
             await userManager.CheckPasswordAsync(user, password);
 
 
-        public async Task<int> UpdateRefreshTokenAsync(User user, RefreshToken refreshToken)
+        public async Task<bool> AddRefreshToken(User user, RefreshToken refreshToken)
         {
             user.RefreshToken = refreshToken;
-            userRepository.Context.Entry(user).State = EntityState.Modified;
-            return await userRepository.SaveChangesAsync();
-        }
-
-        public async Task<bool> ExistAsync(Expression<Func<User, bool>> predicate)
-            => await userRepository.Set.AnyAsync(predicate);
-
-
-        #region Deleting
-
-        /// <summary>
-        /// Delete user by Id. If deletion is failed, see result errors
-        /// </summary>
-        /// <param name="userId">User identifier</param>
-        /// <returns>Deletion result</returns>
-        public async Task<Result> DeleteAsync(string userId)
-        {
-            var userToDelete = new User() { Id = userId };
-
-            userRepository.Context.Entry(userToDelete).State = EntityState.Deleted;
-
-            return await userRepository.SaveChangesAsync() > 0 ? true : false;
-
-            // soon will be added some logging and expcetions catching
-        }
-
-        public async Task<Result> DeleteAsync(User user)
-        {
-            userRepository.Set.Remove(user);
-            return await userRepository.SaveChangesAsync() > 0 ? true : false;
-        }
-
-        public async Task<Result> DeleteAsync(Expression<Func<User, bool>> predicate)
-        {
-            var users = userRepository.Set.Where(predicate).AsNoTracking();
-            return await DeleteRangeAsync(users);
-        }
-
-        public async Task<Result> DeleteRangeAsync(IEnumerable<User> users)
-        {
-            userRepository.Set.RemoveRange(users);
-            return await userRepository.SaveChangesAsync() > 0 ? true : false;
+            return await repository.UpdateAndSaveAsync(user);
         }
 
 
-        #endregion
 
-        #region Reading
-
-
-        public async Task<User> FindAsync(string id)
-           => await userRepository.Set.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
-
-        public async Task<User> FindAsync(Expression<Func<User, bool>> expression)
-              => await userRepository.Set.AsNoTracking().SingleOrDefaultAsync(expression);
-
-        public IAsyncEnumerable<User> FindRangeAsync(Expression<Func<User, bool>> predicate)
-            => userRepository.Set.AsNoTracking().Where(predicate).AsAsyncEnumerable();
-
-
-
-        #endregion
-
-        #region Updating
-
-        public async Task<Result> UpdateAsync(User user)
-        {
-            userRepository.Set.Update(user);
-            //  will be changed soon sensi Update method updates all properties even if they are not changed
-            return await userRepository.SaveChangesAsync() > 0 ? true : false;
-        }
-
-        public async Task<Result> UpdateRange(IEnumerable<User> entites)
-        {
-            userRepository.Set.UpdateRange(entites);
-            return await userRepository.SaveChangesAsync() > 0 ? true : false;
-        }
-
-
-        #endregion
     }
 }

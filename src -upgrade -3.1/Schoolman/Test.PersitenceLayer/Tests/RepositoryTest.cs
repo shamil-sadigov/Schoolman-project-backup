@@ -9,12 +9,12 @@ using Xunit;
 
 namespace Test.PersitenceLayer
 {
-    public class RepositoryTest : BasicTest
+    public class RepositoryTest : TestBase
     {
         public RepositoryTest(TestWebAppFactory testWebAppFactory) : base(testWebAppFactory) { }
 
 
-        [Fact(DisplayName = "IRepository<User> Add and Save new User() entit")]
+        [Fact(DisplayName = "IRepository<User> Add and Save new User")]
         public async Task UserRepositoryAddAndSave()
         {
             var userRepository = factory.Services.GetRequiredService<IRepository<User>>();

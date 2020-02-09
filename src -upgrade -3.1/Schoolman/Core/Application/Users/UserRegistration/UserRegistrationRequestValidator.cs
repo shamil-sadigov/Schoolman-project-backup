@@ -2,6 +2,7 @@
 using Domain;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Schoolman.Student.Core.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,13 @@ using System.Text;
 
 namespace Application.Users.UserRegistration
 {
-    class UserRegistrationRequestValidator:AbstractValidator<UserRegistrationRequest>
+    public class UserRegistrationRequestValidator:AbstractValidator<UserRegistrationRequest>
     {
-        private readonly IRepository<User> userRepository;
+        private readonly IUserService userService;
 
-        public UserRegistrationRequestValidator(IRepository<User> userRepository)
+        public UserRegistrationRequestValidator(IUserService userService)
         {
-            this.userRepository = userRepository;
+            this.userService = userService;
         }
 
 
@@ -37,8 +38,8 @@ namespace Application.Users.UserRegistration
                 RuleFor(model => model.Email)
                 .MustAsync(async (email, token ) =>
                 {
-                    bool userExist = await userRepository.Set.AnyAsync(user => user.Email == email);
-                    return !userExist;
+                    bool userDoesntExist = !await userService.ExistAsync(user => user.Email == email);
+                    return userDoesntExist;
                 });
             });
 

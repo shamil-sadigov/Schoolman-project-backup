@@ -8,13 +8,11 @@ namespace Application.Services.Token
     public class AccessTokenValidationParameters
     {
         public string AccessToken { get; set; }
-        public TokenValidationParameters ValidationParameters{ get; set; }
 
 
-        public AccessTokenValidationParameters(string accessToken, TokenValidationParameters validationParameters)
+        public AccessTokenValidationParameters(string accessToken)
         {
             AccessToken = accessToken;
-            ValidationParameters = validationParameters;
         }
     }
 

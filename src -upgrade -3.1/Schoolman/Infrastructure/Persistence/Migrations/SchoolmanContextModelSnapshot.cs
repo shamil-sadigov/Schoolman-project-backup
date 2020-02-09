@@ -17,6 +17,70 @@ namespace Persistence.Migrations
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Domain.Company", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("Domain.Models.AppClient", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId", "RoleId", "CompanyId")
+                        .IsUnique();
+
+                    b.ToTable("AppClients");
+                });
+
             modelBuilder.Entity("Domain.Models.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -85,33 +149,6 @@ namespace Persistence.Migrations
                     b.ToTable("UserLogins");
                 });
 
-            modelBuilder.Entity("Domain.Models.UserRoleTenant", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<string>("TenantId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<string>("RelationId")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.HasKey("UserId", "RoleId", "TenantId");
-
-                    b.HasIndex("RelationId");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("UserRoleTenantRelations");
-                });
-
             modelBuilder.Entity("Domain.Models.UserToken", b =>
                 {
                     b.Property<string>("UserId")
@@ -159,21 +196,6 @@ namespace Persistence.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Domain.Tenant", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tenants");
-                });
-
             modelBuilder.Entity("Domain.User", b =>
                 {
                     b.Property<string>("Id")
@@ -187,6 +209,16 @@ namespace Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("Email")
                         .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
@@ -197,6 +229,16 @@ namespace Persistence.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("LastName")
                         .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
@@ -248,6 +290,26 @@ namespace Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Domain.Models.AppClient", b =>
+                {
+                    b.HasOne("Domain.Company", "Company")
+                        .WithMany("clients")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Role", "Role")
+                        .WithMany("clients")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany("clients")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Models.RoleClaim", b =>
                 {
                     b.HasOne("Domain.Role", "Role")
@@ -275,27 +337,6 @@ namespace Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Models.UserRoleTenant", b =>
-                {
-                    b.HasOne("Domain.Role", "Role")
-                        .WithMany("_userRoleTenantRelation")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Tenant", "Tenant")
-                        .WithMany("_userRoleTenantRelation")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.User", "User")
-                        .WithMany("_userRoleTenantRelation")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Models.UserToken", b =>
                 {
                     b.HasOne("Domain.User", "User")
@@ -311,9 +352,6 @@ namespace Persistence.Migrations
                         {
                             b1.Property<string>("UserId")
                                 .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                            b1.Property<string>("AccessTokenId")
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                             b1.Property<long>("ExpirationTime")
                                 .HasColumnType("bigint");
