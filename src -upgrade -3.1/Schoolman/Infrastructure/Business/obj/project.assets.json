@@ -1972,10 +1972,7 @@
         },
         "runtime": {
           "bin/placeholder/Application.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       },
       "Domain/1.0.0": {
         "type": "project",
@@ -6639,11 +6636,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj",
+      "projectUniqueName": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj",
       "projectName": "Business",
-      "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj",
+      "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj",
       "packagesPath": "C:\\Users\\sovsh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\obj\\",
+      "outputPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6662,8 +6659,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj": {
-              "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj"
+            "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj": {
+              "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj"
             }
           }
         }
@@ -6717,9 +6714,6 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
