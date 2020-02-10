@@ -51,6 +51,8 @@ namespace Schoolman.Student.Core.Application.Models
     }
 
 
+
+
     public class Result<T> : Result where T:class
     {
         public T Response;
