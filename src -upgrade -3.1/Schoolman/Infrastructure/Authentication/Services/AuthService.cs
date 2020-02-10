@@ -17,38 +17,38 @@ namespace Authentication.Services
     {
         private readonly IAuthTokenService tokenService;
         private readonly IConfirmationEmailService emailConfirmationManager;
-        private readonly IClientManager clientManager;
+        private readonly ICustomerManager customerManager;
         private readonly ILogger<AuthService> logger;
 
         public AuthService(IAuthTokenService tokenService,
                            IConfirmationEmailService emailConfirmationManager,
-                           IClientManager clientManager,
+                           ICustomerManager customerManager,
                            ILogger<AuthService> logger)
         {
             this.tokenService = tokenService;
             this.emailConfirmationManager = emailConfirmationManager;
-            this.clientManager = clientManager;
+            this.customerManager = customerManager;
             this.logger = logger;
         }
 
 
 
-        public async Task<Result<AuthenticationTokens>> LoginClientAsync(ClientLoginRequest request)
+        public async Task<Result<AuthenticationTokens>> LoginCustomerAsync(CustomerLoginRequest request)
         {
-            Client client = await clientManager.FindAsync(WithConfirmedEmail(request.Email));
+            Customer customer = await customerManager.FindAsync(WithConfirmedEmail(request.Email));
 
-            if (client != null)
+            if (customer != null)
             {
-                if (!await clientManager.UserService.CheckPasswordAsync(client.User, request.Password))
+                if (!await customerManager.CheckPasswordAsync(customer, request.Password))
                 {
                     logger.LogInformation("Login failed: User provided invalid password. " +
                                           "Client.Id {Id}, Client.Email {Email} ", 
-                                          client.Id, client.User.Email);
+                                          customer.Id, customer.User.Email);
 
                     return Result<AuthenticationTokens>.Failure("Invalid login credentials");
                 }
 
-                return await tokenService.GenerateAuthenticationTokensAsync(client);
+                return await tokenService.GenerateAuthenticationTokensAsync(customer);
             }
 
             logger.LogInformation("Login failed: User provided nonexistent Email. " +
@@ -57,55 +57,58 @@ namespace Authentication.Services
             return Result<AuthenticationTokens>.Failure("Invalid login credentials");
         }
 
-        public async Task<Result<Client>> RegisterClientAsync(ClientRegistraionRequest request)
+
+
+        public async Task<Result<Customer>> RegisterCustomerAsync(CustomerRegistrationRequest request)
         {
             #region Creating User
 
 
-            Result<Client> createionResult =  await clientManager.CreateAsync(request);
+            Result<Customer> createionResult =  await customerManager.CreateAsync(request);
 
             if (!createionResult.Succeeded)
             {
-                logger.LogInformation("Registraion failed: Client provided invalid registration values. " +
-                                      "User.Email {Email}. Validation Errors: {@Errors}", 
+                logger.LogInformation("Registraion failed: Customer provided invalid registration values. " +
+                                      "Customer.Email {customerEmail}. Validation Errors: {@Errors}", 
                                         request.Email, createionResult.Errors);
 
                 return createionResult;
             }
 
-            Client createdClient= createionResult.Response;
+            Customer newCustomer = createionResult.Response;
 
-            logger.LogInformation("Registration succeeded: New client have been registered." +
-                                  "ClientId {clientId}, Email {clientEmail}", 
-                                    createdClient.Id, createdClient.User.Email);
+            logger.LogInformation("Registration succeeded: New customer have been registered." +
+                                  "Customer.Id {customerId}, Email {customerEmail}", 
+                                    newCustomer.Id, newCustomer.User.Email);
 
             #endregion
 
             #region Sending Email
 
 
-            string token = await emailConfirmationManager.GenerateTokenAsync(createdClient);
-            bool emailSent = await emailConfirmationManager.SendConfirmationEmailAsync(createdClient, token);
+            string token = await emailConfirmationManager.GenerateTokenAsync(newCustomer);
+            bool emailSent = await emailConfirmationManager.SendConfirmationEmailAsync(newCustomer, token);
 
             if (!emailSent)
             {
-                logger.LogInformation("Sending confirmation email failed: ClientId {clientId}, Email {clientEmail}",
-                                  createdClient.Id, createdClient.User.Email);
+                logger.LogInformation("Sending confirmation email failed: CustomerId {customerId}, Email {customerEmail}",
+                                  newCustomer.Id, newCustomer.User.Email);
 
-                return Result<Client>.Failure("Sending confirmation email failed");
+                return Result<Customer>.Failure("Sending confirmation email failed");
             }
 
-            logger.LogInformation("Confirmation email sent to new registered client: ClientId {clientId}, Email {clientEmail}",
-                                   createdClient.Id, createdClient.User.Email);
+            logger.LogInformation("Confirmation email sent to new registered customer: " +
+                                    "CustomerId {customerId}, Email {customerEmail}",
+                                   newCustomer.Id, newCustomer.User.Email);
 
             #endregion
 
-            return createdClient;
+            return newCustomer;
         }
 
 
         // Soon will be wrapped in Specification pattern
-        private Expression<Func<Client, bool>> WithConfirmedEmail(string email)
-            => client => client.User.Email == email && client.User.EmailConfirmed;
+        private Expression<Func<Customer, bool>> WithConfirmedEmail(string email)
+            => customer => customer.User.Email == email && customer.User.EmailConfirmed;
     }
 }

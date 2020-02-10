@@ -14,18 +14,18 @@ namespace Authentication.Services
     {
         private readonly IAccessTokenService accessTokenService;
         private readonly IRefreshTokenService refreshTokenService;
-        private readonly IClientManager clientManager;
+        private readonly ICustomerManager clientManager;
 
         public AuthTokenService(IAccessTokenService accessTokenService, 
                                 IRefreshTokenService refreshTokenService,
-                                IClientManager clientManager)
+                                ICustomerManager clientManager)
         {
             this.accessTokenService = accessTokenService;
             this.refreshTokenService = refreshTokenService;
             this.clientManager = clientManager;
         }
 
-        public async Task<Result<AuthenticationTokens>> GenerateAuthenticationTokensAsync(Client client)
+        public async Task<Result<AuthenticationTokens>> GenerateAuthenticationTokensAsync(Customer client)
         {
             #region Access token generation
 
@@ -83,8 +83,8 @@ namespace Authentication.Services
 
             #region Token Generation
 
-            string clientId = accessTokenService.GetClientIdFromClaims(tokenClaims);
-            Client client  = await clientManager.FindAsync(clientId);
+            string clientId = accessTokenService.GetCustomerIdFromClaims(tokenClaims);
+            Customer client  = await clientManager.FindAsync(clientId);
             return await GenerateAuthenticationTokensAsync(client);
             #endregion
         }

@@ -13,7 +13,6 @@ namespace Test.PersitenceLayer
     {
         public RepositoryTest(TestWebAppFactory testWebAppFactory) : base(testWebAppFactory) { }
 
-
         [Fact(DisplayName = "IRepository<User> Add and Save new User")]
         public async Task UserRepositoryAddAndSave()
         {
@@ -49,7 +48,5 @@ namespace Test.PersitenceLayer
             Assert.NotNull(user);
             Assert.Equal(Id, user.Id);
         }
-
-
     }
 }

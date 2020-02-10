@@ -52,11 +52,11 @@ namespace Persistence
 
             services.AddDbContext<SchoolmanContext>(ops =>
             {
-                ops.UseMySql(configuration.GetConnectionString("LocalServer-MySql"));
+                ops.UseMySql(configuration.GetConnectionString("RemoteServer"));
             });
 
 
-            #endregion
+            #endregion 
         }
     }
 }

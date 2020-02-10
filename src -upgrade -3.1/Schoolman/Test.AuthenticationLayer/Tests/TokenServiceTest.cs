@@ -30,7 +30,7 @@ namespace Test.AuthenticationLayer
         [Fact(DisplayName = "IAuthTokenService.GenerateAuthenticationTokensAsync() => Doesn't generate token for nonexistent user")]
         public async Task TokenService_Doesnt_Generate_Tokens_For_NonExistent_User()
         {
-            var nonexistentUser = new User();
+            var nonexistentUser = new Customer();
             bool tokensAreGenegerated = await tokenService.GenerateAuthenticationTokensAsync(nonexistentUser);
             Assert.False(tokensAreGenegerated, "Tokens should not be generated");
         }

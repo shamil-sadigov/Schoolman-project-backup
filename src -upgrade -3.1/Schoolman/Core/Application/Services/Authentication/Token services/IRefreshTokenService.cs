@@ -6,7 +6,7 @@ namespace Application.Services.Token
 {
     public interface IRefreshTokenService : 
         ITokenValidator<string, Result>,
-        ITokenFactory<Client, Result<string>>
+        ITokenFactory<Customer, Result<string>>
     {
 
     }

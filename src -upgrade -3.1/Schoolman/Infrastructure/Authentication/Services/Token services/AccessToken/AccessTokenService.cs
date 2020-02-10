@@ -27,18 +27,18 @@ namespace Authentication.Services.New_services
         }
 
 
-        public string GetClientIdFromClaims(ClaimsPrincipal tokenClaims)
+        public string GetCustomerIdFromClaims(ClaimsPrincipal tokenClaims)
         {
-            return claimsService.GetUserIdFromClaims(tokenClaims.Claims);
+            return claimsService.GetCustomerFromClaims(tokenClaims.Claims);
         }
 
 
-        public Task<Result<string>> GenerateTokenAsync(Client client)
+        public Task<Result<string>> GenerateTokenAsync(Customer customer)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
 
-            Claim[] claims = claimsService.BuildClaims(client);
+            Claim[] claims = claimsService.BuildClaims(customer);
             byte[] secretKeyBytes = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
 
             var tokenDesciptor = new SecurityTokenDescriptor()

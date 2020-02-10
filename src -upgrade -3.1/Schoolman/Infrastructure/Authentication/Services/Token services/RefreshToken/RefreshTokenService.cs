@@ -16,24 +16,24 @@ namespace Authentication.Services.New_services
     public class RefreshTokenService : IRefreshTokenService
     {
         private readonly RefreshTokenOptions options;
-        private readonly IClientManager clientManager;
+        private readonly ICustomerManager customerManager;
 
-        public RefreshTokenService(IClientManager clientManager,
+        public RefreshTokenService(ICustomerManager customerManager,
                                    IOptionsMonitor<RefreshTokenOptions> optionsMonitor)
         {
             this.options = optionsMonitor.CurrentValue;
-            this.clientManager = clientManager;
+            this.customerManager = customerManager;
         }
 
 
-        public async Task<Result<string>> GenerateTokenAsync(Client client)
+        public async Task<Result<string>> GenerateTokenAsync(Customer client)
         {
             var refreshToken = new RefreshToken();
             refreshToken.IssueTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             refreshToken.ExpirationTime = DateTimeOffset.UtcNow.Add(options.ExpirationTime)
                                                                         .ToUnixTimeSeconds();
 
-            await clientManager.AddRefreshToken(client, refreshToken);
+            await customerManager.AddRefreshToken(client, refreshToken);
 
             return Result<string>.Success(refreshToken.Token);
         }
@@ -42,14 +42,14 @@ namespace Authentication.Services.New_services
 
         public async Task<Result> ValidateTokenAsync(string token)
         {
-            Client client = await clientManager.FindAsync(user => user.RefreshToken.Token == token);
+            Customer customer = await customerManager.FindAsync(c => c.RefreshToken.Token == token);
 
-            if (client == null)
+            if (customer == null)
                 return Result.Failure("Refresh token is not valid");
 
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-            if (client.RefreshToken.ExpirationTime < currentTime)
+            if (customer.RefreshToken.ExpirationTime < currentTime)
                 return Result.Failure("Refresh token has been expired");
 
             return Result.Success();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain.Models
@@ -10,3 +11,4 @@ namespace Domain.Models
         public User User { get; set; }
     }
 }
+

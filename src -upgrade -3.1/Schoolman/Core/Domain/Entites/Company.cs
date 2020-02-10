@@ -11,32 +11,11 @@ namespace Domain
 
         public Company()
         {
-            clients = new HashSet<Client>();
+            Customers = new HashSet<Customer>();
         }
 
-        [NotMapped]
-        public IEnumerable<User> Users
-        {
-            get
-            {
-                foreach (var client in clients)
-                    yield return client.User;
-
-            }
-        }
-
-        [NotMapped]
-        public IEnumerable<Role> Roles
-        {
-            get
-            {
-                foreach (var client in clients)
-                    yield return client.Role;
-
-            }
-        }
-
-        private ICollection<Client> clients;
+      
+        public ICollection<Customer> Customers { get; set; }
 
     }
 }

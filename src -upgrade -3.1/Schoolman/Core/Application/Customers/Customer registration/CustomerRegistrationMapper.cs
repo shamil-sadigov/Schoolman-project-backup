@@ -6,15 +6,15 @@ using System.Text;
 
 namespace Application.Users.UserRegistration
 {
-    public class ClientRegistrationRequestMapper:Profile
+    public class CustomerRegistrationMapper:Profile
     {
         /// <summary>
         /// Mapper from UserRegistrationRequest to User
         /// Doesnt map password because password shoulb be hashed
         /// </summary>
-        public ClientRegistrationRequestMapper()
+        public CustomerRegistrationMapper()
         {
-            CreateMap<ClientRegistraionRequest, User>()
+            CreateMap<CustomerRegistrationRequest, User>()
                     .ForMember(user => user.FirstName,
                                ops => ops.MapFrom(request => request.FirstName))
                     .ForMember(user => user.LastName,

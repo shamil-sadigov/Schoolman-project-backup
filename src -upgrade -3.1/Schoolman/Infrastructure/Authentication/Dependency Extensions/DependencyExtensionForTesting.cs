@@ -28,14 +28,12 @@ namespace Authentication
 
             services.AddJwtAuthentication(configuration);
 
-            services.AddScoped<IAccessTokenService, AccessTokenService>();
-            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
-
-            services.AddScoped<IAuthTokenService, AuthTokenService>();
+            services.AddTransient<IAccessTokenService, AccessTokenService>();
+            services.AddTransient<IRefreshTokenService, RefreshTokenService>();
+            services.AddTransient<IAuthTokenClaimService, JwtClaimsBuilder>();
+            services.AddTransient<IAuthTokenService, AuthTokenService>();
 
             services.AddScoped<IAuthService, AuthService>();
-
-            services.AddScoped<IAuthTokenClaimService, JwtClaimsBuilder>();
         }
     }
 }

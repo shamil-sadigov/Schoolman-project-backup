@@ -7,7 +7,7 @@ using System.Text;
 namespace Domain
 {
     public abstract class UserBase:IdentityUser<string>, 
-                                   IEntityBase<string>
+                                       IEntityBase<string>
     {
         public string CreatedBy { get; set; }
         public DateTime Created { get; set; }
@@ -17,4 +17,6 @@ namespace Domain
         public bool IsDeleted { get; set; }
         public string DeletedBy { get; set; }
     }
+
+
 }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Application.Users
 {
-    public partial class ClientRegistraionRequest : IRequest<Result>
+    public partial class CustomerRegistrationRequest : IRequest<Result>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

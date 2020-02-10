@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Base;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain.Models
@@ -8,10 +10,8 @@ namespace Domain.Models
     /// <summary>
     /// Many-to-many table
     /// </summary>
-    public class Client : IdentityUserRole<string>, IEntity<string>
+    public class Customer : CustomerBase
     {
-        public string Id { get; set; }
-
         public User User { get; set; }
         public Role Role { get; set; }
         public Company Company { get; set; }
@@ -20,6 +20,5 @@ namespace Domain.Models
 
         // Owned entity
         public RefreshToken RefreshToken { get; set; }
-
     }
 }

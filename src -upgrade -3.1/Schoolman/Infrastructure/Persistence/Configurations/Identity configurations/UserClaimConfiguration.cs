@@ -6,13 +6,14 @@ namespace Persistence.Configurations
 {
     public class UserClaimConfiguration : IEntityTypeConfiguration<UserClaim>
     {
-        public void Configure(EntityTypeBuilder<UserClaim> user)
+        public void Configure(EntityTypeBuilder<UserClaim> userInfo)
         {
-            user.ToTable("UserClaims");
-            user.HasOne(u => u.User)
+            userInfo.ToTable("UserClaims");
+            userInfo.HasOne(u => u.User)
               .WithMany(u => u.Claims)
               .HasForeignKey(u => u.UserId)
               .IsRequired();
+
         }
     }
 }

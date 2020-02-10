@@ -12,7 +12,7 @@ namespace Domain
 
         public User()
         {
-            clients = new HashSet<Client>();
+            Customers = new HashSet<Customer>();
             Claims = new HashSet<UserClaim>();
             Logins = new HashSet<UserLogin>();
             Tokens = new HashSet<UserToken>();
@@ -26,34 +26,11 @@ namespace Domain
         public string LastName { get; set; }
 
 
-        [NotMapped]
-        public IEnumerable<Role> Roles
-        {
-            get
-            {
-                foreach (var client in clients)
-                    yield return client.Role;
-            }
-        }
-
-        [NotMapped]
-        public IEnumerable<Company> Companies
-        {
-            get
-            {
-                foreach (var client in clients)
-                    yield return client.Company;
-
-            }
-        }
-
-
-
-
+      
 
         #region Navigation Properties
 
-        private ICollection<Client> clients;
+        public ICollection<Customer> Customers { get; set; }
         public ICollection<UserClaim> Claims { get; set; }
         public ICollection<UserLogin> Logins { get; set; }
         public ICollection<UserToken> Tokens { get; set; }

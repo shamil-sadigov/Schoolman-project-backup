@@ -6,8 +6,8 @@ namespace Application.Services.Token
 {
     public interface IAccessTokenService:
         ITokenValidator<string, Result<ClaimsPrincipal>>,
-        ITokenFactory<Client, Result<string>>
+        ITokenFactory<Customer, Result<string>>
     {
-        string GetClientIdFromClaims(ClaimsPrincipal tokenClaims);
+        string GetCustomerIdFromClaims(ClaimsPrincipal tokenClaims);
     }
 }

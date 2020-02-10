@@ -8,7 +8,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
 {
     public interface IAuthTokenClaimService
     {
-        Claim[] BuildClaims(Client client);
-        string GetUserIdFromClaims(IEnumerable<Claim> claims);
+        Claim[] BuildClaims(Customer customer);
+        string GetCustomerFromClaims(IEnumerable<Claim> claims);
     }
 }

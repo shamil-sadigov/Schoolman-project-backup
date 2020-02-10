@@ -15,6 +15,7 @@ namespace Persistence.Configurations
               .WithMany(u => u.Tokens)
               .HasForeignKey(u => u.UserId)
               .IsRequired();
+
         }
     }
 }

@@ -14,22 +14,22 @@ namespace Authentication.Services
     public class JwtClaimsBuilder : IAuthTokenClaimService
     {
 
-        public Claim[] BuildClaims(Client client)
+        public Claim[] BuildClaims(Customer customer)
         {
             var claims = new[]
             {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, client.User.Email),
-                    new Claim(AppClaimTypes.UserId, client.Id),
-                    new Claim(AppClaimTypes.Role, client.Role?.Name),
-                    new Claim(AppClaimTypes.Company, client.Company?.Name),
-                    new Claim(AppClaimTypes.CompanyId, client.Company?.Id),
+                    new Claim(JwtRegisteredClaimNames.Email, customer.User.Email),
+                    new Claim(AppClaimTypes.CustomerId, customer.Id),
+                    new Claim(AppClaimTypes.Role, customer.Role?.Name),
+                    new Claim(AppClaimTypes.Company, customer.Company?.Name),
+                    new Claim(AppClaimTypes.CompanyId, customer.Company?.Id),
             };
 
             return claims;
         }
 
-        public string GetUserIdFromClaims(IEnumerable<Claim> claims)
-            => claims.FirstOrDefault(c => c.Type == AppClaimTypes.UserId).Value;
+        public string GetCustomerFromClaims(IEnumerable<Claim> claims)
+            => claims.FirstOrDefault(c => c.Type == AppClaimTypes.CustomerId).Value;
     }
 }

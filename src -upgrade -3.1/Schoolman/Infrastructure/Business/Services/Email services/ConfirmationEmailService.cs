@@ -41,7 +41,7 @@ namespace Authentication.Services.EmailConfirmation
 
 
 
-        public async Task<Result> SendConfirmationEmailAsync(Client client, string token)
+        public async Task<Result> SendConfirmationEmailAsync(Customer client, string token)
         {
             Uri confirmUrl = urlService.UseSpaUrlAddress()
                                        .BuildConfirmationUrl
@@ -60,7 +60,7 @@ namespace Authentication.Services.EmailConfirmation
 
 
         
-        public async Task<string> GenerateTokenAsync(Client client)
+        public async Task<string> GenerateTokenAsync(Customer client)
         {
             string token =  await userManager.GenerateEmailConfirmationTokenAsync(client.User);
 
@@ -76,12 +76,12 @@ namespace Authentication.Services.EmailConfirmation
         {
             string decodedToken = HttpUtility.UrlDecode(param.Token);
 
-            var result = await userManager.ConfirmEmailAsync(param.Client.User, decodedToken);
+            var result = await userManager.ConfirmEmailAsync(param.Customer.User, decodedToken);
 
             if (!result.Succeeded)
             {
                 logger.LogWarning("Email confirmation failed: Invalid token have been provided " +
-                                  "Email: {email}", param.Client.User.Email);
+                                  "Email: {email}", param.Customer.User.Email);
 
                 return Result.Failure(result.Errors.Select(m => m.Description).ToArray());
             }

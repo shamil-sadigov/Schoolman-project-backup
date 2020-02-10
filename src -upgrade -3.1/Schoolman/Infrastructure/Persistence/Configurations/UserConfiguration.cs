@@ -17,8 +17,6 @@ namespace Persistence.Configurations
             builder.Property(model => model.PhoneNumber).HasMaxLength(50);
             builder.Property(model => model.FirstName).HasMaxLength(50);
             builder.Property(model => model.LastName).HasMaxLength(50);
-          
-
 
             base.Configure(builder);
         }

@@ -14,15 +14,15 @@ using System.Threading.Tasks;
 
 namespace Application.Users
 {
-    public class ClientRegistrationRequestHandler : IRequestHandler<ClientRegistraionRequest, Result>
+    public class CustomerRegistrationHandler : IRequestHandler<CustomerRegistrationRequest, Result>
     {
-        private readonly IValidator<ClientRegistraionRequest> userValidator;
+        private readonly IValidator<CustomerRegistrationRequest> userValidator;
         private readonly IAuthService authenticationService;
-        private readonly ILogger<ClientRegistrationRequestHandler> logger;
+        private readonly ILogger<CustomerRegistrationHandler> logger;
 
-        public ClientRegistrationRequestHandler(IValidator<ClientRegistraionRequest> validator,
+        public CustomerRegistrationHandler(IValidator<CustomerRegistrationRequest> validator,
                                               IAuthService authenticationService,
-                                              ILogger<ClientRegistrationRequestHandler> logger)
+                                              ILogger<CustomerRegistrationHandler> logger)
         {
             this.userValidator = validator;
             this.authenticationService = authenticationService;
@@ -30,7 +30,7 @@ namespace Application.Users
         }
 
 
-        public async Task<Result> Handle(ClientRegistraionRequest request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CustomerRegistrationRequest request, CancellationToken cancellationToken)
         {
             #region User Validation
 
@@ -60,7 +60,7 @@ namespace Application.Users
 
             #endregion
 
-            return await authenticationService.RegisterClientAsync(request);
+            return await authenticationService.RegisterCustomerAsync(request);
         }
     }
 

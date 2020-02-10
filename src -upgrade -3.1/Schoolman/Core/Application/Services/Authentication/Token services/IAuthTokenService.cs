@@ -11,9 +11,9 @@ namespace Schoolman.Student.Core.Application.Interfaces
         /// <summary>
         /// Generatees JWT token for specified user
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="customer"></param>
         /// <returns></returns>
-        Task<Result<AuthenticationTokens>> GenerateAuthenticationTokensAsync(Client user);
+        Task<Result<AuthenticationTokens>> GenerateAuthenticationTokensAsync(Customer customer);
 
         /// <summary>
         /// Get tokens and refresh them.

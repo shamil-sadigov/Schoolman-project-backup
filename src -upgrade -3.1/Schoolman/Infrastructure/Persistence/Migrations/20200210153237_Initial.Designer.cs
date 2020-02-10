@@ -9,7 +9,7 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SchoolmanContext))]
-    [Migration("20200209130503_Initial")]
+    [Migration("20200210153237_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,7 +54,7 @@ namespace Persistence.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("Domain.Models.AppClient", b =>
+            modelBuilder.Entity("Domain.Models.Customer", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,6 +62,24 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CompanyId")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
@@ -80,7 +98,7 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId", "RoleId", "CompanyId")
                         .IsUnique();
 
-                    b.ToTable("AppClients");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Domain.Models.RoleClaim", b =>
@@ -179,6 +197,24 @@ namespace Persistence.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifiedBy")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
@@ -292,24 +328,47 @@ namespace Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Domain.Models.AppClient", b =>
+            modelBuilder.Entity("Domain.Models.Customer", b =>
                 {
                     b.HasOne("Domain.Company", "Company")
-                        .WithMany("clients")
+                        .WithMany("Customers")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Role", "Role")
-                        .WithMany("clients")
+                        .WithMany("Customers")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.User", "User")
-                        .WithMany("clients")
+                        .WithMany("Customers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsOne("Domain.Models.RefreshToken", "RefreshToken", b1 =>
+                        {
+                            b1.Property<string>("CustomerId")
+                                .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                            b1.Property<long>("ExpirationTime")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("IssueTime")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Token")
+                                .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
+                                .HasMaxLength(256);
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("RefreshTokens");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.RoleClaim", b =>
@@ -346,32 +405,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.User", b =>
-                {
-                    b.OwnsOne("Domain.Models.RefreshToken", "RefreshToken", b1 =>
-                        {
-                            b1.Property<string>("UserId")
-                                .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                            b1.Property<long>("ExpirationTime")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("IssueTime")
-                                .HasColumnType("bigint");
-
-                            b1.Property<string>("Token")
-                                .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                                .HasMaxLength(256);
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("RefreshTokens");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
                 });
 #pragma warning restore 612, 618
         }

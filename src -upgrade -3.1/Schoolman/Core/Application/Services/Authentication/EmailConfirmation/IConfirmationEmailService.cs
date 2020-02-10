@@ -11,8 +11,8 @@ namespace Application.Services.Token.Validators.User_Token_Validator
 {
     public interface IConfirmationEmailService:
         ITokenValidator<EmailTokenValidationParameters, Result>,
-        ITokenFactory<Client, string>
+        ITokenFactory<Customer, string>
     {
-        Task<Result> SendConfirmationEmailAsync(Client client, string token);
+        Task<Result> SendConfirmationEmailAsync(Customer customer, string token);
     }
 }

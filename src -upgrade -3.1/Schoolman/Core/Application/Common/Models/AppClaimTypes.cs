@@ -8,7 +8,7 @@ namespace Application.Common.Models
     {
         public const string Role = "Role";
         public const string RoleId = "RoleId";
-        public const string UserId = "UserId";
+        public const string CustomerId = "CustomerId";
         public const string Email = "Email";
         public const string Company = "Company";
         public const string CompanyId = "CompanyId";

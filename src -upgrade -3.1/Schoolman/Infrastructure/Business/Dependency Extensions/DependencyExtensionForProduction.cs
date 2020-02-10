@@ -1,6 +1,8 @@
 ﻿using Application.Services;
+using Application.Services.Business;
 using Application.Services.Token.Validators.User_Token_Validator;
 using Authentication.Services.EmailConfirmation;
+using Business;
 using Business.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,15 +23,16 @@ namespace Authentication
         public static void AddBusinessLayer(this IServiceCollection services)
         {
             IConfiguration configuration = BuildConfiguration("business-settings.json");
-
             services.AddTransient<IEmailSender<IConfirmationEmailBuilder>, ConfirmationEmailSender>();
             services.AddTransient<IConfirmationEmailService, ConfirmationEmailService>();
-
-
-            services.AddTransient<ICurrentUserService, CurrentUserService>();
-            services.AddTransient<IUserService, UserService>();
-
+            services.AddTransient<ICurrentCustomerService, CurrentUserService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICustomerManager, CustomerManager>();
             services.AddTransient<UrlService>();
+
+
 
             services.AddEmailOptions(configuration);
             services.AddUrlOptions(configuration);

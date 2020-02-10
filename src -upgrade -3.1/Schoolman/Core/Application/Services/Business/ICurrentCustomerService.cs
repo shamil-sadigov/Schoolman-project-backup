@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public interface ICurrentUserService
+    public interface ICurrentCustomerService
     {
-        string CurrentUserId();
-        ClaimsPrincipal CurrentUserClaims();
+        string CurrentCustomerId();
+        ClaimsPrincipal CurrentCustomerClaims();
     }
 }

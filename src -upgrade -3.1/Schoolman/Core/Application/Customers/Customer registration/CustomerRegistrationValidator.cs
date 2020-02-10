@@ -1,26 +1,18 @@
-﻿using Application.Services;
-using Application.Services.Business;
-using Domain;
+﻿using Application.Services.Business;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using Schoolman.Student.Core.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Application.Users.UserRegistration
 {
-    public class ClientRegistrationRequestValidator:AbstractValidator<ClientRegistraionRequest>
+    public class CustomerRegistrationValidator:AbstractValidator<CustomerRegistrationRequest>
     {
-        private readonly IClientManager clientManager;
-        public ClientRegistrationRequestValidator(IClientManager clientManager)
+        private readonly ICustomerManager userManager;
+        public CustomerRegistrationValidator(ICustomerManager clientManager)
         {
-            this.clientManager = clientManager;
+            this.userManager = clientManager;
         }
 
 
-        public ClientRegistrationRequestValidator()
+        public CustomerRegistrationValidator()
         {
             RuleFor(model => model.FirstName).NotEmpty()
                                              .MaximumLength(25);
@@ -38,7 +30,7 @@ namespace Application.Users.UserRegistration
                 RuleFor(model => model.Email)
                 .MustAsync(async (email, token ) =>
                 {
-                    bool userDoesntExist = !await clientManager.UserService.ExistAsync(user => user.Email == email);
+                    bool userDoesntExist = !await userManager.ExistAsync(user => user.User.Email == email);
                     return userDoesntExist;
                 });
             });

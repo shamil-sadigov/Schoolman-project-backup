@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Business.Services
 {
-    public class CurrentUserService : ICurrentUserService
+    public class CurrentUserService : ICurrentCustomerService
     {
         private readonly HttpContext httpContext;
 
@@ -20,11 +20,11 @@ namespace Business.Services
         }
 
 
-        public string CurrentUserId()
+        public string CurrentCustomerId()
             => httpContext.User?.FindFirst("UserId")?.Value ?? null;
         
 
-        public ClaimsPrincipal CurrentUserClaims()
+        public ClaimsPrincipal CurrentCustomerClaims()
             => httpContext.User ?? null;
 
     }

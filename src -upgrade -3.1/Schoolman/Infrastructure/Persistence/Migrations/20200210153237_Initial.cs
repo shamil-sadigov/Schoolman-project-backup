@@ -34,7 +34,13 @@ namespace Persistence.Migrations
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 50, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModified = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedBy = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,51 +103,37 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppClients",
+                name: "Customers",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     RoleId = table.Column<string>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModified = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedBy = table.Column<string>(nullable: true),
                     CompanyId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppClients", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppClients_Companies_CompanyId",
+                        name: "FK_Customers_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AppClients_Roles_RoleId",
+                        name: "FK_Customers_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AppClients_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RefreshTokens",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(nullable: false),
-                    Token = table.Column<string>(maxLength: 256, nullable: true),
-                    IssueTime = table.Column<long>(nullable: false),
-                    ExpirationTime = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefreshTokens", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_RefreshTokens_Users_UserId",
+                        name: "FK_Customers_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -209,19 +201,39 @@ namespace Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    CustomerId = table.Column<string>(nullable: false),
+                    Token = table.Column<string>(maxLength: 256, nullable: true),
+                    IssueTime = table.Column<long>(nullable: false),
+                    ExpirationTime = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_AppClients_CompanyId",
-                table: "AppClients",
+                name: "IX_Customers_CompanyId",
+                table: "Customers",
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppClients_RoleId",
-                table: "AppClients",
+                name: "IX_Customers_RoleId",
+                table: "Customers",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppClients_UserId_RoleId_CompanyId",
-                table: "AppClients",
+                name: "IX_Customers_UserId_RoleId_CompanyId",
+                table: "Customers",
                 columns: new[] { "UserId", "RoleId", "CompanyId" },
                 unique: true);
 
@@ -261,9 +273,6 @@ namespace Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AppClients");
-
-            migrationBuilder.DropTable(
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
@@ -277,6 +286,9 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Companies");

@@ -13,16 +13,16 @@ namespace Persistence.Contexts
 {
     public class SchoolmanContext : IdentityDbContext<User, Role, string,
                                                  UserClaim,
-                                                 Client,
+                                                 Customer,
                                                  UserLogin,
                                                  RoleClaim,
                                                  UserToken>
 
     {
-        private readonly ICurrentUserService currentUserService;
+        private readonly ICurrentCustomerService currentUserService;
 
         public SchoolmanContext(DbContextOptions<SchoolmanContext> ops,
-                                ICurrentUserService currentUserService) : base(ops)
+                                ICurrentCustomerService currentUserService) : base(ops)
         {
             this.currentUserService = currentUserService;
         }
@@ -46,17 +46,17 @@ namespace Persistence.Contexts
                 {
                     case EntityState.Deleted when entry is IDeleteableEntity entity:
                         entity.IsDeleted = true;
-                        entity.DeletedBy = currentUserService.CurrentUserId();
+                        entity.DeletedBy = currentUserService.CurrentCustomerId();
                         entry.State = EntityState.Modified;
                         if (entry is IAuditableEntity auditableEntity)
-                            auditableEntity.LastModifiedBy = currentUserService.CurrentUserId();
+                            auditableEntity.LastModifiedBy = currentUserService.CurrentCustomerId();
                         continue;
                     case EntityState.Modified when entry is IAuditableEntity entity:
-                        entity.LastModifiedBy = currentUserService.CurrentUserId();
+                        entity.LastModifiedBy = currentUserService.CurrentCustomerId();
                         continue;
 
                     case EntityState.Added when entry is IAuditableEntity entity:
-                        entity.CreatedBy = currentUserService.CurrentUserId();
+                        entity.CreatedBy = currentUserService.CurrentCustomerId();
                         continue;
 
                     default:

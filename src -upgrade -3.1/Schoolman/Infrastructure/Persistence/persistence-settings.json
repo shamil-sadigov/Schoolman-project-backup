@@ -1,8 +1,8 @@
 {
   // да, да, пароли тут держать нельз€. ќбещаю изменитьс€.
   "ConnectionStrings": {
-    "RemoteServer": "Server=192.168.10.18;Port=3306;Database=schoolman_student_test;Uid=shamil.benzeine; Pwd=workbenchGibson1414@",
+    "RemoteServer": "Server=192.168.10.18;Port=3306;Database=schoolman_test;Uid=shamil.benzeine; Pwd=workbenchGibson1414@",
     "LocalServer-MySql": "Server=localhost;Port=3306;Database=schoolman_test;Uid=root; Pwd=mysqlGibson1414@",
-    "LocalServer-MSSQL": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Schoolman_test;Integrated Security=True;Connect Timeout=30;"
+    "LocalServer-MSSQL": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=schoolman__test;Integrated Security=True;Connect Timeout=30;"
   }
 }
