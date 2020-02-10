@@ -13,7 +13,7 @@ namespace Persistence.Contexts
 {
     public class SchoolmanContext : IdentityDbContext<User, Role, string,
                                                  UserClaim,
-                                                 AppClient,
+                                                 Client,
                                                  UserLogin,
                                                  RoleClaim,
                                                  UserToken>

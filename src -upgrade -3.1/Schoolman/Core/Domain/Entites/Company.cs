@@ -11,7 +11,7 @@ namespace Domain
 
         public Company()
         {
-            clients = new HashSet<AppClient>();
+            clients = new HashSet<Client>();
         }
 
         [NotMapped]
@@ -36,7 +36,7 @@ namespace Domain
             }
         }
 
-        private ICollection<AppClient> clients;
+        private ICollection<Client> clients;
 
     }
 }

@@ -1,14 +1,11 @@
-﻿using Application.Common.Models;
-using Application.Services.Token;
-using Application.Services.Token.Validators.Access_Token_Validator;
+﻿using Application.Services.Token;
 using Authentication.Options;
-using Domain;
+using Domain.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -21,6 +18,7 @@ namespace Authentication.Services.New_services
         private readonly IAuthTokenClaimService claimsService;
         private readonly JwtOptions jwtOptions;
 
+
         public AccessTokenService(IAuthTokenClaimService claimsBuilder,
                                   IOptionsMonitor<JwtOptions> jwtOptions)
         {
@@ -29,18 +27,18 @@ namespace Authentication.Services.New_services
         }
 
 
-        public string GetUserIdFromClaims(ClaimsPrincipal tokenClaims)
+        public string GetClientIdFromClaims(ClaimsPrincipal tokenClaims)
         {
             return claimsService.GetUserIdFromClaims(tokenClaims.Claims);
         }
 
 
-        public Task<Result<string>> GenerateTokenAsync(User user)
+        public Task<Result<string>> GenerateTokenAsync(Client client)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
 
-            Claim[] claims = claimsService.BuildClaims(user);
+            Claim[] claims = claimsService.BuildClaims(client);
             byte[] secretKeyBytes = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
 
             var tokenDesciptor = new SecurityTokenDescriptor()

@@ -14,9 +14,7 @@ namespace Schoolman.Student.Core.Application.Interfaces
     /// </summary>
     public interface IUserService : IServiceBase<User, string>
     {
-        Task<Result<User>> CreateAsync(UserRegistrationRequest user, string password);
+        Task<Result<User>> CreateAsync(User user, string password);
         Task<bool> CheckPasswordAsync(User user, string password);
-        Task<bool> AddRefreshToken(User user, RefreshToken refreshToken);
-        Task<IEnumerable<string>> GetRoles(User user, string roleName);
     }
 }

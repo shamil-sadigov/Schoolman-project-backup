@@ -47,6 +47,7 @@ namespace Schoolman.Student.Core.Application.Models
         {
             return Result.Success();
         }
+
     }
 
 
@@ -107,6 +108,12 @@ namespace Schoolman.Student.Core.Application.Models
         {
             return Result<T>.Failure(error);
         }
+
+        public static implicit operator Result<T>(string[] errors)
+        {
+            return Result<T>.Failure(errors);
+        }
+
 
     }
 

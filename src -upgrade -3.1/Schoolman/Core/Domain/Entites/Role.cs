@@ -10,7 +10,7 @@ namespace Domain
         public Role(string roleName)
         {
             Name = roleName;
-            clients = new HashSet<AppClient>();
+            clients = new HashSet<Client>();
         }
 
 
@@ -37,7 +37,7 @@ namespace Domain
         }
 
 
-        private ICollection<AppClient> clients;
+        private ICollection<Client> clients;
         public ICollection<RoleClaim> Claims { get; set; }
     }
 }

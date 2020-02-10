@@ -12,17 +12,16 @@ namespace Domain
 
         public User()
         {
-            clients = new HashSet<AppClient>();
+            clients = new HashSet<Client>();
             Claims = new HashSet<UserClaim>();
             Logins = new HashSet<UserLogin>();
             Tokens = new HashSet<UserToken>();
-            RefreshToken = new RefreshToken();
         }
 
         #endregion
 
         // Owned entity
-        public RefreshToken RefreshToken { get; set; }
+       
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -54,7 +53,7 @@ namespace Domain
 
         #region Navigation Properties
 
-        private ICollection<AppClient> clients;
+        private ICollection<Client> clients;
         public ICollection<UserClaim> Claims { get; set; }
         public ICollection<UserLogin> Logins { get; set; }
         public ICollection<UserToken> Tokens { get; set; }

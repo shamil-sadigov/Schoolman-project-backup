@@ -17,11 +17,7 @@ namespace Persistence.Configurations
             builder.Property(model => model.PhoneNumber).HasMaxLength(50);
             builder.Property(model => model.FirstName).HasMaxLength(50);
             builder.Property(model => model.LastName).HasMaxLength(50);
-            builder.OwnsOne(model => model.RefreshToken, rt=> 
-            {
-                rt.Property(rt => rt.Token).HasMaxLength(256);
-                rt.ToTable("RefreshTokens");
-            });
+          
 
 
             base.Configure(builder);

@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using Application.Common.Models;
+using Domain;
+using Domain.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,21 +13,23 @@ namespace Authentication.Services
 {
     public class JwtClaimsBuilder : IAuthTokenClaimService
     {
-        const string UserId = "UserId";
 
-        public Claim[] BuildClaims(User user)
+        public Claim[] BuildClaims(Client client)
         {
             var claims = new[]
             {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(UserId, user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
+                    new Claim(JwtRegisteredClaimNames.Email, client.User.Email),
+                    new Claim(AppClaimTypes.UserId, client.Id),
+                    new Claim(AppClaimTypes.Role, client.Role?.Name),
+                    new Claim(AppClaimTypes.Company, client.Company?.Name),
+                    new Claim(AppClaimTypes.CompanyId, client.Company?.Id),
             };
 
             return claims;
         }
 
         public string GetUserIdFromClaims(IEnumerable<Claim> claims)
-            => claims.FirstOrDefault(c => c.Type == UserId).Value;
+            => claims.FirstOrDefault(c => c.Type == AppClaimTypes.UserId).Value;
     }
 }

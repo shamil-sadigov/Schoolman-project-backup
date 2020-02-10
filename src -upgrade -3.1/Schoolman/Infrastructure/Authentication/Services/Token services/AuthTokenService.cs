@@ -1,18 +1,11 @@
 ﻿using Application.Common.Models;
+using Application.Services.Business;
 using Application.Services.Token;
-using Application.Services.Token.Validators.Access_Token_Validator;
-using Authentication.Options;
-using AutoMapper;
 using Domain;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using Domain.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Authentication.Services
@@ -21,22 +14,22 @@ namespace Authentication.Services
     {
         private readonly IAccessTokenService accessTokenService;
         private readonly IRefreshTokenService refreshTokenService;
-        private readonly IUserService userService;
+        private readonly IClientManager clientManager;
 
         public AuthTokenService(IAccessTokenService accessTokenService, 
                                 IRefreshTokenService refreshTokenService,
-                                IUserService userService)
+                                IClientManager clientManager)
         {
             this.accessTokenService = accessTokenService;
             this.refreshTokenService = refreshTokenService;
-            this.userService = userService;
+            this.clientManager = clientManager;
         }
 
-        public async Task<Result<AuthenticationTokens>> GenerateAuthenticationTokensAsync(User user)
+        public async Task<Result<AuthenticationTokens>> GenerateAuthenticationTokensAsync(Client client)
         {
             #region Access token generation
 
-            Result<string> jwtCreationResult = await accessTokenService.GenerateTokenAsync(user);
+            Result<string> jwtCreationResult = await accessTokenService.GenerateTokenAsync(client);
 
             if (!jwtCreationResult.Succeeded)
                 return Result<AuthenticationTokens>.Failure(jwtCreationResult.Errors);
@@ -49,11 +42,10 @@ namespace Authentication.Services
             #region Refresh token generation
 
             Result<string> refreshTokenGenerationResult = 
-                await refreshTokenService.GenerateTokenAsync(user);
+                await refreshTokenService.GenerateTokenAsync(client);
 
             if (!refreshTokenGenerationResult.Succeeded)
                 return Result<AuthenticationTokens>.Failure(refreshTokenGenerationResult.Errors);
-
 
             // retrieve refreshtoken to separate variable
             string refreshToken = refreshTokenGenerationResult.Response;
@@ -91,10 +83,9 @@ namespace Authentication.Services
 
             #region Token Generation
 
-            string userId = accessTokenService.GetUserIdFromClaims(tokenClaims);
-            User user = await userService.FindAsync(userId);
-
-            return await GenerateAuthenticationTokensAsync(user);
+            string clientId = accessTokenService.GetClientIdFromClaims(tokenClaims);
+            Client client  = await clientManager.FindAsync(clientId);
+            return await GenerateAuthenticationTokensAsync(client);
             #endregion
         }
     }

@@ -23,7 +23,7 @@ namespace Authentication
             IConfiguration configuration = BuildConfiguration("business-settings.json");
 
             services.AddTransient<IEmailSender<IConfirmationEmailBuilder>, ConfirmationEmailSender>();
-            services.AddTransient<IConfirmationEmailManager, ConfirmationEmailManager>();
+            services.AddTransient<IConfirmationEmailService, ConfirmationEmailService>();
 
 
             services.AddTransient<ICurrentUserService, CurrentUserService>();

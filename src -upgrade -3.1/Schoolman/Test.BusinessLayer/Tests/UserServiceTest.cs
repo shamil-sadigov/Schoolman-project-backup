@@ -29,7 +29,7 @@ namespace Test.BusinessLayer
         [Fact(DisplayName = "IUserService.CreateUser() => with empty FirstName and Lastname =>  fails")]
         public async Task UserService_Doesnt_Create_User_With_Emtpty_FirstName_And_Lastname()
         {
-            var user = new UserRegistrationRequest()
+            var user = new ClientRegistraionRequest()
             {
                 FirstName = "",
                 LastName = ""
@@ -44,7 +44,7 @@ namespace Test.BusinessLayer
         [Fact(DisplayName = "IUserService.CreateUser() => with invalid Password => fail")]
         public async Task UserService_Doesnt_Create_User_With_Invalid_Password()
         {
-            var user = new UserRegistrationRequest()
+            var user = new ClientRegistraionRequest()
             {
                 FirstName = "",
                 LastName = ""
@@ -60,7 +60,7 @@ namespace Test.BusinessLayer
         [Fact(DisplayName = "IUserService.CreateUser() => with valid FirstName, Lastname, Email, UserName and Password => succeed")]
         public async Task UserService_Create_new_User_With_Valid_Values()
         {
-            bool userCreated = await userService.CreateAsync(user: new UserRegistrationRequest()
+            bool userCreated = await userService.CreateAsync(user: new ClientRegistraionRequest()
             {
                 FirstName = "Steve",
                 LastName = "Corney",
@@ -75,7 +75,7 @@ namespace Test.BusinessLayer
         [Fact(DisplayName = "IUserService.DeleteUser() => Suceed if user exist and Fails if user doesn't exist")]
         public async Task UserService_deletes_newly_created_user()
         {
-            User createdUser = await userService.CreateAsync(user: new UserRegistrationRequest()
+            User createdUser = await userService.CreateAsync(user: new ClientRegistraionRequest()
             {
                 FirstName = "Steve",
                 LastName = "Corney",
@@ -97,7 +97,7 @@ namespace Test.BusinessLayer
         {
             #region Create user and check emailconfirmation
 
-            User createdUser = await userService.CreateAsync(user: new UserRegistrationRequest()
+            User createdUser = await userService.CreateAsync(user: new ClientRegistraionRequest()
             {
                 FirstName = "Steve",
                 LastName = "Corney",
@@ -122,7 +122,7 @@ namespace Test.BusinessLayer
 
             #region Passwords should not pass
 
-            User user = await userService.CreateAsync(user: new UserRegistrationRequest()
+            User user = await userService.CreateAsync(user: new ClientRegistraionRequest()
             {
                 FirstName = "Steve",
                 LastName = "Corney",
@@ -139,7 +139,7 @@ namespace Test.BusinessLayer
 
             #region Password should match
 
-            User user2 = await userService.CreateAsync(user: new UserRegistrationRequest()
+            User user2 = await userService.CreateAsync(user: new ClientRegistraionRequest()
             {
                 FirstName = "Steve",
                 LastName = "Corney",
