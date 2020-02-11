@@ -1,23 +1,15 @@
 # Schoolman backend architecture
 
 ## Tech stack and libraries:
-> **.NET Core 3.1**
-
-> **EF Core 3.0**
-
-> **ASP.NET Identity**
-
-> **Seq** *(logging service)*
-
-> **FluentValidation** *(for validation)*
-
-> **Automapper** *(for mapping)*
-
-> **MediatR** *(for CQRS)*
-
-> **xUnit** *(for testing)*
-
-> **Mailkit** *(for sending emails)*
+- **.NET Core 3.1**
+- **EF Core 3.0**
+- **ASP.NET Identity**
+- **Seq** *(logging service)*
+- **FluentValidation** *(for validation)*
+- **Automapper** *(for mapping)*
+- **MediatR** *(for CQRS)*
+- **xUnit** *(for testing)*
+- **Mailkit** *(for sending emails)*
 
 
 
