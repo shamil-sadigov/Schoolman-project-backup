@@ -50,4 +50,4 @@ Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](.
 ### This is how it will be stored in relational DB 
 *(changes in tables are highlighted in green)*
 
-![DB](https://gitlab.com/schoolman/schoolman-student-webapi/-/raw/documentation/create/src%20-upgrade%20-3.1/Schoolman/Core/Domain/DocumentationImages/db2.PNG)
+![DB](https://gitlab.com/schoolman/schoolman-student-webapi/-/raw/documentation/create/src%20-upgrade%20-3.1/Schoolman/Core/Domain/DocumentationImages/db3.PNG)
