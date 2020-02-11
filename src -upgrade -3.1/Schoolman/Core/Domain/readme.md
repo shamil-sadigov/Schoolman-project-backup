@@ -4,7 +4,7 @@ This layer contains all entities specific to domain.
 
 ### One of the main entities of our application is a [Customer](./Entities/Customer.cs)
 
-Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](./Entities/Role.cs)
+Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](./Entities/Company.cs)
 
 
 
