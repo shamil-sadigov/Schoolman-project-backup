@@ -1,6 +1,7 @@
 using Application.Services.Business;
 using Application.Users;
 using Domain;
+using Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
@@ -26,8 +27,7 @@ namespace Test.BusinessLayer
         [Fact(DisplayName = "IUserService is registered in IoC and not null")]
         public async Task UserServiceIsRegisteredAndNotNull()
         {
-            var result = await userManager.CreateAsync(new CustomerRegistrationRequest());
-
+            await userManager.CreateAsync(new CustomerRegistrationRequest());
 
             Assert.True(userInfoService != null, "IUserService is not registered");
         }

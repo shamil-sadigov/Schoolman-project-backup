@@ -116,7 +116,6 @@ namespace Schoolman.Student.Core.Application.Models
             return Result<T>.Failure(errors);
         }
 
-
     }
 
 
