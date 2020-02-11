@@ -19,7 +19,7 @@ Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](.
 
 ### This is how it will be stored in relational DB 
 
-![DB](./DocumentationImages/db1.png)
+![DB](https://gitlab.com/schoolman/schoolman-student-webapi/-/raw/documentation/create/src%20-upgrade%20-3.1/Schoolman/Core/Domain/DocumentationImages/db1.PNG)
 
 <br />
 <br />
@@ -34,7 +34,7 @@ Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](.
 ### This is how it will be stored in relational DB 
 *(changes in tables are highlighted in green)*
 
-![DB](./DocumentationImages/db2.png)
+![DB](https://gitlab.com/schoolman/schoolman-student-webapi/-/raw/documentation/create/src%20-upgrade%20-3.1/Schoolman/Core/Domain/DocumentationImages/db2.PNG)
 
 
 <br />
@@ -50,7 +50,7 @@ Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](.
 ### This is how it will be stored in relational DB 
 *(changes in tables are highlighted in green)*
 
-![DB](./DocumentationImages/db3.png)
+![DB](https://gitlab.com/schoolman/schoolman-student-webapi/-/raw/documentation/create/src%20-upgrade%20-3.1/Schoolman/Core/Domain/DocumentationImages/db2.PNG)
 
 
 > This way we came to the point when  one user may represent 3 different __Customer__. This is why __Customer__ is one of the main entities in this layers.
