@@ -1,7 +1,7 @@
 # Business Layer
 
 
-This layer contains implementation of business and notification related interfaces in __[Application Layer](../../Core/Application)__ 
+This layer contains implementation of business and notification logic defined in __[Application Layer](../../Core/Application)__ 
 
 > As __[Domain Layer](../../Core/Domain)__  documentation says, Customer is on of the main entites.
 
