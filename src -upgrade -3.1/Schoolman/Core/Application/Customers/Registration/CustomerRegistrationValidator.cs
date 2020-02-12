@@ -10,7 +10,6 @@ namespace Application.Customers.Registration
     {
         private readonly ICustomerManager customerManager;
 
-
         public CustomerRegistrationValidator(ICustomerManager customerManager)
         {
             this.customerManager = customerManager;
@@ -34,7 +33,7 @@ namespace Application.Customers.Registration
                 RuleFor(model => model.Email)
                 .MustAsync(async (email, token ) =>
                 {
-                    bool userDoesntExist = !await customerManager.ExistAsync(customer => customer.User.Email == email);
+                    bool userDoesntExist = !await customerManager.ExistEmailAsync(email);
                     return userDoesntExist;
                 });
             });

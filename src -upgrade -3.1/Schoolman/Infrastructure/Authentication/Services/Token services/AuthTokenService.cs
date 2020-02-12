@@ -84,7 +84,7 @@ namespace Authentication.Services
             #region Token Generation
 
             string clientId = accessTokenService.GetCustomerIdFromClaims(tokenClaims);
-            Customer client  = await clientManager.FindAsync(clientId);
+            Customer client  = await clientManager.FindByIdAsync(clientId);
             return await GenerateAuthenticationTokensAsync(client);
             #endregion
         }

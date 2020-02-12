@@ -26,7 +26,7 @@ namespace Persistence.Configurations
                            .HasForeignKey(urt => urt.RoleId)
                            .OnDelete(DeleteBehavior.Restrict);
 
-            customer.HasOne(urt => urt.User)
+            customer.HasOne(urt => urt.UserInfo)
                            .WithMany(u=> u.Customers)
                            .HasForeignKey(urt => urt.UserId)
                            .OnDelete(DeleteBehavior.Cascade);

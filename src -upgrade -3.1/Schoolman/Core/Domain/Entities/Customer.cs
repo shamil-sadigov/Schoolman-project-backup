@@ -12,7 +12,7 @@ namespace Domain.Models
     /// </summary>
     public class Customer : CustomerBase
     {
-        public User User { get; set; }
+        public User UserInfo { get; set; }
         public Role Role { get; set; }
         public Company Company { get; set; }
 

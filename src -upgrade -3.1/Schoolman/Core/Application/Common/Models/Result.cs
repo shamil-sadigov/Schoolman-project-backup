@@ -13,6 +13,11 @@ namespace Schoolman.Student.Core.Application.Models
         public bool Succeeded { get; protected set; }
         public string[] Errors { get; protected set; }
 
+        /// <summary>
+        ///  Do not modify or delete this ctor since its used in RequestValidatorBehavior by Activator to return fail responses
+        /// </summary>
+        /// <param name="succeeded"></param>
+        /// <param name="errors"></param>
         public Result(bool succeeded, string[] errors)
             => (Succeeded, Errors) = (succeeded, errors);
 
@@ -57,10 +62,7 @@ namespace Schoolman.Student.Core.Application.Models
     {
         public T Response;
 
-
-
         public Result(bool succeeded, string[] errors) : base(succeeded, errors) { }
-
 
         public Result(T response, bool succeeded, string[] errors):base(succeeded, errors)
         {

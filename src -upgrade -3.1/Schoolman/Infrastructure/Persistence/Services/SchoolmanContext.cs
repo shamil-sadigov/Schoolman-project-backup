@@ -25,6 +25,7 @@ namespace Persistence.Contexts
                                 ICurrentCustomerService currentUserService) : base(ops)
         {
             this.currentUserService = currentUserService;
+            Database.MigrateAsync().Wait();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

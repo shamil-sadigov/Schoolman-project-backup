@@ -14,19 +14,22 @@ namespace Application.Services
     /// <typeparam name="TKey"></typeparam>
     public interface IServiceBase<TEntity, TKey> where TEntity : class, new()
     {
+        Task<bool> ExistsAsync(TKey id);
+        Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
 
         #region Reading
 
-        Task<TEntity> FindAsync(TKey id);
+        Task<TEntity> FindByIdAsync(TKey id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate);
         IAsyncEnumerable<TEntity> FindRangeAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<bool> ExistAsync(Expression<Func<TEntity, bool>> Predicate);
+
+        Task<ICollection<TEntity>> ListAsync();
 
         #endregion
 
         #region Deleting
 
-        Task<Result> DeleteAsync(TKey id);
+        Task<Result> DeleteByIdAsync(TKey id);
         Task<Result> DeleteAsync(TEntity user);
         Task<Result> DeleteAsync(Expression<Func<TEntity, bool>> expression);
         Task<Result> DeleteRangeAsync(IEnumerable<TEntity> user);

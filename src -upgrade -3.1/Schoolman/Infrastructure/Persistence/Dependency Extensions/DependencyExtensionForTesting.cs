@@ -42,18 +42,15 @@ namespace Persistence
                .AddEntityFrameworkStores<SchoolmanContext>()
                .AddDefaultTokenProviders();
 
-
-
             #endregion
 
             #region Database configuration
-
 
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 
             services.AddDbContext<SchoolmanContext>(ops =>
             {
-                ops.UseInMemoryDatabase("DefaultDb");
+                ops.UseMySql(configuration.GetConnectionString("LocalServer-MySql"));
             });
 
             #endregion

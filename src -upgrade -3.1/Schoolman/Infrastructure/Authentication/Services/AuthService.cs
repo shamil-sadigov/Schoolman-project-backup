@@ -35,7 +35,7 @@ namespace Authentication.Services
 
         public async Task<Result<AuthenticationTokens>> LoginCustomerAsync(CustomerLoginRequest request)
         {
-            Customer customer = await customerManager.FindAsync(WithConfirmedEmail(request.Email));
+            Customer customer = await customerManager.FindByEmailAsync(request.Email);
 
             if (customer != null)
             {
@@ -43,7 +43,7 @@ namespace Authentication.Services
                 {
                     logger.LogInformation("IAuthService. Login failed: User provided invalid password. " +
                                           "Client.Id {Id}, Client.Email {Email} ", 
-                                          customer.Id, customer.User.Email);
+                                          customer.Id, customer.UserInfo.Email);
 
                     return Result<AuthenticationTokens>.Failure("Invalid login credentials");
                 }
@@ -79,7 +79,7 @@ namespace Authentication.Services
 
             logger.LogInformation("IAuthService. Registration succeeded: New customer have been registered." +
                                   "Customer.Id {customerId}, Email {customerEmail}", 
-                                    newCustomer.Id, newCustomer.User.Email);
+                                    newCustomer.Id, newCustomer.UserInfo.Email);
 
             #endregion
 
@@ -92,14 +92,14 @@ namespace Authentication.Services
             if (!emailSent)
             {
                 logger.LogInformation("IAuthService. Sending confirmation email failed: CustomerId {customerId}, Email {customerEmail}",
-                                  newCustomer.Id, newCustomer.User.Email);
+                                  newCustomer.Id, newCustomer.UserInfo.Email);
 
                 return Result<Customer>.Failure("Sending confirmation email failed");
             }
 
             logger.LogInformation("IAuthService. Confirmation email sent to new registered customer: " +
                                     "CustomerId {customerId}, Email {customerEmail}",
-                                   newCustomer.Id, newCustomer.User.Email);
+                                   newCustomer.Id, newCustomer.UserInfo.Email);
 
             #endregion
 
@@ -109,6 +109,6 @@ namespace Authentication.Services
 
         // Soon will be wrapped in Specification pattern
         private Expression<Func<Customer, bool>> WithConfirmedEmail(string email)
-            => customer => customer.User.Email == email && customer.User.EmailConfirmed;
+            => customer => customer.UserInfo.Email == email && customer.UserInfo.EmailConfirmed;
     }
 }

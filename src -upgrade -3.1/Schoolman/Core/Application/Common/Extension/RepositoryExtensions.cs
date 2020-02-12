@@ -26,7 +26,7 @@ namespace Persistence.Helpers
 
         public static async Task<bool> UpdateAndSaveAsync<T>(this IRepository<T> repo, T entity) where T : class
         {
-             repo.Set.Update(entity);
+            repo.Set.Update(entity);
             return await repo.SaveChangesAsync() > 0 ? true : false;
         }
         public static async Task<bool> UpdateRangeAndSaveAsync<T>(this IRepository<T> repo, IEnumerable<T> entites) where T : class

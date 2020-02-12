@@ -36,6 +36,4 @@ namespace Application.Customers
             return await authenticationService.RegisterCustomerAsync(request);
         }
     }
-
-
 }

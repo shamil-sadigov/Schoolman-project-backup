@@ -49,7 +49,7 @@ namespace Authentication.Services.EmailConfirmation
 
             var result = await emailService.SendEmailAsync
                                             (ops => ops.ConfirmationUrl(confirmUrl.ToString())
-                                                       .To(client.User.Email)
+                                                       .To(client.UserInfo.Email)
                                                        .Subject("Account Confirmation")
                                                        .Template(emailTemplate.Path)); 
 
@@ -62,7 +62,7 @@ namespace Authentication.Services.EmailConfirmation
         
         public async Task<string> GenerateTokenAsync(Customer customer)
         {
-            string token =  await userManager.GenerateEmailConfirmationTokenAsync(customer.User);
+            string token =  await userManager.GenerateEmailConfirmationTokenAsync(customer.UserInfo);
 
             // generated token may contain some invalid characters such as '+' and '='
             // which is considered url-unsafe
@@ -76,12 +76,12 @@ namespace Authentication.Services.EmailConfirmation
         {
             string decodedToken = HttpUtility.UrlDecode(param.Token);
 
-            var result = await userManager.ConfirmEmailAsync(param.Customer.User, decodedToken);
+            var result = await userManager.ConfirmEmailAsync(param.Customer.UserInfo, decodedToken);
 
             if (!result.Succeeded)
             {
                 logger.LogWarning("Email confirmation failed: Invalid token have been provided " +
-                                  "Email: {email}", param.Customer.User.Email);
+                                  "Email: {email}", param.Customer.UserInfo.Email);
 
                 return Result.Failure(result.Errors.Select(m => m.Description).ToArray());
             }

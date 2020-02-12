@@ -27,11 +27,6 @@ namespace Application.Services
         }
 
 
-
-        public virtual async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> predicate)
-            => await repository.Set.AnyAsync(predicate);
-
-
         #region Deleting
 
         /// <summary>
@@ -39,7 +34,7 @@ namespace Application.Services
         /// </summary>
         /// <param name="userId">User identifier</param>
         /// <returns>Deletion result</returns>
-        public virtual async Task<Result> DeleteAsync(TKey id)
+        public virtual async Task<Result> DeleteByIdAsync(TKey id)
         {
             var entity = new TEntity() as IEntity<TKey>;
             entity.Id = id;
@@ -70,7 +65,7 @@ namespace Application.Services
         #region Reading
 
 
-        public virtual async Task<TEntity> FindAsync(TKey id)
+        public virtual async Task<TEntity> FindByIdAsync(TKey id)
         {
             return await repository.Set.AsNoTracking().SingleOrDefaultAsync(e => e.Id.Equals(id));
         }
@@ -97,10 +92,23 @@ namespace Application.Services
             return await repository.UpdateRangeAndSaveAsync(entites);
         }
 
-
         #endregion
 
 
+        public virtual async Task<bool> ExistsAsync(TKey id)
+        {
+            return await repository.Set.AnyAsync(e => e.Id.Equals(id));
+        }
+
+        public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await repository.Set.AnyAsync(predicate);
+        }
+
+        public virtual async Task<ICollection<TEntity>> ListAsync()
+        {
+            return await repository.Set.ToArrayAsync();
+        }
 
     }
 }

@@ -3,6 +3,8 @@ using Domain;
 using Domain.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
+using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Application.Services.Business
@@ -17,5 +19,8 @@ namespace Application.Services.Business
         Task<bool> AddToCompanyAsync(Customer customer, Company company);
         Task<bool> AddRefreshToken(Customer customer, RefreshToken refreshToken);
         Task<bool> CheckPasswordAsync(Customer customer, string password);
+        Task<Customer> FindByEmailAsync(string email);
+        Task<bool> ExistEmailAsync(string email);
+
     }
 }

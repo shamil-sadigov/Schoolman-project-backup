@@ -23,12 +23,12 @@ namespace Authentication.Services
 
         public Claim[] BuildClaims(Customer customer)
         {
-            if (customer != null && customer.User != null && customer.Role != null)
+            if (customer != null && customer.UserInfo != null && customer.Role != null)
             {
                 var claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, customer.User.Email),
+                    new Claim(JwtRegisteredClaimNames.Email, customer.UserInfo.Email),
                     new Claim(AppClaimTypes.CustomerId, customer.Id),
                     new Claim(AppClaimTypes.Role, customer.Role?.Name ?? null),
                     new Claim(AppClaimTypes.Company, customer.Company?.Name ?? null),

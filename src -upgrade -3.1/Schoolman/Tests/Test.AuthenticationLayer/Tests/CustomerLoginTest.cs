@@ -7,9 +7,11 @@ using Domain.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Contexts;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Test.Shared;
 using Xunit;
@@ -18,14 +20,14 @@ namespace Test.AuthenticationLayer.Login
 {
     public class CustomerLoginTest:TestBase
     {
-
         private readonly IMediator mediator;
-        private readonly ICustomerManager manager;
-
+        private readonly ICustomerManager customerManager;
+        private readonly SchoolmanContext context;
         public CustomerLoginTest(TestWebAppFactory testWebAppFactory) : base(testWebAppFactory)
         {
              mediator = factory.Services.GetRequiredService<IMediator>();
-             manager = factory.Services.GetRequiredService<ICustomerManager>();
+             customerManager = factory.Services.GetRequiredService<ICustomerManager>();
+             context = factory.Services.GetRequiredService<SchoolmanContext>();
         }
 
 
@@ -41,7 +43,7 @@ namespace Test.AuthenticationLayer.Login
         [Fact(DisplayName = "IMediator handle CustomerLoginRequest")]
         public async Task MediatorHandleCustomerLoginRequest()
         {
-            var customerRequest = new CustomerRegistrationRequest()
+            var request = new CustomerRegistrationRequest()
             {
                 Email = "zoom7oom@gmail.com",
                 FirstName = "asdasdsadas",
@@ -49,22 +51,40 @@ namespace Test.AuthenticationLayer.Login
                 Password = "Creedence is best Band Ever1414##"
             };
 
-            var result = await mediator.Send(customerRequest);
+            var result = await mediator.Send(request);
 
-            var customer = await manager.FindAsync(c => c.User.Email == customerRequest.Email);
-            customer.User.EmailConfirmed = true;
-            await manager.UpdateAsync(customer);
 
+            var customers = await customerManager.ListAsync();
+
+            var customer1 = customers.FirstOrDefault();
+
+            var list = await context.Set<Customer>().ToListAsync();
+
+            var listTraced = await context.Set<Customer>().Include(c=> c.UserInfo)
+                                                          .AsNoTracking()
+                                                          .FirstOrDefaultAsync(u => u.UserInfo.Email == request.Email);
+
+            
+            var listNoTracekd = await context.Set<Customer>().Include(c => c.UserInfo)
+                                                    .Include(c => c.Company)
+                                                    .Include(c => c.Role)
+                                                    //.AsNoTracking()
+                                                    .FirstOrDefaultAsync(c => c.UserInfo.Email == request.Email);
+
+
+            var customer = await customerManager.FindByEmailAsync(request.Email);
+
+            customer.UserInfo.EmailConfirmed = true;
+            await customerManager.UpdateAsync(customer);
 
             var customerLogin = new CustomerLoginRequest()
             {
-                Email = customer.User.Email,
-                Password = customerRequest.Password
+                Email = customer.UserInfo.Email,
+                Password = request.Password
             };
 
             var loginResult = await mediator.Send(customerLogin);
             
-
             Assert.True(result.Succeeded);
         }
 

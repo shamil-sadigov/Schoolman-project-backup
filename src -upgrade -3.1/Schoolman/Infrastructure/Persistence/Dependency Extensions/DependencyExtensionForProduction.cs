@@ -55,7 +55,6 @@ namespace Persistence
                 ops.UseMySql(configuration.GetConnectionString("RemoteServer"));
             });
 
-
             #endregion 
         }
     }
