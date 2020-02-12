@@ -8,15 +8,15 @@ namespace Schoolman.Student.Core.Application.Models
     /// <summary>
     /// Simple Result object that is used in common cases
     /// </summary>
-    public class Result
+    public class Result : IResult
     {
         public bool Succeeded { get; protected set; }
         public string[] Errors { get; protected set; }
 
-        protected Result(bool succeeded, string[] errors)
+        public Result(bool succeeded, string[] errors)
             => (Succeeded, Errors) = (succeeded, errors);
 
-        public static Result Success()=>
+        public static Result Success() =>
             new Result(true, Array.Empty<string>());
 
         public static Result Failure(params string[] errors) =>
@@ -57,7 +57,12 @@ namespace Schoolman.Student.Core.Application.Models
     {
         public T Response;
 
-        private Result(T response, bool succeeded, string[] errors):base(succeeded, errors)
+
+
+        public Result(bool succeeded, string[] errors) : base(succeeded, errors) { }
+
+
+        public Result(T response, bool succeeded, string[] errors):base(succeeded, errors)
         {
             Response = response;
         }
@@ -70,7 +75,7 @@ namespace Schoolman.Student.Core.Application.Models
 
         public new static Result<T> Failure(params string[] errors)
         {
-            return new Result<T>(null, false, Array.Empty<string>());
+            return new Result<T>(null, false, errors);
         }
 
 

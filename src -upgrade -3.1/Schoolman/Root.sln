@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.PersitenceLayer", "Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.BusinessLayer", "Tests\Test.BusinessLayer\Test.BusinessLayer.csproj", "{6703AD28-9220-4D38-B85B-1B34733944A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.AuthenticationLayer", "Tests\Test.AuthenticationLayer\Test.AuthenticationLayer.csproj", "{D323D2BB-643B-4112-AE46-70D8A57DAC9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.ApplicationLayer", "Tests\Test.AuthenticationLayer\Test.ApplicationLayer.csproj", "{D323D2BB-643B-4112-AE46-70D8A57DAC9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

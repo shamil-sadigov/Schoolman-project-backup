@@ -29,7 +29,9 @@ namespace Authentication
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICustomerManager, CustomerManager>();
             services.AddTransient<UrlService>();
+
 
 
 

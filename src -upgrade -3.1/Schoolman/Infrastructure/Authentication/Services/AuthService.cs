@@ -2,7 +2,7 @@
 using Application.Common.Models;
 using Application.Services.Business;
 using Application.Services.Token.Validators.User_Token_Validator;
-using Application.Users;
+using Application.Customers;
 using Domain.Models;
 using Microsoft.Extensions.Logging;
 using Schoolman.Student.Core.Application.Interfaces;
@@ -41,7 +41,7 @@ namespace Authentication.Services
             {
                 if (!await customerManager.CheckPasswordAsync(customer, request.Password))
                 {
-                    logger.LogInformation("Login failed: User provided invalid password. " +
+                    logger.LogInformation("IAuthService. Login failed: User provided invalid password. " +
                                           "Client.Id {Id}, Client.Email {Email} ", 
                                           customer.Id, customer.User.Email);
 
@@ -51,7 +51,7 @@ namespace Authentication.Services
                 return await tokenService.GenerateAuthenticationTokensAsync(customer);
             }
 
-            logger.LogInformation("Login failed: User provided nonexistent Email. " +
+            logger.LogInformation("IAuthService. Login failed: User provided nonexistent Email. " +
                                   "User.Email {Email}", request.Email);
 
             return Result<AuthenticationTokens>.Failure("Invalid login credentials");
@@ -68,7 +68,7 @@ namespace Authentication.Services
 
             if (!createionResult.Succeeded)
             {
-                logger.LogInformation("Registraion failed: Customer provided invalid registration values. " +
+                logger.LogInformation("IAuthService. Registraion failed: Customer provided invalid registration values. " +
                                       "Customer.Email {customerEmail}. Validation Errors: {@Errors}", 
                                         request.Email, createionResult.Errors);
 
@@ -77,7 +77,7 @@ namespace Authentication.Services
 
             Customer newCustomer = createionResult.Response;
 
-            logger.LogInformation("Registration succeeded: New customer have been registered." +
+            logger.LogInformation("IAuthService. Registration succeeded: New customer have been registered." +
                                   "Customer.Id {customerId}, Email {customerEmail}", 
                                     newCustomer.Id, newCustomer.User.Email);
 
@@ -91,13 +91,13 @@ namespace Authentication.Services
 
             if (!emailSent)
             {
-                logger.LogInformation("Sending confirmation email failed: CustomerId {customerId}, Email {customerEmail}",
+                logger.LogInformation("IAuthService. Sending confirmation email failed: CustomerId {customerId}, Email {customerEmail}",
                                   newCustomer.Id, newCustomer.User.Email);
 
                 return Result<Customer>.Failure("Sending confirmation email failed");
             }
 
-            logger.LogInformation("Confirmation email sent to new registered customer: " +
+            logger.LogInformation("IAuthService. Confirmation email sent to new registered customer: " +
                                     "CustomerId {customerId}, Email {customerEmail}",
                                    newCustomer.Id, newCustomer.User.Email);
 

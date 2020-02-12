@@ -1,5 +1,5 @@
 ﻿using Application.Services;
-using Application.Users;
+using Application.Customers;
 using AutoMapper;
 using Domain;
 using Domain.Models;
@@ -42,12 +42,13 @@ namespace Business.Services
         {
             var creationResult = await userManager.CreateAsync(newUser, password);
 
+            var errors = creationResult.Errors.Select(e => e.Description).ToArray();
+
             if (!creationResult.Succeeded)
             {
-                logger.LogInformation("User creation failed: User.Email {Email}. Validation Errors: {@Errors}",
-                                     newUser.Email, creationResult.Errors);
+                logger.LogWarning("UserService. User creation failed: User.Email {Email}. Validation Errors: {@Errors}",
+                                     newUser.Email, errors);
 
-                var errors = creationResult.Errors.Select(e => e.Description).ToArray();
                 return Result<User>.Failure(errors);
             }
             return Result<User>.Success(newUser);

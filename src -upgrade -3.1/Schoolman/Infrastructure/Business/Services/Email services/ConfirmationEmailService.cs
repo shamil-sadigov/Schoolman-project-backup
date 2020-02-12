@@ -51,7 +51,7 @@ namespace Authentication.Services.EmailConfirmation
                                             (ops => ops.ConfirmationUrl(confirmUrl.ToString())
                                                        .To(client.User.Email)
                                                        .Subject("Account Confirmation")
-                                                       .Template(emailTemplate.Path));
+                                                       .Template(emailTemplate.Path)); 
 
             return result;
         }
@@ -60,9 +60,9 @@ namespace Authentication.Services.EmailConfirmation
 
 
         
-        public async Task<string> GenerateTokenAsync(Customer client)
+        public async Task<string> GenerateTokenAsync(Customer customer)
         {
-            string token =  await userManager.GenerateEmailConfirmationTokenAsync(client.User);
+            string token =  await userManager.GenerateEmailConfirmationTokenAsync(customer.User);
 
             // generated token may contain some invalid characters such as '+' and '='
             // which is considered url-unsafe

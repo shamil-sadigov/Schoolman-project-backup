@@ -20,13 +20,8 @@ namespace Domain
 
         #endregion
 
-        // Owned entity
-       
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-
-      
 
         #region Navigation Properties
 

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Users.UserRegistration
+namespace Application.Customers.Registration
 {
     public class CustomerRegistrationMapper:Profile
     {
@@ -20,6 +20,8 @@ namespace Application.Users.UserRegistration
                     .ForMember(user => user.LastName,
                                ops => ops.MapFrom(request => request.LastName))
                     .ForMember(user => user.Email,
+                               ops => ops.MapFrom(request => request.Email))
+                    .ForMember(user => user.UserName,
                                ops => ops.MapFrom(request => request.Email))
                     .ForMember(user => user.PhoneNumber,
                                ops => ops.MapFrom(request => request.PhoneNumber));

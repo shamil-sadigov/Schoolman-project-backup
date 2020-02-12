@@ -1,6 +1,8 @@
-﻿using Application.Services.Token;
+﻿using Application.Common.Exceptions;
+using Application.Services.Token;
 using Authentication.Options;
 using Domain.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Schoolman.Student.Core.Application.Interfaces;
@@ -16,13 +18,16 @@ namespace Authentication.Services.New_services
     public class AccessTokenService : IAccessTokenService
     {
         private readonly IAuthTokenClaimService claimsService;
+        private readonly ILogger<AccessTokenService> logger;
         private readonly JwtOptions jwtOptions;
 
 
         public AccessTokenService(IAuthTokenClaimService claimsBuilder,
-                                  IOptionsMonitor<JwtOptions> jwtOptions)
+                                  IOptionsMonitor<JwtOptions> jwtOptions,
+                                  ILogger<AccessTokenService> logger)
         {
             claimsService = claimsBuilder;
+            this.logger = logger;
             this.jwtOptions = jwtOptions.CurrentValue;
         }
 
@@ -35,10 +40,20 @@ namespace Authentication.Services.New_services
 
         public Task<Result<string>> GenerateTokenAsync(Customer customer)
         {
+            if(customer == null)
+            {
+                logger.LogError("AccessTokenService. Unable to generate token since customer parameter is null");
+            }
+
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-
-
             Claim[] claims = claimsService.BuildClaims(customer);
+
+            if (claims == null || claims.Length == 0)
+            {
+                logger.LogError("IAccessTokenService. Claims are not built. IAuthTokenClaimService return null while building claims for Customer {@customer}", customer);
+                throw new ClaimsException("Claims are not built. IAuthTokenClaimService return null while building claims", customer);
+            }
+
             byte[] secretKeyBytes = Encoding.UTF8.GetBytes(jwtOptions.SecretKey);
 
             var tokenDesciptor = new SecurityTokenDescriptor()
@@ -60,6 +75,10 @@ namespace Authentication.Services.New_services
         // todo: Add jwt time validation
         public async Task<Result<ClaimsPrincipal>> ValidateTokenAsync(string accessToken)
         {
+            if (accessToken == null)
+            {
+                logger.LogError("AccessTokenService. Unable to validate token since token parameter is null");
+            }
 
             // No worries. Just explicit conversion operator
             TokenValidationParameters validationParams = (TokenValidationParameters) jwtOptions;

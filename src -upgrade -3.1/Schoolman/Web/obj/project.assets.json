@@ -2085,7 +2085,10 @@
         },
         "runtime": {
           "bin/placeholder/Application.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Authentication/1.0.0": {
         "type": "project",
@@ -2107,7 +2110,10 @@
         },
         "runtime": {
           "bin/placeholder/Authentication.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Business/1.0.0": {
         "type": "project",
@@ -2127,7 +2133,10 @@
         },
         "runtime": {
           "bin/placeholder/Business.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Domain/1.0.0": {
         "type": "project",
@@ -2161,7 +2170,10 @@
         },
         "runtime": {
           "bin/placeholder/Persistence.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -6703,11 +6715,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Web\\WebApi.csproj",
+      "projectUniqueName": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Web\\WebApi.csproj",
       "projectName": "WebApi",
-      "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Web\\WebApi.csproj",
+      "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Web\\WebApi.csproj",
       "packagesPath": "C:\\Users\\sovsh\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Web\\obj\\",
+      "outputPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6726,11 +6738,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj": {
-              "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj"
+            "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj": {
+              "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj"
             },
-            "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Persistence\\Persistence.csproj": {
-              "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Persistence\\Persistence.csproj"
+            "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Persistence\\Persistence.csproj": {
+              "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Persistence\\Persistence.csproj"
             }
           }
         }

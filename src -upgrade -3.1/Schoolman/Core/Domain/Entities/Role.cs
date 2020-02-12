@@ -13,7 +13,6 @@ namespace Domain
             Customers = new HashSet<Customer>();
         }
 
-
         public Role() { }
 
         public  ICollection<Customer> Customers { get; set; }

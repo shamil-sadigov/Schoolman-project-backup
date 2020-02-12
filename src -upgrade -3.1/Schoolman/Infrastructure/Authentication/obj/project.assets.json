@@ -2245,7 +2245,10 @@
         },
         "runtime": {
           "bin/placeholder/Application.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Business/1.0.0": {
         "type": "project",
@@ -2265,7 +2268,10 @@
         },
         "runtime": {
           "bin/placeholder/Business.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Domain/1.0.0": {
         "type": "project",
@@ -7329,11 +7335,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj",
+      "projectUniqueName": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj",
       "projectName": "Authentication",
-      "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj",
+      "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\Authentication.csproj",
       "packagesPath": "C:\\Users\\sovsh\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\obj\\",
+      "outputPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Authentication\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -7352,11 +7358,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj": {
-              "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj"
+            "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj": {
+              "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Core\\Application\\Application.csproj"
             },
-            "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj": {
-              "projectPath": "c:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj"
+            "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj": {
+              "projectPath": "C:\\Users\\sovsh\\Desktop\\Benzeine\\schoolman-student-webapi\\src -upgrade -3.1\\Schoolman\\Infrastructure\\Business\\Business.csproj"
             }
           }
         }
@@ -7414,6 +7420,9 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }

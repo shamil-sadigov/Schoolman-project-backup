@@ -1,6 +1,6 @@
 ﻿using Application.Services;
 using Application.Services.Business;
-using Application.Users;
+using Application.Customers;
 using AutoMapper;
 using Domain;
 using Domain.Models;
@@ -49,8 +49,8 @@ namespace Business.Services
 
             if (!result.Succeeded)
             {
-                logger.LogInformation("Client creation failed: User.Email {Email}. Creation errors: {@Errors}",
-                                    request.Email, result.Errors);
+                logger.LogError("CustomerService. Cusotmer creation failed: User.Email {email}. Creation errors: {@errors}",
+                                       request.Email, result.Errors);
 
                 return Result<Customer>.Failure(result.Errors);
             }

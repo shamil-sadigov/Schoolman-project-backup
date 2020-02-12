@@ -1,12 +1,11 @@
-﻿using Domain;
-using MediatR;
+﻿using MediatR;
 using Schoolman.Student.Core.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Application.Users
+namespace Application.Customers
 {
+    /// <summary>
+    /// DTO model for customer registration
+    /// </summary>
     public partial class CustomerRegistrationRequest : IRequest<Result>
     {
         public string FirstName { get; set; }
@@ -15,4 +14,5 @@ namespace Application.Users
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
     }
+
 }

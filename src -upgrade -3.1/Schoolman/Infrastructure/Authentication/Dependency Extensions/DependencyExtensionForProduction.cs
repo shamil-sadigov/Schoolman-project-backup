@@ -17,9 +17,8 @@ namespace Authentication
     public static partial class DependencyExtension
     {
         /// <summary>
-        /// This extension method is valid both for production and testing mode.
-        /// If you take a look at other projects, you may find addition extension method for testing mode
-        /// But in Authentication project its unnecessary
+        /// This extenstion method is indentended for Preasentation.Web layer
+        /// </summary>
         /// </summary>
         public static void AddAuthenticationLayer(this IServiceCollection services)
         {

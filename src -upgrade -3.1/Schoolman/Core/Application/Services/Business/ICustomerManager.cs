@@ -1,4 +1,4 @@
-﻿using Application.Users;
+﻿using Application.Customers;
 using Domain;
 using Domain.Models;
 using Schoolman.Student.Core.Application.Interfaces;
@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Business
 {
+    /// <summary>
+    /// Service that manages Customer class
+    /// </summary>
     public interface ICustomerManager:IServiceBase<Customer, string>
     {
         Task<Result<Customer>> CreateAsync(CustomerRegistrationRequest userDto);

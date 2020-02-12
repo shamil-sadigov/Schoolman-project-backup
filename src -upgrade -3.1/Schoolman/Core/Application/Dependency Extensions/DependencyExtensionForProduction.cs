@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Common.Handler_preprocessor;
+using Application.Services;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +28,7 @@ namespace Application.Extensions
             services.AddMediatR(typeof(DependencyExtension).Assembly);
             services.AddAutoMapper(typeof(DependencyExtension));
             services.AddHttpContextAccessor();
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
         }
     }

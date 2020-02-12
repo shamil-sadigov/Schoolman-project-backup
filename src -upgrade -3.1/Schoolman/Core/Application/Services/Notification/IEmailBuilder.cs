@@ -1,5 +1,8 @@
 ﻿namespace Schoolman.Student.Core.Application.Models
 {
+    /// <summary>
+    /// Builds email
+    /// </summary>
     public interface IEmailBuilder
     {
         IEmailBuilder From(string from);

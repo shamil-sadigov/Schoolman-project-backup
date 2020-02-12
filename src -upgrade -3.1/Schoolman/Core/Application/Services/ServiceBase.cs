@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
+    /// <summary>
+    /// Base class for application services
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TKey">Primary key</typeparam>
     public abstract class ServiceBase<TEntity, TKey> : IServiceBase<TEntity, TKey>
                                              where TEntity : class, IEntity<TKey>, new()
     {

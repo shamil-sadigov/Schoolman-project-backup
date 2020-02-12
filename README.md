@@ -10,6 +10,7 @@
 - **MediatR** *(for CQRS)*
 - **xUnit** *(for testing)*
 - **Mailkit** *(for sending emails)*
+- **Swagger** *(for api documentation)*
 
 
 
@@ -30,4 +31,4 @@
 
 ### Achitecture design
 
-![Architecture](https://downloader.disk.yandex.ru/preview/feb6461f17df0198155a7204d55594a7bd417aa2f877bd85a856d3afaa931433/5e42d05d/BkUcR9lE3g4VxW7W6HMS7F5AzR6ilUI8f8ONjO8ajXPxtetPKQQv6ND3_UUjLeLgfV1WHNYXlzK4jjXIqhGWCQ==?uid=0&filename=Architecture+design.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&tknv=v2&owner_uid=596091530&size=2048x2048)
+![Architecture](https://res.cloudinary.com/dfmpdhjz9/image/upload/v1581490001/Schoolman%20Documentation/Architecture_design_vhmoph.png)

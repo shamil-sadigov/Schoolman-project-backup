@@ -4,6 +4,9 @@ using System;
 
 namespace Domain
 {
+    /// <summary>
+    /// Base class for Role entity
+    /// </summary>
     public abstract class RoleBase : IdentityRole<string>,
                                        IEntityBase<string>
     {

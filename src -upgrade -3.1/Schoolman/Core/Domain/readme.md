@@ -19,7 +19,7 @@ Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](.
 
 ### This is how it will be stored in relational DB 
 
-![DB](https://downloader.disk.yandex.ru/preview/efb735cd155eb750cb2e86bc16447772e7cc726c030865b7707d01f8cb3095ab/5e42929c/LzArORicQM5S9-keIrgCgMFs6TzvDKOm6C6SD5QymDKZnwCJNek8PuaeWzHRF448dv1N6PSrrqpaekjv2X0Png==?uid=0&filename=db1.PNG&disposition=inline&hash=&limit=0&content_type=image%2Fpng&tknv=v2&owner_uid=596091530&size=2048x2048)
+![DB](https://res.cloudinary.com/dfmpdhjz9/image/upload/v1581490001/Schoolman%20Documentation/Domain_docs_image_1_uemey0.png)
 
 <br />
 <br />
@@ -34,7 +34,7 @@ Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](.
 ### This is how it will be stored in relational DB 
 *(changes in tables are highlighted in green)*
 
-![DB](https://downloader.disk.yandex.ru/preview/9c64deee2f35774d39af000d18b73f7d6db5127a3a04e1f5697137048a4aaf2e/5e42926f/gW0g-G1wiLJs661LkzfNEMFs6TzvDKOm6C6SD5QymDIvg0KQSoIokZ5fXojz6vjrxY77FeBR0x2XpFI4Rv83fQ==?uid=0&filename=db2.PNG&disposition=inline&hash=&limit=0&content_type=image%2Fpng&tknv=v2&owner_uid=596091530&size=2048x2048)
+![DB](https://res.cloudinary.com/dfmpdhjz9/image/upload/v1581490001/Schoolman%20Documentation/Domain_docs_image_2_k3lssm.png)
 
 
 <br />
@@ -50,4 +50,4 @@ Customer has [User](./Entities/User.cs), [Role](./Entities/Role.cs), [Company](.
 ### This is how it will be stored in relational DB 
 *(changes in tables are highlighted in green)*
 
-![DB](https://downloader.disk.yandex.ru/preview/fbfea31599914b0ce6065905b2a965f446df7b4801f296f539fd9c348174c129/5e4292b7/MOou56N1r5ZqEQt8A5LoBsFs6TzvDKOm6C6SD5QymDL58xu9qwLQfuCv0mdeW9SdwDB2Q_SwKWTHN-bqDGJZaA==?uid=0&filename=db3.PNG&disposition=inline&hash=&limit=0&content_type=image%2Fpng&tknv=v2&owner_uid=596091530&size=2048x2048)
+![DB](https://res.cloudinary.com/dfmpdhjz9/image/upload/v1581490000/Schoolman%20Documentation/Domain_docs_image_3_vcjetu.png)

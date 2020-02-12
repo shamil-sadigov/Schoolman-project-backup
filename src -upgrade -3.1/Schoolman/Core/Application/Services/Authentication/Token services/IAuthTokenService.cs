@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace Schoolman.Student.Core.Application.Interfaces
 {
+    /// <summary>
+    /// Service that manages authentication tokens
+    /// </summary>
     public interface IAuthTokenService
     {   
         /// <summary>
-        /// Generatees JWT token for specified user
+        /// Generatees access token for specified customer
         /// </summary>
         /// <param name="customer"></param>
         /// <returns></returns>
         Task<Result<AuthenticationTokens>> GenerateAuthenticationTokensAsync(Customer customer);
 
         /// <summary>
-        /// Get tokens and refresh them.
+        /// Take expired tokens and exchange them
         /// </summary>
         /// <param name="jwt"></param>
         /// <param name="refreshToken"></param>

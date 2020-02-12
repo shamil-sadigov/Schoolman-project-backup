@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Domain.Base
 {
+    /// <summary>
+    /// Base class for Customer entity
+    /// </summary>
     public class CustomerBase: IdentityUserRole<string>, IEntityBase<string>
     {
         public string Id { get; set; }

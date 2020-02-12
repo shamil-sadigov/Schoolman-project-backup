@@ -1,5 +1,5 @@
 ﻿using Application.Services;
-using Application.Users;
+using Application.Customers;
 using Domain;
 using Domain.Models;
 using Schoolman.Student.Core.Application.Models;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Schoolman.Student.Core.Application.Interfaces
 {
     /// <summary>
-    /// Service for CRUD Users
+    /// Service that manages User class
     /// </summary>
     public interface IUserService : IServiceBase<User, string>
     {

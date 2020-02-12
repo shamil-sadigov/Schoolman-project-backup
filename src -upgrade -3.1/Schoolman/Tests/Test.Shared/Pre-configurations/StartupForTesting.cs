@@ -28,6 +28,8 @@ namespace Test.Shared
                         ops.RegisterValidatorsFromAssemblyContaining<IUserService>();
                         ops.ImplicitlyValidateChildProperties = false;
                         ops.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                        ops.LocalizationEnabled = false;
+
                     });
         }
 

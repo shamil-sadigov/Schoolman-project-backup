@@ -4,6 +4,10 @@ using System.Text;
 
 namespace Domain.Models
 {
+    /// <summary>
+    /// Base class for all DB entities
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
     public abstract class EntityBase<TKey> : IEntityBase<TKey>
     {
         public string CreatedBy { get; set; }

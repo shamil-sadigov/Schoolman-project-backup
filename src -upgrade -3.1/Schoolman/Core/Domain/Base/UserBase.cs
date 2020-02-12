@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Domain
 {
+    /// <summary>
+    /// Base class for User class
+    /// </summary>
     public abstract class UserBase:IdentityUser<string>, 
                                        IEntityBase<string>
     {

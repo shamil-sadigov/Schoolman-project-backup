@@ -1,10 +1,12 @@
-﻿using Xunit;
+﻿using Microsoft.Extensions.Logging;
+using Xunit;
 
 namespace Test.Shared
 {
     public class TestBase : IClassFixture<TestWebAppFactory>
     {
         protected readonly TestWebAppFactory factory;
+
         public TestBase(TestWebAppFactory testWebAppFactory)
         {
             this.factory = testWebAppFactory;

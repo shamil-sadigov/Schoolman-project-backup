@@ -18,9 +18,9 @@ namespace Authentication
     {
         /// <summary>
         /// This extenstion method is indentended for Integration testing
-        /// Yet we just add the same service as in above extension
+        /// Yet we just add the same services in 'AddApplicationLayerForProduction' method
         /// BUT
-        /// Things can change, so you had better to use this extension rather that above one
+        /// Things can change, so you had better keep this extensions method separate
         /// </summary>
         public static void AddAuthenticationLayerForTesting(this IServiceCollection services)
         {

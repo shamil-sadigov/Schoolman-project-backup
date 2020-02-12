@@ -16,7 +16,7 @@
     },
     "Templates": {
       "Path": {
-        "Confirmation": "Emails\\Confirmation\\template6.html"
+        "Confirmation": "Emails\\Confirmation\\template.html"
       }
     }
   },

@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
+    /// <summary>
+    /// Base interface for application services should be implemented by all services
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
     public interface IServiceBase<TEntity, TKey> where TEntity : class, new()
     {
-
 
         #region Reading
 
         Task<TEntity> FindAsync(TKey id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate);
         IAsyncEnumerable<TEntity> FindRangeAsync(Expression<Func<TEntity, bool>> predicate);
-
-
-
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> Predicate);
 
         #endregion

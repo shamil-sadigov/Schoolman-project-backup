@@ -8,7 +8,7 @@ using System.Text;
 namespace Domain.Models
 {
     /// <summary>
-    /// Many-to-many table
+    /// Main entity that hold User, Role and Company information
     /// </summary>
     public class Customer : CustomerBase
     {
