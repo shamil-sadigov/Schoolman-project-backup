@@ -1267,3 +1267,4 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.BusinessLayer\obj\Debug\netcoreapp3.1\Test.BusinessLayer.AssemblyInfoInputs.cache
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.BusinessLayer\obj\Debug\netcoreapp3.1\Test.BusinessLayer.AssemblyInfo.cs
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.BusinessLayer\obj\Debug\netcoreapp3.1\Test.BusinessLayer.csproj.CopyComplete
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.BusinessLayer\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll

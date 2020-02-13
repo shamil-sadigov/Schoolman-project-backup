@@ -1,20 +1,10 @@
 ﻿using Application.Services;
-using Application.Customers;
-using AutoMapper;
 using Domain;
-using Domain.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Persistence.Helpers;
-using Schoolman.Student.Core.Application.Common.Models;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Business.Services
@@ -22,15 +12,13 @@ namespace Business.Services
 
     public class UserService : ServiceBase<User,string>, IUserService
     {
-        private readonly ILogger<UserService> logger;
         private readonly UserManager<User> userManager;
 
         public UserService (UserManager<User> userManager,
                            IRepository<User> userRepository,
-                           ILogger<UserService> logger):base(userRepository)
+                           ILogger<UserService> logger):base(userRepository, logger)
         {
             this.userManager = userManager;
-            this.logger = logger;
         }
 
 

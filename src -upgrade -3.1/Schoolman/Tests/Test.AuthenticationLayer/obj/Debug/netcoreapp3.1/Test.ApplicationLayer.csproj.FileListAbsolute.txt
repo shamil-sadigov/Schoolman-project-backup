@@ -422,3 +422,4 @@ C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoo
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.AuthenticationLayer\obj\Debug\netcoreapp3.1\Test.ApplicationLayer.csproj.CopyComplete
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.AuthenticationLayer\obj\Debug\netcoreapp3.1\Test.ApplicationLayer.dll
 C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.AuthenticationLayer\obj\Debug\netcoreapp3.1\Test.ApplicationLayer.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Tests\Test.AuthenticationLayer\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll

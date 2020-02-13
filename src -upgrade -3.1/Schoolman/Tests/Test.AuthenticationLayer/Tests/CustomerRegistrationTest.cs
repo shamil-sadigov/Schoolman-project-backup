@@ -25,7 +25,6 @@ namespace Test.AuthenticationLayer
         }
 
 
-
         [Fact(DisplayName = "IMediator is registered in IoC and not null")]
         public void IMediatorIsRegistered()
         {
@@ -33,21 +32,20 @@ namespace Test.AuthenticationLayer
         }
 
 
-
-        [Fact(DisplayName = "IMediator handle CustomerRegistrationRequest")]
+        [Fact(DisplayName = "IMediator handles CustomerRegistrationRequest")]
         public async Task MediatorHandleCustomerRegistrationRequest()
         {
             var customerRequest = new CustomerRegistrationRequest()
             {
-                Email = "sov.shamil@gmail.com",
-                FirstName = "asdasdsadas",
-                LastName = "qweqweqwe",
-                Password = "Creedence is best Band Ever1414##"
+                Email = $"sov.{new Random().Next(0, 987987)}@gmail.com",
+                FirstName = "Steve",
+                LastName = "Corney",
+                Password = "Rolling On the riverGsbion1414@"
             };
 
             var result = await mediator.Send(customerRequest);
 
-            Assert.True(result.Succeeded);
+            Assert.True(result.Succeeded, "IMediator should handle CustomerRegistrationRequest successfully");
         }
 
     }

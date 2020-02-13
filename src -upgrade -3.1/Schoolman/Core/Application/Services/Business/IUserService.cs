@@ -18,3 +18,4 @@ namespace Schoolman.Student.Core.Application.Interfaces
         Task<bool> CheckPasswordAsync(User user, string password);
     }
 }
+

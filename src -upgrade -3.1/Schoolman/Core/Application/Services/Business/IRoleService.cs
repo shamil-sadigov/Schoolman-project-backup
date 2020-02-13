@@ -13,7 +13,8 @@ namespace Application.Services.Business
     public interface IRoleService:IServiceBase<Role,string>
     {
         Task<Result<Role>> CreateAsync(string rolename);
+        Task<Role> FindByName(string roleName);
+        Task<Role> FindOrCreateAsync(string roleName);
 
-        // additional methods will be added
     }
 }

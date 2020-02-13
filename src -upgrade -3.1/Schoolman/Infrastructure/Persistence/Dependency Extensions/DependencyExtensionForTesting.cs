@@ -46,7 +46,7 @@ namespace Persistence
 
             #region Database configuration
 
-            services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(RepositoryBase<>));
 
             services.AddDbContext<SchoolmanContext>(ops =>
             {

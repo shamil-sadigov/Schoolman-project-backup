@@ -17,7 +17,7 @@ namespace Domain.Models
 
         public RefreshToken()
         {
-
+            Token = Guid.NewGuid().ToString();
         }
 
     }

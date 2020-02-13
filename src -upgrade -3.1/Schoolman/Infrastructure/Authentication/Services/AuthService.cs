@@ -68,7 +68,7 @@ namespace Authentication.Services
 
             if (!createionResult.Succeeded)
             {
-                logger.LogInformation("IAuthService. Registraion failed: Customer provided invalid registration values. " +
+                logger.LogWarning("IAuthService. Registraion failed: Customer provided invalid registration values. " +
                                       "Customer.Email {customerEmail}. Validation Errors: {@Errors}", 
                                         request.Email, createionResult.Errors);
 
@@ -89,9 +89,10 @@ namespace Authentication.Services
             string token = await emailConfirmationManager.GenerateTokenAsync(newCustomer);
             bool emailSent = await emailConfirmationManager.SendConfirmationEmailAsync(newCustomer, token);
 
+            
             if (!emailSent)
             {
-                logger.LogInformation("IAuthService. Sending confirmation email failed: CustomerId {customerId}, Email {customerEmail}",
+                logger.LogWarning("IAuthService. Sending confirmation email failed: CustomerId {customerId}, Email {customerEmail}",
                                   newCustomer.Id, newCustomer.UserInfo.Email);
 
                 return Result<Customer>.Failure("Sending confirmation email failed");

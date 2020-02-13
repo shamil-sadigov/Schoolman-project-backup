@@ -22,6 +22,7 @@ namespace Business.Services
         {
             this.emailOptions = emailOps.Get("Confirmation");
             this.logger = logger;
+        
         }
 
 
@@ -47,7 +48,7 @@ namespace Business.Services
             catch (Exception ex)
             {
 #if DEBUG
-                logger.LogError(ex, "Sending email failed: Email.To {Email}, Subject {subject}",
+                logger.LogError(ex, "ConfirmationEmailSender.Send() Sending email failed: Email.To {Email}, Subject {subject}",
                                 email.To, email.Subject);
 
                 return Result.Failure("Could send message to this email. Ensure you provided a valid email");

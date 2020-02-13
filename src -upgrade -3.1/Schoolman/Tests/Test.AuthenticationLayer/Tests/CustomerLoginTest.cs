@@ -18,6 +18,7 @@ using Xunit;
 
 namespace Test.AuthenticationLayer.Login
 {
+#warning Additional test should be added to test customer login
     public class CustomerLoginTest:TestBase
     {
         private readonly IMediator mediator;
@@ -31,7 +32,6 @@ namespace Test.AuthenticationLayer.Login
         }
 
 
-
         [Fact(DisplayName = "IMediator is registered in IoC and not null")]
         public void IMediatorIsRegistered()
         {
@@ -40,53 +40,39 @@ namespace Test.AuthenticationLayer.Login
 
 
 
-        [Fact(DisplayName = "IMediator handle CustomerLoginRequest")]
+        [Fact(DisplayName = "IMediator handles  CustomerLoginRequest after CustomerRegistrationRequest is completed successfully")]
         public async Task MediatorHandleCustomerLoginRequest()
         {
             var request = new CustomerRegistrationRequest()
             {
-                Email = "zoom7oom@gmail.com",
+                Email = $"zoom {new Random().Next(0, 9999999)}@gmail.com",
                 FirstName = "asdasdsadas",
                 LastName = "qweqweqwe",
                 Password = "Creedence is best Band Ever1414##"
             };
+            Result result = await mediator.Send(request);
 
-            var result = await mediator.Send(request);
-
-
-            var customers = await customerManager.ListAsync();
-
-            var customer1 = customers.FirstOrDefault();
-
-            var list = await context.Set<Customer>().ToListAsync();
-
-            var listTraced = await context.Set<Customer>().Include(c=> c.UserInfo)
-                                                          .AsNoTracking()
-                                                          .FirstOrDefaultAsync(u => u.UserInfo.Email == request.Email);
-
-            
-            var listNoTracekd = await context.Set<Customer>().Include(c => c.UserInfo)
-                                                    .Include(c => c.Company)
-                                                    .Include(c => c.Role)
-                                                    //.AsNoTracking()
-                                                    .FirstOrDefaultAsync(c => c.UserInfo.Email == request.Email);
-
+            Assert.True(result.Succeeded, "New Customer should be registered");
 
             var customer = await customerManager.FindByEmailAsync(request.Email);
 
+            Assert.True(customer!=null, "Customer should not be null since we just recently registered this customer");
+
             customer.UserInfo.EmailConfirmed = true;
-            await customerManager.UpdateAsync(customer);
+            bool updated = await customerManager.UpdateAsync(customer);
+
+            Assert.True(updated, "Customer should be updated");
 
             var customerLogin = new CustomerLoginRequest()
             {
                 Email = customer.UserInfo.Email,
                 Password = request.Password
             };
-
-            var loginResult = await mediator.Send(customerLogin);
+            Result<AuthenticationTokens> loginResult = await mediator.Send(customerLogin);
             
-            Assert.True(result.Succeeded);
+            Assert.True(result.Succeeded, "Authentication tokens should be generated for CustomerLoginRequest");
+            Assert.True(loginResult.Response.RefresthToken !=null, "Refresh token should not be null after login successfully");
+            Assert.True(loginResult.Response.AccessToken !=null, "Access token should not be null after login successfully");
         }
-
     }
 }

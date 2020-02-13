@@ -43,6 +43,7 @@ namespace Authentication.Services.New_services
             if(customer == null)
             {
                 logger.LogError("AccessTokenService. Unable to generate token since customer parameter is null");
+                throw new ArgumentNullException("Customer argument is null. Unable to generate claims for token");
             }
 
             var jwtTokenHandler = new JwtSecurityTokenHandler();

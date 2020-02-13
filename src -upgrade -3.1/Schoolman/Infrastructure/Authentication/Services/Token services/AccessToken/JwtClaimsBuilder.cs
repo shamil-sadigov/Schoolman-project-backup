@@ -30,9 +30,9 @@ namespace Authentication.Services
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, customer.UserInfo.Email),
                     new Claim(AppClaimTypes.CustomerId, customer.Id),
-                    new Claim(AppClaimTypes.Role, customer.Role?.Name ?? null),
-                    new Claim(AppClaimTypes.Company, customer.Company?.Name ?? null),
-                    new Claim(AppClaimTypes.CompanyId, customer.Company?.Id ?? null),
+                    new Claim(AppClaimTypes.Role, customer.Role?.Name ?? string.Empty),
+                    new Claim(AppClaimTypes.Company, customer.Company?.Name ?? string.Empty),
+                    new Claim(AppClaimTypes.CompanyId, customer.Company?.Id ?? string.Empty),
                  };
 
                 return claims;

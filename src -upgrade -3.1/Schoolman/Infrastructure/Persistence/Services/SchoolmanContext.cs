@@ -26,6 +26,7 @@ namespace Persistence.Contexts
         {
             this.currentUserService = currentUserService;
             Database.MigrateAsync().Wait();
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -52,6 +53,7 @@ namespace Persistence.Contexts
                         if (entry is IAuditableEntity auditableEntity)
                             auditableEntity.LastModifiedBy = currentUserService.CurrentCustomerId();
                         continue;
+
                     case EntityState.Modified when entry is IAuditableEntity entity:
                         entity.LastModifiedBy = currentUserService.CurrentCustomerId();
                         continue;

@@ -5,9 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Schoolman.Student.Core.Application.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Business
@@ -17,7 +15,8 @@ namespace Business
         private readonly RoleManager<Role> roleManager;
 
         public RoleService(RoleManager<Role> roleManager,
-                           IRepository<Role> repository) : base(repository)
+                           IRepository<Role> repository,
+                           ILogger<RoleService> logger) : base(repository, logger)
         {
             this.roleManager = roleManager;
         }
@@ -35,6 +34,30 @@ namespace Business
                 return Result<Role>.Success(role);
 
             return Result<Role>.Failure(result.Errors.Select(c => c.Description).ToArray());
+        }
+
+        public async Task<Role> FindByName(string roleName)
+               => await roleManager.FindByNameAsync(roleName);
+
+
+        public async Task<Role> FindOrCreateAsync(string roleName)
+        {
+            var role = await roleManager.FindByNameAsync(roleName);
+
+            if (role == null)
+            {
+                role = new Role(roleName);
+                role.Id = Guid.NewGuid().ToString();
+                var result = await roleManager.CreateAsync(new Role(roleName));
+
+                if (!result.Succeeded)
+                {
+                    logger.LogError("RoleService. Unable to create role with Rolename {rolename}", roleName);
+                    return null;
+                }
+            }
+                
+            return role;
         }
     }
 }

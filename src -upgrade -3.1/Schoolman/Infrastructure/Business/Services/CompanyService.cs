@@ -2,22 +2,21 @@
 using Application.Services.Business;
 using Domain;
 using Microsoft.Extensions.Logging;
-using Persistence.Helpers;
 using Schoolman.Student.Core.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.Services
 {
     public class CompanyService : ServiceBase<Company, string>, ICompanyService
     {
-        public CompanyService(IRepository<Company> repository):base(repository){ }
+        public CompanyService(IRepository<Company> repository,
+                              ILogger<CompanyService> logger):base(repository, logger){ }
 
         public async Task<Result<Company>> CreateAsync(Company company)
         {
-            await repository.AddAndSaveAsync(company);
+            // ex handling will be added
+            await repository.AddAsync(company);
+            await repository.SaveChangesAsync();
             return company;
         }
     }

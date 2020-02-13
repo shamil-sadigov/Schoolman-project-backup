@@ -1,30 +1,27 @@
-﻿using Application.Services;
-using Application.Services.Business;
+﻿using Application.Common.Exceptions;
+using Application.Common.Models;
 using Application.Customers;
+using Application.Services;
+using Application.Services.Business;
 using AutoMapper;
 using Domain;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Persistence.Helpers;
 using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using Application.Common.Exceptions;
 
 namespace Business.Services
 {
     public class CustomerManager : ServiceBase<Customer, string>, ICustomerManager
     {
         private readonly IUserService userService;
-        private readonly ILogger<CustomerManager> logger;
         private readonly IRoleService roleService;
         private readonly ICompanyService companyService;
-
         private readonly IMapper mapper;
 
         public CustomerManager(IRepository<Customer> repository,
@@ -32,9 +29,8 @@ namespace Business.Services
                                IRoleService roleService,
                                ICompanyService companyService,
                                IMapper mapper,
-                               ILogger<CustomerManager> logger) : base(repository)
+                               ILogger<CustomerManager> logger) : base(repository, logger)
         {
-            this.logger = logger;
             this.userService = userService;
             this.roleService = roleService;
             this.companyService = companyService;
@@ -42,8 +38,11 @@ namespace Business.Services
         }
 
 
-        public async Task<Result<Customer>> CreateAsync(CustomerRegistrationRequest request)
+        public async Task<Result<Customer>> CreateAsync(CustomerRegistrationRequest request, bool throwOnFail)
         {
+
+            #region Create User
+
             var user = mapper.Map<User>(request);
 
             var result = await userService.CreateAsync(user, request.Password);
@@ -53,43 +52,70 @@ namespace Business.Services
                 logger.LogError("CustomerService. Cusotmer creation failed: User.Email {email}. Creation errors: {@errors}",
                                        request.Email, result.Errors);
 
+                if (throwOnFail)
+                    throw new EntityNotCreatedException<User>(user);
+
                 return Result<Customer>.Failure(result.Errors);
             }
 
+            #endregion
+
+            #region Get Role
+
             User createdUser = result.Response;
+            Role role = await roleService.FindOrCreateAsync(AppRoles.Candidate);
+
+            if (role == null)
+                throw new EntityNotFoundException(AppRoles.Candidate, "Role with this name wasnt found");
+
+            #endregion
+
+            #region Create customer
 
             var newCustomer = new Customer();
             newCustomer.UserId = createdUser.Id;
+            newCustomer.RoleId = role.Id;
 
             try
             {
-                await repository.AddAndSaveAsync(newCustomer);
+                await repository.AddAsync(newCustomer);
+                await repository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Customer creation failed: Db Exception thrown while creating customer with Email {email}",
+                logger.LogError(ex, "ICustomerManager. Customer creation failed: Db Exception thrown while creating customer with Email {email}",
                                 createdUser.Email);
+
+                if (throwOnFail)
+                    throw ex;
 
                 return Result<Customer>.Failure("Unable to create a customer");
             }
 
             return newCustomer;
+
+
+            #endregion
+
         }
 
-        public async Task<bool> AddToCompanyAsync(Customer customer, Company company)
+        public async Task<bool> AddToCompanyAsync(Customer customer, Company company, bool throwOnFail = false)
         {
             customer.CompanyId = company.Id;
-            repository.Context.Entry(customer).State = EntityState.Modified;
+            customer.Company = company;
 
             try
             {
+                repository.Update(customer);
                 await repository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Adding company to customer failed: Db Exception thrown while adding customer to Company" +
+                logger.LogError(ex, "ICustomerManager. Adding company to customer failed: Db Exception thrown while adding customer to Company" +
                                     "CustomerId {customerId}, CustomerEmail {clientEmail}, CompanyId {companyId}, CompanyName {companyName}",
                                      customer.Id, customer.UserInfo.Email, company.Id, company.Name);
+                if (throwOnFail)
+                    throw ex;
 
                 return false;
             }
@@ -97,89 +123,91 @@ namespace Business.Services
             return true;
         }
 
-        public async Task<bool> AddToRoleAsync(Customer customer, Role role)
+        public async Task<bool> AddToRoleAsync(Customer customer, Role role, bool throwOnFail)
         {
             customer.RoleId = role.Id;
-            repository.Context.Entry(customer).State = EntityState.Modified;
+            customer.Role = role;
 
             try
             {
+                repository.Update(customer);
                 await repository.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Adding role to customer failed: Db Exception thrown while adding role to Client" +
+                logger.LogError(ex, "ICustomerManager. Adding role to customer failed: Db Exception thrown while adding role to Client" +
                                     "CustomerId {customerId}, CustomerEmail {customerEmail}, RoleName {roleName}",
                                      customer.Id, customer.UserInfo.Email, role.Name);
 
+                if (throwOnFail)
+                    throw ex;
+
                 return false;
             }
 
             return true;
         }
 
+        
 
-
-        public async Task<bool> AddRefreshToken(Customer customer, RefreshToken refreshToken)
+        public async Task<bool> AddRefreshToken(Customer customer, RefreshToken refreshToken, bool throwOnFail = false)
         {
             customer.RefreshToken = refreshToken;
-            return await repository.UpdateAndSaveAsync(customer);
-        }
 
-        public async Task<bool> CheckPasswordAsync(Customer customer, string password)
-        {
-            return await userService.CheckPasswordAsync(customer.UserInfo, password);
-        }
+            // since customer is not tracked, and refreshToken is owned entity, we should attach it to context
+            repository.Context.Attach(refreshToken);
 
+            repository.Update(customer);
 
-
-        public async Task<bool> ExistEmailAsync(string email)
-        {
-            return await repository.Set.AnyAsync(c => c.UserInfo.Email == email);
-        }
-
-        public async Task<Customer> FindByEmailAsync(string email)
-        {
-            var customer =  await repository.Set.Include(c => c.UserInfo)
-                                                .Include(c => c.Role)
-                                                .Include(c => c.Company)
-                                                .AsNoTracking()
-                                                .FirstOrDefaultAsync(c => c.UserInfo.Email == email);
-
-            if (customer == null)
+            try
             {
-                logger.LogError("CustomerManager.FindAsync(email): Customer with this email {email} wasnt found");
-                throw new EntityNotFoundException(email, "Customer with this email wasn't found");
+                await repository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "ICustomerManager. Adding refresh tokento customer failed: Db Exception thrown while adding refreshToken to Client" +
+                                    "CustomerId {customerId}, CustomerEmail {customerEmail}, RoleName {roleName}",
+                                     customer.Id, customer.UserInfo.Email);
+                if (throwOnFail)
+                    throw ex;
+
+                return false;
             }
 
-            return customer;
+            return true;
         }
 
-        public override async Task<Customer> FindAsync(Expression<Func<Customer, bool>> predicate)
-        {
-            var customer = await  repository.Set
-                                      .Include(c => c.UserInfo)
-                                      .Include(c => c.Role)
-                                      .Include(c => c.Company)
-                                      .AsNoTracking()
-                                      .FirstOrDefaultAsync(predicate);
+        public Task<bool> CheckPasswordAsync(Customer customer, string password)
+            => userService.CheckPasswordAsync(customer.UserInfo, password);
+        
 
-            if(customer == null)
-            {
-                logger.LogError("CustomerManager.FindAsync(predicate): Customer wasn't found");
-                throw new EntityNotFoundException(predicate, "Customer with thie predicate wasn't found");
-            }
 
-            return customer;
-        }
-             
+        public  Task<bool> ExistEmailAsync(string email)
+            => repository.AnyAsync(c => c.UserInfo.Email == email);
+        
 
-        public override async Task<ICollection<Customer>> ListAsync()
-            => await repository.Set.Include(c => c.UserInfo)
-                                   .Include(c => c.Role)
-                                   .Include(c => c.Company)
-                                   .AsNoTracking()
-                                   .ToArrayAsync();
+        public Task<Customer> FindByEmailAsync(string email)
+           => repository.AsQueryable().Include(c => c.UserInfo)
+                                                        .Include(c => c.Role)
+                                                        .Include(c => c.Company)
+                                                        .AsNoTracking()
+                                                        .FirstOrDefaultAsync(c => c.UserInfo.Email == email);
+
+       
+        public override Task<Customer> FindAsync(Expression<Func<Customer, bool>> predicate)
+            => repository.AsQueryable()
+                              .Include(c => c.UserInfo)
+                              .Include(c => c.Role)
+                              .Include(c => c.Company)
+                              .AsNoTracking()
+                              .FirstOrDefaultAsync(predicate);
+        
+
+        public override IEnumerable<Customer> ToEnumerable()
+            =>  repository.AsQueryable().Include(c => c.UserInfo)
+                                            .Include(c => c.Role)
+                                            .Include(c => c.Company)
+                                            .AsNoTracking();
 
     }
 }

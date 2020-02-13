@@ -14,11 +14,17 @@ namespace Application.Services.Business
     /// </summary>
     public interface ICustomerManager:IServiceBase<Customer, string>
     {
-        Task<Result<Customer>> CreateAsync(CustomerRegistrationRequest userDto);
-        Task<bool> AddToRoleAsync(Customer customer, Role role);
-        Task<bool> AddToCompanyAsync(Customer customer, Company company);
-        Task<bool> AddRefreshToken(Customer customer, RefreshToken refreshToken);
+        Task<Result<Customer>> CreateAsync(CustomerRegistrationRequest userDto, bool throwOnFail = false);
+        Task<bool> AddToRoleAsync(Customer customer, Role role, bool throwOnFail = false);
+        Task<bool> AddToCompanyAsync(Customer customer, Company company, bool throwOnFail = false);
+        Task<bool> AddRefreshToken(Customer customer, RefreshToken refreshToken, bool throwOnFail = false);
         Task<bool> CheckPasswordAsync(Customer customer, string password);
+
+        /// <summary>
+        /// Finds by Email, if not found, null will be returned
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         Task<Customer> FindByEmailAsync(string email);
         Task<bool> ExistEmailAsync(string email);
 
