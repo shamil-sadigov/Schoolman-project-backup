@@ -1,0 +1,33 @@
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Application.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Application.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Application.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Application.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Domain.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\bin\Debug\netcoreapp3.1\Domain.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Application.csproj.CopyComplete
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Application\obj\Debug\netcoreapp3.1\Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\bin\Debug\netcoreapp3.1\Application.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\bin\Debug\netcoreapp3.1\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\bin\Debug\netcoreapp3.1\Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\bin\Debug\netcoreapp3.1\Domain.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\bin\Debug\netcoreapp3.1\Domain.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\obj\Debug\netcoreapp3.1\Application.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\obj\Debug\netcoreapp3.1\Application.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\obj\Debug\netcoreapp3.1\Application.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\obj\Debug\netcoreapp3.1\Application.csproj.CopyComplete
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\obj\Debug\netcoreapp3.1\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\src -upgrade -3.1\Schoolman\Core\Application\obj\Debug\netcoreapp3.1\Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\bin\Debug\netcoreapp3.1\Application.deps.json
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\bin\Debug\netcoreapp3.1\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\bin\Debug\netcoreapp3.1\Application.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\bin\Debug\netcoreapp3.1\Domain.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\bin\Debug\netcoreapp3.1\Domain.pdb
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\obj\Debug\netcoreapp3.1\Application.csprojAssemblyReference.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\obj\Debug\netcoreapp3.1\Application.AssemblyInfoInputs.cache
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\obj\Debug\netcoreapp3.1\Application.AssemblyInfo.cs
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\obj\Debug\netcoreapp3.1\Application.csproj.CopyComplete
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\obj\Debug\netcoreapp3.1\Application.dll
+C:\Users\sovsh\Desktop\Benzeine\schoolman-student-webapi\Core\Application\obj\Debug\netcoreapp3.1\Application.pdb

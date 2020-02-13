@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:WebApi.Controllers.Auth.AuthController.RegisterClient(Application.Customers.CustomerRegistrationRequest)">
+            <remarks>
+            This action registers new client and sends confirmation email
+            <br/><br/> 
+            <b style="color: #f14d2f;align-contentalign-content:;" > 
+            Password Must have:</b> <br/> <br/> 
+            Digit (0123456789) <br/>
+            Lowecase character (a-z) <br/>
+            Uppercase character (A-Z) <br/>
+            Non-Alphanumeric character (!@#$ ....) <br/>
+            Length >=8 <br/>
+            </remarks>
+            <response code="200">Success request => New user registered and returned</response>
+            <response code="400">Bad request. Cases: Email is not valid, Firstname or Lastname is empty, Password doesn't meet specified requirements and so on...</response>
+        </member>
+        <member name="M:WebApi.Controllers.Auth.AuthController.LoginClient(Application.Clients.Client_login.CustomerLoginRequest)">
+            <remarks>
+            This action returns access tokens (JWT + Refresh Token)
+             <br/> <br/> 
+            <b style="color: #f14d2f;align-contentalign-content: ;" > 
+            Attention Attention</b> <br/> <br/> 
+            User must be registered before Login <br/>
+            </remarks>
+            <response code="200">Success request => Access tokens created and returned</response>
+            <response code="400">Bad request => Cases: User is not registered, Email is not valid, Password is not valid and so on...</response>
+        </member>
+        <member name="M:WebApi.Controllers.Auth.AuthController.ConfirmEmail(System.String,System.String)">
+            <remarks>
+            This action confirms new client's email
+            </remarks>
+            <response code="200">Success request => Email confirmed</response>
+            <response code="400">Bad request => Cases: userId or token are not valid </response>
+        </member>
+        <member name="M:WebApi.Controllers.Auth.AuthController.ExchangeTokens(Application.Request_Handlers.Clients.ExchangeTokensRequest)">
+            <remarks>
+            This action take expired access token and exchange it
+            </remarks>
+            <response code="200">Success request: New auth tokens generated and returned in response</response>
+            <response code="400">Bad request:  Can be if refresh token expired, JWT is not valid, or Jwt token is not expired and so on...</response>
+        </member>
+    </members>
+</doc>
