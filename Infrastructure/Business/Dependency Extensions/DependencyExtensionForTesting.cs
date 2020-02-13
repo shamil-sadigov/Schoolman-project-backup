@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Common.Exceptions;
+using Application.Services;
 using Application.Services.Business;
 using Application.Services.Token.Validators.User_Token_Validator;
 using Authentication.Services.EmailConfirmation;
@@ -43,8 +44,19 @@ namespace Authentication
 
         private static void AddEmailOptionsForTesting(this IServiceCollection services, IConfiguration configuration)
         {
+          
             services.Configure<EmailOptions>("Confirmation", ops =>
-                configuration.GetSection("EmailOptions:Yandex").Bind(ops));
+            {
+                configuration.GetSection("EmailOptions:Yandex").Bind(ops);
+                string psw = configuration["EmailOptions:Yandex:Password"];
+
+                if (psw is null)
+                    throw new ConfigurationException("Password for EmailOptions.Yandex wasn't found");
+
+                ops.Password = psw;
+            });
+
+
 
             services.Configure<EmailTemplate>("Confirmation", template =>
             {

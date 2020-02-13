@@ -16,8 +16,8 @@ namespace WebApi.Controllers
         // I decided not to inject IMediator
         // instead get it from IoC itself 
         
-        public BaseController()
-              => mediator = HttpContext.RequestServices.GetRequiredService<IMediator>();
+        public BaseController(IMediator mediator)
+              => this.mediator = mediator;
         
     }
 }

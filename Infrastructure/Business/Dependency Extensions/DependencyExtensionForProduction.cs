@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Common.Exceptions;
+using Application.Services;
 using Application.Services.Business;
 using Application.Services.Token.Validators.User_Token_Validator;
 using Authentication.Services.EmailConfirmation;
@@ -42,7 +43,8 @@ namespace Authentication
 
 
         private static IConfiguration BuildConfiguration(string configurationFilePath) =>
-              new ConfigurationBuilder().AddJsonFile(path: configurationFilePath,
+              new ConfigurationBuilder().AddUserSecrets<CustomerManager>()
+                                        .AddJsonFile(path: configurationFilePath,
                                                      optional: true,
                                                      reloadOnChange: true)
                                                      .Build();
@@ -51,6 +53,24 @@ namespace Authentication
         {
             services.Configure<EmailOptions>("Confirmation", ops =>
                 configuration.GetSection("EmailOptions:SendInBlue").Bind(ops));
+
+
+#if RELEASE
+#error Ensure you provided password for EmailOptions.Password in configuration for the production environment
+#endif
+
+            services.Configure<EmailOptions>("Confirmation", ops =>
+            {
+                configuration.GetSection("EmailOptions:SendInBlue").Bind(ops);
+                string psw = configuration["EmailOptions:SendInBlue:Password"];
+
+                if (psw is null)
+                    throw new ConfigurationException("Password for EmailOptions.SendInBlue wasn't found");
+
+                ops.Password = psw;
+            });
+
+
 
             services.Configure<EmailTemplate>("Confirmation", template =>
             {
@@ -90,6 +110,6 @@ namespace Authentication
             });
         }
 
-        #endregion
+#endregion
     }
 }

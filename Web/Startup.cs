@@ -39,6 +39,7 @@ namespace WebApi
             services.AddControllers()
                     .AddFluentValidation(ops =>
                     {
+                        ops.LocalizationEnabled = false; // now errorMessage will be in english
                         ops.RegisterValidatorsFromAssemblyContaining<IUserService>();
                         ops.ImplicitlyValidateChildProperties = false;
                         ops.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
@@ -53,26 +54,18 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseHttpsRedirection();
-
+            app.UseExceptionHandler("/error");
+            //app.UseHttpsRedirection();
             app.UseDefaultCors(); // app extension method
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -4,7 +4,7 @@ namespace Application.Common.Exceptions
 {
     public class EntityNotFoundException:Exception
     {
-        private readonly object searchParameter;
-        public EntityNotFoundException(object entity, string message) : base(message) { searchParameter = entity; }
+        public readonly object SearchParameter;
+        public EntityNotFoundException(object entity, string message) : base(message) { SearchParameter = entity; }
     }
 }

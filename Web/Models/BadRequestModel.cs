@@ -7,14 +7,14 @@ namespace WebApi.Models
 {
     public class BadRequestModel
     {
-        public string Errors { get; set; }
+        public string[] Errors { get; set; }
         public BadRequestModel()
         {
 
         }
         public BadRequestModel(string[] errors)
         {
-
+            Errors = errors;
         }
     }
 }

@@ -4,6 +4,7 @@ using Application.Customers;
 using Application.Customers.Registration;
 using Application.Request_Handlers.Clients;
 using Application.Request_Handlers.Customers.Email_confirmation;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Schoolman.Student.Core.Application.Models;
@@ -27,6 +28,11 @@ namespace WebApi.Controllers.Auth
     /// </summary>
     public class AuthController:BaseController
     {
+        public AuthController(IMediator mediator):base(mediator)
+        {
+
+        }
+
 
         /// <remarks>
         /// This action registers new client and sends confirmation email
@@ -47,6 +53,7 @@ namespace WebApi.Controllers.Auth
         [HttpPost("register")]
         public async Task<IActionResult> RegisterClient([FromBody] CustomerRegistrationRequest request)
         {
+
             var registrationResult =  await mediator.Send(request);
 
             if (registrationResult.Succeeded)
