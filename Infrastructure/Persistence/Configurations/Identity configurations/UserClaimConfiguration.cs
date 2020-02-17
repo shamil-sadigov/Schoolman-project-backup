@@ -8,12 +8,12 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<UserClaim> userInfo)
         {
-            userInfo.ToTable("UserClaims");
+            userInfo.ToTable("user_claims");
+
             userInfo.HasOne(u => u.User)
               .WithMany(u => u.Claims)
               .HasForeignKey(u => u.UserId)
               .IsRequired();
-
         }
     }
 }

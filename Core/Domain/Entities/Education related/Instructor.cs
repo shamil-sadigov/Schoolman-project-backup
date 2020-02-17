@@ -12,7 +12,7 @@ namespace Domain.Entities
         /// <summary>
         /// Courses that Instructor prepared
         /// </summary>
-        public ICollection<InstructorPreparedCourse> Courses { get; set; }
+        public ICollection<InstructorCourse> Courses { get; set; }
     }
 
 }

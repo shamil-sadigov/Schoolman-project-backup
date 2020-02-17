@@ -17,7 +17,4 @@ namespace Domain.Entities
         public Course Course { get; set; }
     }
 
-
-
-
 }

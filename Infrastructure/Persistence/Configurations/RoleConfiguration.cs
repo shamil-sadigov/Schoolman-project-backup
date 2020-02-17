@@ -11,7 +11,7 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Role> role)
         {
-            role.ToTable("Roles");
+            role.ToTable("roles");
             role.Property(r => r.Name).HasMaxLength(50);
             role.Property(r => r.NormalizedName).HasMaxLength(50);
             role.Property(r => r.Id).ValueGeneratedOnAdd();

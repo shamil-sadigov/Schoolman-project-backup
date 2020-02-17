@@ -8,14 +8,13 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<UserToken> user)
         {
-            user.ToTable("UserTokens");
+            user.ToTable("user_tokens");
             user.Property(model => model.Name).HasMaxLength(50);
 
             user.HasOne(u => u.User)
               .WithMany(u => u.Tokens)
               .HasForeignKey(u => u.UserId)
               .IsRequired();
-
         }
     }
 }

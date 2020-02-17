@@ -47,8 +47,7 @@ namespace Business
             if (role == null)
             {
                 role = new Role(roleName);
-                role.Id = Guid.NewGuid().ToString();
-                var result = await roleManager.CreateAsync(new Role(roleName));
+                var result = await roleManager.CreateAsync(role);
 
                 if (!result.Succeeded)
                 {

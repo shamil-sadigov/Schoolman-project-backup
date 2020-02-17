@@ -11,6 +11,7 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Customer> customer)
         {
+            customer.ToTable("customers");
             customer.HasKey(x => x.Id);
 
             customer.Property(x => x.Id)
@@ -31,12 +32,6 @@ namespace Persistence.Configurations
                            .HasForeignKey(urt => urt.UserId)
                            .OnDelete(DeleteBehavior.Cascade);
 
-
-            customer.OwnsOne(model => model.RefreshToken, token =>
-            {
-                token.Property(rt => rt.Token).HasMaxLength(256);
-                token.ToTable("RefreshTokens");
-            });
 
             customer.HasIndex(x => new { x.UserId, x.RoleId, x.CompanyId })
                             .IsUnique();

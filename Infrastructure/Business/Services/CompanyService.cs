@@ -15,8 +15,7 @@ namespace Business.Services
         public async Task<Result<Company>> CreateAsync(Company company)
         {
             // ex handling will be added
-            await repository.AddAsync(company);
-            await repository.SaveChangesAsync();
+            await repository.AddOrUpdateAsync(company);
             return company;
         }
     }

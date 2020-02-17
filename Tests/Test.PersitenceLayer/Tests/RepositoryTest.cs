@@ -18,15 +18,18 @@ namespace Test.PersitenceLayer
         {
             var userRepository = factory.Services.GetRequiredService<IRepository<User>>();
 
-            await userRepository.AddAsync(new User()
+            string Id = Guid.NewGuid().ToString();
+
+            await userRepository.AddOrUpdateAsync(new User()
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = Id,
                 FirstName = "Steve",
                 LastName = "Corney"
             });
 
-            int affected = await userRepository.SaveChangesAsync();
-            Assert.True(affected > 0);
+            var user = await  userRepository.FindAsync(Id);
+
+            Assert.NotNull(user);
         }
 
 
@@ -36,7 +39,7 @@ namespace Test.PersitenceLayer
             var userRepository = factory.Services.GetRequiredService<IRepository<User>>();
             string Id = Guid.NewGuid().ToString();
 
-            await userRepository.AddAsync(new User()
+            await userRepository.AddOrUpdateAsync(new User()
             {
                 Id = Id,
                 FirstName = "Steve",

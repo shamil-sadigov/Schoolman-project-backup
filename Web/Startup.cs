@@ -34,7 +34,7 @@ namespace WebApi
             services.AddApplicationLayer();
             services.AddAuthenticationLayer();
             services.AddBusinessLayer();
-            services.AddPersistenceLayer();
+            services.AddPersistenceLayerForTesting();
 
             services.AddControllers()
                     .AddFluentValidation(ops =>

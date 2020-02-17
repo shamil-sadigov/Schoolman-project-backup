@@ -9,7 +9,7 @@ namespace Persistence.Configurations.Education_related_configuration
     {
         public override void Configure(EntityTypeBuilder<StudentAcquiredCourse> builder)
         {
-            builder.ToTable("StudentAcquiredCourses");
+            builder.ToTable("student_acquired_courses");
 
             builder.Property(c => c.Status).HasConversion(new EnumToStringConverter<AcquiredCourseStatus>());
 
@@ -19,9 +19,9 @@ namespace Persistence.Configurations.Education_related_configuration
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Course)
-                  .WithMany(x => x.StudentsAcquired)
-                  .HasForeignKey(x => x.CourseId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                   .WithMany(x => x.StudentsAcquired)
+                   .HasForeignKey(x => x.CourseId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             base.Configure(builder);
         }

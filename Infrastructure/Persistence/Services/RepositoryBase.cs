@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Persistence.Services
 {
-    public class RepositoryBase<T> : IRepository<T> where T : class
+    public class RepositoryBase<T> : IRepository<T> where T : class, new()
     {
         private readonly SchoolmanContext context;
         private readonly DbSet<T> set;
@@ -22,73 +23,71 @@ namespace Persistence.Services
 
         public DbContext Context { get => context; }
 
-
-
-        public Task<int> SaveChangesAsync()
-            => context.SaveChangesAsync();
-
-
-        public async Task AddAsync(T entity)
-           => await set.AddAsync(entity);
-
-        public async Task AddRangeAsync(IEnumerable<T> entities)
-            => await set.AddRangeAsync(entities);
-
-        public void Remove(T entity)
-            => set.Remove(entity);
-
-        public  void Update(T entity)
+        public async Task AddOrUpdateAsync(T entity)
         {
-            var updatingEntityId = context.Entry(entity).Property("Id").CurrentValue;
+            EnsureEntityHasId<T>();
+            var entityId = context.Entry(entity).Property("Id").CurrentValue;
 
-            T trackedEntity = set.Local.FirstOrDefault(trackedEntity =>
-            {
-                var updadingEntityId = context.Entry(entity).Property("Id").CurrentValue;
-                var trackedEntityId = context.Entry(trackedEntity).Property("Id").CurrentValue;
+            //if (entityId is null)
+            //    set.Add(entity);
 
-                return updadingEntityId.Equals(trackedEntityId);
-            });
+            if (!context.Entry(entity).IsKeySet)
+                set.Add(entity);
+            else
+            {   // if entity is tracked, it will catched from cache
+                var dbEntity = await set.FindAsync(entityId);
+                context.Entry(dbEntity).CurrentValues.SetValues(entity);
+                context.Entry(dbEntity).State = EntityState.Modified;
+            }
 
-            if (trackedEntity != null)
-                context.Entry(trackedEntity).State = EntityState.Detached;
-
-            context.Entry(entity).State = EntityState.Modified;
+            await context.SaveChangesAsync();
         }
 
-        public IQueryable<T> AsNoTracking()
-            => set.AsNoTracking();
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            await set.AddRangeAsync(entities);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task AddRangeAsync(params T[] entities)
+        {
+            await set.AddRangeAsync(entities);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAsync(T entity)
+        {
+            set.Remove(entity);
+            await context.SaveChangesAsync();
+        }
 
         public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
             => set.AnyAsync(predicate);
 
-        public Task AddRangeAsync(params T[] entities)
-            => set.AddRangeAsync(entities);
-        
-
         public IQueryable<T> AsQueryable()
-             => set.AsQueryable();
-        
-        public void RemoveRange(params T[] entities)
-        {
-            throw new NotImplementedException();
-        }
+             => set.AsTracking();
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public async Task RemoveRangeAsync(params T[] entities)
         {
-            throw new NotImplementedException();
+            set.RemoveRange(entities);
+            await context.SaveChangesAsync();
         }
-
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
+        {
+            set.RemoveRange(entities);
+            await context.SaveChangesAsync();
+        }
         public async Task<T> FindAsync(object key)
-        {
-            return await set.FindAsync(key);
-        }
-
+            => await set.FindAsync(key);
         public Task<T> FindAsync(Expression<Func<T, bool>> predicate)
-            => set.AsNoTracking().Where(predicate).FirstOrDefaultAsync();
-
-        public IEnumerable<T> FindArrange(Expression<Func<T, bool>> predicate)
+            => set.Where(predicate).FirstOrDefaultAsync();
+        public IQueryable<T> FindRange(Expression<Func<T, bool>> predicate)
+             => set.Where(predicate);
+        private void EnsureEntityHasId<Tentity>()
         {
-            return set.AsNoTracking().Where(predicate);
+            // ensure entity has Id
+            if (typeof(Tentity).GetProperty("Id") == null)
+                throw new DbUpdateException("Updating entity has no Id");
         }
     }
 }

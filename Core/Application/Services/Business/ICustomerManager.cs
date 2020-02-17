@@ -17,16 +17,19 @@ namespace Application.Services.Business
         Task<Result<Customer>> CreateAsync(CustomerRegistrationRequest userDto, bool throwOnFail = false);
         Task<bool> AddToRoleAsync(Customer customer, Role role, bool throwOnFail = false);
         Task<bool> AddToCompanyAsync(Customer customer, Company company, bool throwOnFail = false);
-        Task<bool> AddRefreshToken(Customer customer, RefreshToken refreshToken, bool throwOnFail = false);
         Task<bool> CheckPasswordAsync(Customer customer, string password);
-
         /// <summary>
         /// Finds by Email, if not found, null will be returned
         /// </summary>
         /// <param name="email"></param>
+        /// <param name="track">Should EF Core track entity or not. It's recommended to user 'false' when you only reading this entity</param>
         /// <returns></returns>
         Task<Customer> FindByEmailAsync(string email);
+        /// <summary>
+        /// Finds by Email, if not found, null will be returned
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="track">Should EF Core track entity or not. It's recommended to user 'false' when you only reading this entity</param>
         Task<bool> ExistEmailAsync(string email);
-
     }
 }

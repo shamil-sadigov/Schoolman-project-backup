@@ -1,5 +1,5 @@
 {
-  // да, да, пароли тут держать нельзя. Обещаю измениться.
+  // да, да, пароли тут держать нельзя. Обещаю измениться и хранить в user-secrets.json
   "ConnectionStrings": {
     "RemoteServer": "Server=192.168.10.18;Port=3306;Database=schoolman_test;Uid=shamil.benzeine; Pwd=workbenchGibson1414@",
     "LocalServer-MySql": "Server=localhost;Port=3306;Database=schoolman_for_xunit;Uid=root; Pwd=mysqlGibson1414@",

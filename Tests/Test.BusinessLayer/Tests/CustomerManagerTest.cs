@@ -1,10 +1,7 @@
-using Application.Services.Business;
 using Application.Customers;
-using Domain;
+using Application.Services.Business;
 using Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Threading.Tasks;
@@ -30,14 +27,14 @@ namespace Test.BusinessLayer
         }
 
 
-        [Fact(DisplayName = "ICustomerManager.CreateAsync() => with empty FirstName and Lastname =>  fails")]
-        public async Task UserService_Doesnt_Create_User_With_Emtpty_FirstName_And_Lastname()
+        [Fact(DisplayName = "ICustomerManager.CreateAsync() => Doesn't creates customer with empty FirstName, Lastname and invalid Password")]
+        public async Task ICustomerManagerCreateAsyncWithEmtpyFirstAndLastName()
         {
             var customer = new CustomerRegistrationRequest()
             {
                 FirstName = "",
                 LastName = "",
-                Password = "asdasd"
+                Password = "asd"
             };
 
             Result<Customer> creationResult = await customerManager.CreateAsync(customer);
@@ -47,7 +44,7 @@ namespace Test.BusinessLayer
 
 
 
-        [Fact(DisplayName = "ICustomerManager.CreateUser() => with invalid Password => fail")]
+        [Fact(DisplayName = "ICustomerManager.CreateAsync() => Doesnt creates  customer with invalid password")]
         public async Task UserService_Doesnt_Create_User_With_Invalid_Password()
         {
             var user = new CustomerRegistrationRequest()
@@ -63,19 +60,43 @@ namespace Test.BusinessLayer
 
 
 
-        [Fact(DisplayName = "ICustomerManager.CreateUser() => with valid values => succeed")]
+        [Fact(DisplayName = "ICustomerManager.CreateAsync() => Creates customer with valid values")]
         public async Task UserService_Create_new_User_With_Valid_Values()
         {
             var customerRelationResult = await customerManager.CreateAsync(new CustomerRegistrationRequest()
             {
                 FirstName = "Steve",
                 LastName = "Corney",
-                Email = "stevec@gmail.com",
+                Email = $"{Guid.NewGuid().ToString()}@example.com",
                 Password = "Stevei22##as",
             });
 
-            Assert.True(customerRelationResult.Succeeded, "Customer should be created since values are valid");
+            Assert.True(customerRelationResult.Succeeded, "Customer must be created");
+
+            bool customerExists = await customerManager.ExistEmailAsync(customerRelationResult.Response.UserInfo.Email);
+            Assert.True(customerExists, "Customer should exist in DB");
         }
+
+
+        [Fact(DisplayName = "ICustomerManager.CreateAsync() => Doesn't created customer with existent email")]
+        public async Task ICustomerDoesntCreatedWithExistentEmail()
+        {
+            var request = new CustomerRegistrationRequest()
+            {
+                FirstName = "Steve",
+                LastName = "Corney",
+                Email = $"{Guid.NewGuid().ToString()}@example.com",
+                Password = "Stevei22##as",
+            };
+
+            var result = await customerManager.CreateAsync(request);
+            Assert.True(result.Succeeded, "Customer must be created");
+
+            result = await customerManager.CreateAsync(request);
+            Assert.False(result.Succeeded, "Customer should not be created since we already have one with this email and username");
+        }
+
+
 
 
     }

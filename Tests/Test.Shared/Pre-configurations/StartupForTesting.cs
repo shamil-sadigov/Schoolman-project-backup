@@ -29,7 +29,6 @@ namespace Test.Shared
                         ops.ImplicitlyValidateChildProperties = false;
                         ops.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                         ops.LocalizationEnabled = false;
-
                     });
         }
 

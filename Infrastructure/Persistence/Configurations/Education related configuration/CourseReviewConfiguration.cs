@@ -8,7 +8,7 @@ namespace Persistence.Configurations.Education_related_configuration
     {
         public override void Configure(EntityTypeBuilder<CourseReview> review)
         {
-            review.ToTable("CourseReviews");
+            review.ToTable("course_reviews");
 
             review.Property(r => r.Text).IsRequired();
 

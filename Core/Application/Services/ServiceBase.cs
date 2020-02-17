@@ -12,7 +12,7 @@ namespace Application.Services
 {
     /// <summary>
     /// Base class for application services
-    /// </summary>
+    /// </summary>s
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TKey">Primary key</typeparam>
     public abstract class ServiceBase<TEntity, TKey> : IServiceBase<TEntity, TKey>
@@ -20,6 +20,7 @@ namespace Application.Services
     {
         protected readonly IRepository<TEntity> repository;
         protected readonly ILogger logger;
+
 
         public ServiceBase(IRepository<TEntity> repository,
                            ILogger logger)
@@ -42,9 +43,8 @@ namespace Application.Services
             entity.Id = id;
 
             try
-            {    
-                repository.Context.Entry(entity).State = EntityState.Deleted;
-                await repository.SaveChangesAsync();
+            {
+                await repository.RemoveAsync((TEntity)entity);
             }
             catch (Exception ex)
             {
@@ -64,8 +64,7 @@ namespace Application.Services
         {
             try
             {
-                repository.Remove(entity);
-                await repository.SaveChangesAsync();
+                await repository.RemoveAsync(entity);
             }
             catch (Exception ex)
             {
@@ -84,12 +83,11 @@ namespace Application.Services
 
         public virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predicate, bool throwOnFail)
         {
-            var entities = repository.FindArrange(predicate);
+            var entities = repository.FindRange(predicate);
 
             try
             {
-                repository.RemoveRange(entities);
-                await repository.SaveChangesAsync();
+                await repository.RemoveRangeAsync(entities);
             }
             catch (Exception ex)
             {
@@ -110,8 +108,7 @@ namespace Application.Services
 
             try
             {
-                repository.RemoveRange(entities);
-                await repository.SaveChangesAsync();
+                await repository.RemoveRangeAsync(entities);
             }
             catch (Exception ex)
             {
@@ -132,15 +129,15 @@ namespace Application.Services
         #region Reading
 
         public virtual Task<TEntity> FindByIdAsync(TKey id)
-        {
-            return repository.FindAsync(id);
-        }
+            => repository.FindAsync(id);
 
-        public virtual async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression)
-              => await repository.FindAsync(expression);
+        public virtual Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
+                => repository.FindAsync(predicate);
 
-        public virtual IEnumerable<TEntity> FindRangeAsync(Expression<Func<TEntity, bool>> predicate)
-            =>  repository.FindArrange(predicate);
+
+
+        public virtual async Task<IEnumerable<TEntity>> FindRangeAsync(Expression<Func<TEntity, bool>> predicate)
+                => await repository.FindRange(predicate).ToListAsync();
 
 
         #endregion
@@ -151,8 +148,7 @@ namespace Application.Services
         {
             try
             {
-                repository.Update(entity);
-                await repository.SaveChangesAsync();
+                await repository.AddOrUpdateAsync(entity);
             }
             catch (Exception ex)
             {
@@ -182,19 +178,11 @@ namespace Application.Services
         public virtual async Task<bool> ExistsAsync(TKey id)    
             => await repository.AnyAsync(e => e.Id.Equals(id));
         
-
         public virtual async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await repository.AnyAsync(predicate);
-        }
+            => await repository.AnyAsync(predicate);
 
-        public virtual IEnumerable<TEntity> ToEnumerable()
-            => repository.AsNoTracking();
-
-
-        public virtual async Task<List<TEntity>> ToList()
-            => await repository.AsNoTracking().ToListAsync();
-
-       
+        public virtual async Task<List<TEntity>> ToListAsync(bool track)
+            => await repository.AsQueryable().ToListAsync();
+                    
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Services.Business;
+﻿using Application.Services;
+using Application.Services.Business;
 using Application.Services.Token;
 using Authentication.Options;
 using Domain;
@@ -17,23 +18,42 @@ namespace Authentication.Services.New_services
     {
         private readonly RefreshTokenOptions options;
         private readonly ICustomerManager customerManager;
+        private readonly IRepository<RefreshToken> repository;
 
         public RefreshTokenService(ICustomerManager customerManager,
-                                   IOptionsMonitor<RefreshTokenOptions> optionsMonitor)
+                                   IOptionsMonitor<RefreshTokenOptions> optionsMonitor,
+                                   IRepository<RefreshToken> repository)
         {
             this.options = optionsMonitor.CurrentValue;
             this.customerManager = customerManager;
+            this.repository = repository;
         }
 
 
         public async Task<Result<string>> GenerateTokenAsync(Customer client)
         {
-            var refreshToken = new RefreshToken();
-            refreshToken.IssueTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            refreshToken.ExpirationTime = DateTimeOffset.UtcNow.Add(options.ExpirationTime)
-                                                                        .ToUnixTimeSeconds();
+            var refreshToken = await repository.FindAsync(x => x.CustomerId == client.Id);
 
-            await customerManager.AddRefreshToken(client, refreshToken);
+            refreshToken ??= new RefreshToken();
+
+            //refreshToken.IssueTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            //refreshToken.ExpirationTime = DateTimeOffset.UtcNow.Add(options.ExpirationTime)
+            //                                                            .ToUnixTimeSeconds();
+
+
+            // to delete
+            refreshToken.IssueTime = 1313;
+            refreshToken.ExpirationTime = 1313;
+
+
+
+
+            refreshToken.CustomerId = client.Id;
+
+            await repository.AddOrUpdateAsync(refreshToken);
+
+            // to delete
+            //await customerManager.AddRefreshTokenAsync(client, refreshToken);
 
             return Result<string>.Success(refreshToken.Token);
         }

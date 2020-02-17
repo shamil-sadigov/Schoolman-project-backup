@@ -9,6 +9,15 @@ namespace Application.Customers
     /// </summary>
     public partial class CustomerRegistrationRequest : IRequest<Result<CustomerRegistrationResponse>>
     {
+        public CustomerRegistrationRequest(string firstName = default, string lastName = default, string email = default, string password = default, string phoneNumber = default)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Password = password;
+            PhoneNumber = phoneNumber;
+        }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

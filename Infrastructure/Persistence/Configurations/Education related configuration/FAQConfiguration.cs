@@ -8,7 +8,7 @@ namespace Persistence.Configurations.Education_related_configuration
     {
         public override void Configure(EntityTypeBuilder<FAQ> faq)
         {
-            faq.ToTable("FAQs");
+            faq.ToTable("faqs");
 
             faq.Property(f => f.Question).IsRequired().HasMaxLength(200);
             faq.Property(f => f.Answer).IsRequired().HasMaxLength(200);

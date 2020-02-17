@@ -19,8 +19,4 @@ namespace Domain.Entities
         public ICollection<StudentAcquiredCourse> CoursesAcquired { get; set; }
         public ICollection<StudentWishedCourses> CoursesWished { get; set; }
     }
-
-
-
-
 }

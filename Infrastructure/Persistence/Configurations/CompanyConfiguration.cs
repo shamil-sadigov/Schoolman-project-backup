@@ -8,7 +8,7 @@ namespace Persistence.Configurations
     {
         public override void Configure(EntityTypeBuilder<Company> companyBuilder)
         {
-            companyBuilder.ToTable("Companies");
+            companyBuilder.ToTable("companies");
             companyBuilder.Property(model => model.Name).HasMaxLength(100);
             base.Configure(companyBuilder);
         }

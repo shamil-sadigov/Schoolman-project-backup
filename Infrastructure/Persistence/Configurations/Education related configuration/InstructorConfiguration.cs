@@ -8,16 +8,14 @@ namespace Persistence.Configurations.Education_related_configuration
     {
         public override void Configure(EntityTypeBuilder<Instructor> instructor)
         {
-            instructor.ToTable("Instructors");
+            instructor.ToTable("instructors");
 
             instructor.HasOne(i => i.Customer)
-                  .WithOne()
-                  .HasForeignKey<Instructor>(i=> i.CustomerId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                      .WithMany(x=> x.Instructors)
+                      .OnDelete(DeleteBehavior.Restrict);
 
             base.Configure(instructor);
         }
     }
-
 
 }

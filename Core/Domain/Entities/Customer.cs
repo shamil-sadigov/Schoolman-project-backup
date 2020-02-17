@@ -1,4 +1,5 @@
 ﻿using Domain.Base;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,9 @@ namespace Domain.Models
 
         public string CompanyId { get; set; }
 
-        // Owned entity
         public RefreshToken RefreshToken { get; set; }
+
+
+        public ICollection<Instructor> Instructors { get; set; }
     }
 }

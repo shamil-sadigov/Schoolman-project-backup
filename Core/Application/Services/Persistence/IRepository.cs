@@ -18,21 +18,17 @@ namespace Application.Services
     {
         Task<TEntity> FindAsync(object key);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        IEnumerable<TEntity> FindArrange(Expression<Func<TEntity, bool>> predicate);
-        Task AddAsync(TEntity entity);
+        public IQueryable<TEntity> FindRange(Expression<Func<TEntity, bool>> predicate);
+        Task AddOrUpdateAsync(TEntity entity);
         Task AddRangeAsync(params TEntity[] entities);
         Task AddRangeAsync(IEnumerable<TEntity> entities);
         IQueryable<TEntity> AsQueryable();
-        IQueryable<TEntity> AsNoTracking();
-        void Remove(TEntity entity);
-        void RemoveRange(params TEntity[] entities);
-        void RemoveRange(IEnumerable<TEntity> entities);
-        void Update(TEntity entity);
+        Task RemoveAsync(TEntity entity);
+        Task RemoveRangeAsync(params TEntity[] entities);
+        Task RemoveRangeAsync(IEnumerable<TEntity> entities);
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
 
-
-        Task<int> SaveChangesAsync();
         DbContext Context { get; }
     }
 }

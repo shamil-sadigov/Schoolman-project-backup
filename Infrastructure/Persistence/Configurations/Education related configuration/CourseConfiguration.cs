@@ -13,7 +13,7 @@ namespace Persistence.Configurations.Education_related_configuration
 
         public override void Configure(EntityTypeBuilder<Course> course)
         {
-            course.ToTable("Courses");
+            course.ToTable("courses");
             course.Property(model => model.Name).HasMaxLength(100)
                                                 .IsRequired();
 
@@ -21,15 +21,8 @@ namespace Persistence.Configurations.Education_related_configuration
 
             // this configuration will store enum in db as a string value not db
             course.Property(c => c.Type).HasConversion(new EnumToStringConverter<CourseType>());
-            course.OwnsOne(c => c.Fee, fee =>
-            {
-                fee.ToTable("CourseFees");
-                fee.Property(c => c.Currency)
-                   .HasConversion(new EnumToStringConverter<CurrencyType>());
-            });
+           
             base.Configure(course);
         }
     }
-
-
 }

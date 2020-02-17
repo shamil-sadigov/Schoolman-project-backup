@@ -8,12 +8,12 @@ namespace Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<RoleClaim> role)
         {
-            role.ToTable("RoleClaims");
+            role.ToTable("role_claims");
 
             role.HasOne(u => u.Role)
-              .WithMany(u => u.Claims)
-              .HasForeignKey(u => u.RoleId)
-              .IsRequired();
+                .WithMany(u => u.Claims)
+                .HasForeignKey(u => u.RoleId)
+                .IsRequired();
         }
     }
 }

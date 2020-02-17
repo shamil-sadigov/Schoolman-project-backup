@@ -49,7 +49,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("companies");
                 });
 
             modelBuilder.Entity("Domain.Entities.Course", b =>
@@ -96,7 +96,31 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("courses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CourseFee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId")
+                        .IsUnique();
+
+                    b.ToTable("course_fees");
                 });
 
             modelBuilder.Entity("Domain.Entities.CourseReview", b =>
@@ -144,7 +168,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("CourseReviews");
+                    b.ToTable("course_reviews");
                 });
 
             modelBuilder.Entity("Domain.Entities.FAQ", b =>
@@ -189,7 +213,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("FAQs");
+                    b.ToTable("faqs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Instructor", b =>
@@ -223,13 +247,12 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
+                    b.HasIndex("CustomerId");
 
-                    b.ToTable("Instructors");
+                    b.ToTable("instructors");
                 });
 
-            modelBuilder.Entity("Domain.Entities.InstructorPreparedCourse", b =>
+            modelBuilder.Entity("Domain.Entities.InstructorCourse", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -271,7 +294,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.ToTable("InstructorPreparedCourses");
+                    b.ToTable("instructor_courses");
                 });
 
             modelBuilder.Entity("Domain.Entities.Student", b =>
@@ -308,7 +331,7 @@ namespace Persistence.Migrations
                     b.HasIndex("CustomerId")
                         .IsUnique();
 
-                    b.ToTable("Students");
+                    b.ToTable("students");
                 });
 
             modelBuilder.Entity("Domain.Entities.StudentAcquiredCourse", b =>
@@ -353,7 +376,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentAcquiredCourses");
+                    b.ToTable("student_acquired_courses");
                 });
 
             modelBuilder.Entity("Domain.Entities.StudentWishedCourses", b =>
@@ -394,7 +417,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentWishedCoursess");
+                    b.ToTable("student_wished_courses");
                 });
 
             modelBuilder.Entity("Domain.Models.Customer", b =>
@@ -444,6 +467,32 @@ namespace Persistence.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("Domain.Models.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<long>("ExpirationTime")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("IssueTime")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
+
+                    b.ToTable("refresh_tokens");
+                });
+
             modelBuilder.Entity("Domain.Models.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -464,7 +513,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims");
+                    b.ToTable("role_claims");
                 });
 
             modelBuilder.Entity("Domain.Models.UserClaim", b =>
@@ -487,7 +536,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims");
+                    b.ToTable("user_claims");
                 });
 
             modelBuilder.Entity("Domain.Models.UserLogin", b =>
@@ -509,7 +558,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogins");
+                    b.ToTable("user_logins");
                 });
 
             modelBuilder.Entity("Domain.Models.UserToken", b =>
@@ -529,7 +578,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens");
+                    b.ToTable("user_tokens");
                 });
 
             modelBuilder.Entity("Domain.Role", b =>
@@ -574,7 +623,7 @@ namespace Persistence.Migrations
                         .IsUnique()
                         .HasName("RoleNameIndex");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -668,30 +717,16 @@ namespace Persistence.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.ToTable("Users");
+                    b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Course", b =>
+            modelBuilder.Entity("Domain.Entities.CourseFee", b =>
                 {
-                    b.OwnsOne("Domain.Entities.CourseFee", "Fee", b1 =>
-                        {
-                            b1.Property<int>("CourseId")
-                                .HasColumnType("int");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("decimal(65,30)");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                            b1.HasKey("CourseId");
-
-                            b1.ToTable("CourseFees");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CourseId");
-                        });
+                    b.HasOne("Domain.Entities.Course", "Course")
+                        .WithOne("Fee")
+                        .HasForeignKey("Domain.Entities.CourseFee", "CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.CourseReview", b =>
@@ -720,12 +755,12 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Instructor", b =>
                 {
                     b.HasOne("Domain.Models.Customer", "Customer")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Instructor", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany("Instructors")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Domain.Entities.InstructorPreparedCourse", b =>
+            modelBuilder.Entity("Domain.Entities.InstructorCourse", b =>
                 {
                     b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany("Instructors")
@@ -744,7 +779,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Models.Customer", "Customer")
                         .WithOne()
                         .HasForeignKey("Domain.Entities.Student", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Domain.Entities.StudentAcquiredCourse", b =>
@@ -793,29 +828,14 @@ namespace Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.OwnsOne("Domain.Models.RefreshToken", "RefreshToken", b1 =>
-                        {
-                            b1.Property<string>("CustomerId")
-                                .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                            b1.Property<long>("ExpirationTime")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("IssueTime")
-                                .HasColumnType("bigint");
-
-                            b1.Property<string>("Token")
-                                .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                                .HasMaxLength(256);
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("RefreshTokens");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
+            modelBuilder.Entity("Domain.Models.RefreshToken", b =>
+                {
+                    b.HasOne("Domain.Models.Customer", "Customer")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("Domain.Models.RefreshToken", "CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Domain.Models.RoleClaim", b =>

@@ -8,7 +8,7 @@ namespace Persistence.Configurations.Education_related_configuration
     {
         public override void Configure(EntityTypeBuilder<StudentWishedCourses> builder)
         {
-            builder.ToTable("StudentWishedCoursess");
+            builder.ToTable("student_wished_courses");
 
             builder.HasOne(x => x.Student)
                    .WithMany(x => x.CoursesWished)
@@ -16,13 +16,11 @@ namespace Persistence.Configurations.Education_related_configuration
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Course)
-                  .WithMany(x => x.StudentsWished)
-                  .HasForeignKey(x => x.CourseId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                   .WithMany(x => x.StudentsWished)
+                   .HasForeignKey(x => x.CourseId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             base.Configure(builder);
         }
     }
-
-
 }

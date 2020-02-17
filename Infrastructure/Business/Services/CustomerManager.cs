@@ -12,7 +12,9 @@ using Schoolman.Student.Core.Application.Interfaces;
 using Schoolman.Student.Core.Application.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Business.Services
@@ -37,16 +39,11 @@ namespace Business.Services
             this.mapper = mapper;
         }
 
-
         public async Task<Result<Customer>> CreateAsync(CustomerRegistrationRequest request, bool throwOnFail)
         {
-
             #region Create User
-
             var user = mapper.Map<User>(request);
-
             var result = await userService.CreateAsync(user, request.Password);
-
             if (!result.Succeeded)
             {
                 logger.LogError("CustomerService. Cusotmer creation failed: User.Email {email}. Creation errors: {@errors}",
@@ -72,14 +69,15 @@ namespace Business.Services
 
             #region Create customer
 
+            createdUser.FirstName = "Changed";
+
             var newCustomer = new Customer();
             newCustomer.UserId = createdUser.Id;
             newCustomer.RoleId = role.Id;
 
             try
             {
-                await repository.AddAsync(newCustomer);
-                await repository.SaveChangesAsync();
+                await repository.AddOrUpdateAsync(newCustomer);
             }
             catch (Exception ex)
             {
@@ -106,8 +104,7 @@ namespace Business.Services
 
             try
             {
-                repository.Update(customer);
-                await repository.SaveChangesAsync();
+                await repository.AddOrUpdateAsync(customer);
             }
             catch (Exception ex)
             {
@@ -130,8 +127,7 @@ namespace Business.Services
 
             try
             {
-                repository.Update(customer);
-                await repository.SaveChangesAsync();
+                await repository.AddOrUpdateAsync(customer);
             }
             catch (Exception ex)
             {
@@ -148,20 +144,18 @@ namespace Business.Services
             return true;
         }
 
-        
-
-        public async Task<bool> AddRefreshToken(Customer customer, RefreshToken refreshToken, bool throwOnFail = false)
+        public async Task<bool> AddRefreshTokenAsync(Customer customer, RefreshToken refreshToken, bool throwOnFail = false)
         {
-            customer.RefreshToken = refreshToken;
-
-            // since customer is not tracked, and refreshToken is owned entity, we should attach it to context
             repository.Context.Attach(refreshToken);
 
-            repository.Update(customer);
+            customer.RefreshToken.IssueTime = refreshToken.IssueTime;
+            customer.RefreshToken.ExpirationTime = refreshToken.ExpirationTime;
+            customer.RefreshToken.Token = refreshToken.Token;
+
 
             try
             {
-                await repository.SaveChangesAsync();
+                await repository.AddOrUpdateAsync(customer);
             }
             catch (Exception ex)
             {
@@ -179,35 +173,27 @@ namespace Business.Services
 
         public Task<bool> CheckPasswordAsync(Customer customer, string password)
             => userService.CheckPasswordAsync(customer.UserInfo, password);
-        
 
 
-        public  Task<bool> ExistEmailAsync(string email)
+
+        public Task<bool> ExistEmailAsync(string email)
             => repository.AnyAsync(c => c.UserInfo.Email == email);
+
+
+        public async Task<Customer> FindByEmailAsync(string email)
+                => await repository.AsQueryable()
+                                   .Include(c => c.UserInfo)
+                                   .Include(c => c.Role)
+                                   .Include(c => c.Company)
+                                   .Include(c => c.UserInfo)
+                                   .FirstOrDefaultAsync(c => c.UserInfo.Email == email);
         
-
-        public Task<Customer> FindByEmailAsync(string email)
-           => repository.AsQueryable().Include(c => c.UserInfo)
-                                                        .Include(c => c.Role)
-                                                        .Include(c => c.Company)
-                                                        .AsNoTracking()
-                                                        .FirstOrDefaultAsync(c => c.UserInfo.Email == email);
-
-       
         public override Task<Customer> FindAsync(Expression<Func<Customer, bool>> predicate)
-            => repository.AsQueryable()
-                              .Include(c => c.UserInfo)
-                              .Include(c => c.Role)
-                              .Include(c => c.Company)
-                              .AsNoTracking()
-                              .FirstOrDefaultAsync(predicate);
-        
-
-        public override IEnumerable<Customer> ToEnumerable()
-            =>  repository.AsQueryable().Include(c => c.UserInfo)
-                                            .Include(c => c.Role)
-                                            .Include(c => c.Company)
-                                            .AsNoTracking();
+                     => repository.AsQueryable()
+                                    .Include(c => c.UserInfo)
+                                    .Include(c => c.Role)
+                                    .Include(c => c.Company)
+                                    .FirstOrDefaultAsync(predicate);
 
     }
 }

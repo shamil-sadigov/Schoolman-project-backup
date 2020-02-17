@@ -7,18 +7,12 @@ using Application.Request_Handlers.Customers.Email_confirmation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Schoolman.Student.Core.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Models;
 
 namespace WebApi.Controllers.Auth
 {
-
     [Route("api/auth")]
-
     /// <summary>
     /// Controller for authenticate clients.
     /// 1) Registration of new clients
@@ -33,7 +27,6 @@ namespace WebApi.Controllers.Auth
 
         }
 
-
         /// <remarks>
         /// This action registers new client and sends confirmation email
         /// <br/><br/> 
@@ -47,21 +40,18 @@ namespace WebApi.Controllers.Auth
         /// </remarks>
         /// <response code="200">Success request => New user registered and returned</response>
         /// <response code="400">Bad request. Cases: Email is not valid, Firstname or Lastname is empty, Password doesn't meet specified requirements and so on...</response>
-
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerRegistrationResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestModel))]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterClient([FromBody] CustomerRegistrationRequest request)
         {
-
             var registrationResult =  await mediator.Send(request);
 
-            if (registrationResult.Succeeded)
+            return registrationResult.Succeeded switch
             {
-                return Ok(registrationResult.Response);
-            }
-
-            return BadRequest(new BadRequestModel(registrationResult.Errors));
+                true => Ok(registrationResult.Response),
+                false => BadRequest(new BadRequestModel(registrationResult.Errors))
+            };
         }
 
 
@@ -81,12 +71,12 @@ namespace WebApi.Controllers.Auth
         {
             var loginResult = await mediator.Send(request);
 
-            if (loginResult.Succeeded)
+            return loginResult.Succeeded switch
             {
-                return Ok(loginResult.Response);
-            }
+                true => Ok(loginResult.Response),
+                false => BadRequest(new BadRequestModel(loginResult.Errors))
+            };
 
-            return BadRequest(new BadRequestModel(loginResult.Errors));
         }
 
 
@@ -102,10 +92,11 @@ namespace WebApi.Controllers.Auth
         {
             var confirmationResult = await mediator.Send(new EmailConfirmationRequest(clientId, token));
 
-            if (confirmationResult.Succeeded)
-                return Ok();
-
-            return BadRequest(new BadRequestModel(confirmationResult.Errors));
+            return confirmationResult.Succeeded switch
+            {
+                true => Ok(),
+                false => BadRequest(new BadRequestModel(confirmationResult.Errors))
+            };
         }
 
 
@@ -122,10 +113,11 @@ namespace WebApi.Controllers.Auth
         {
             var exchangeResult = await mediator.Send(request);
 
-            if (exchangeResult.Succeeded)
-                return Ok();
-
-            return BadRequest(new BadRequestModel(exchangeResult.Errors));
+            return exchangeResult.Succeeded switch
+            {
+                true => Ok(),
+                false => BadRequest(new BadRequestModel(exchangeResult.Errors))
+            };
         }
 
     }

@@ -7,22 +7,22 @@ namespace Domain.Entities
     /// <summary>
     /// Educational course
     /// </summary>
-    public class Course:EntityBase<int>
+    public class Course : EntityBase<int>
     {
         public string Name { get; set; }
         public string Descripton { get; set; }
         public TimeSpan Duration { get; set; }
         public CourseType Type { get; set; }
 
-        // owned entity
-        public CourseFee Fee { get; set; }
         public Course()
         {
             Reviews = new HashSet<CourseReview>();
-            Instructors = new HashSet<InstructorPreparedCourse>();
+            Instructors = new HashSet<InstructorCourse>();
             StudentsAcquired = new HashSet<StudentAcquiredCourse>();
             FAQs = new HashSet<FAQ>();
         }
+
+        public CourseFee Fee { get; set; }
 
         /// <summary>
         /// Course reviews that is left by Students
@@ -32,12 +32,11 @@ namespace Domain.Entities
         /// Instructors that created this course. Usually course is created by one instructor
         /// But that is not a constraint. Course can be created by multiple Instructors
         /// </summary>
-        public ICollection<InstructorPreparedCourse> Instructors { get; set; }
+        public ICollection<InstructorCourse> Instructors { get; set; }
         /// <summary>
         /// Studens that acquired this course
         /// </summary>
         public ICollection<StudentAcquiredCourse> StudentsAcquired { get; set; }
-
         /// <summary>
         /// Studens that added this course to wishlist
         /// </summary>
@@ -48,7 +47,6 @@ namespace Domain.Entities
         /// </summary>
         public ICollection<FAQ> FAQs { get; set; }
     }
-
 
 
     /// <summary>
