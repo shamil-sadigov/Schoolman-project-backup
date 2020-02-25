@@ -1,3 +1,4 @@
 todo.txt
 done.txt
-
+*.dll
+*.exe
