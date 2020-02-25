@@ -16,6 +16,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "Web\WebApi.csproj", "{AC6D47CF-9C94-42BE-9FF4-D15F7AD94B11}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EA2F9058-7B07-4C2A-BA43-7CC348D133A5}"
+	ProjectSection(SolutionItems) = preProject
+		todo.txt.txt = todo.txt.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A7FF7DBA-6583-46E0-B573-D4F2C9F4E645}"
 EndProject

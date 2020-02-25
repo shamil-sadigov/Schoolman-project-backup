@@ -33,10 +33,9 @@ namespace Test.PersitenceLayer.Tests.CourseRepo
 
 
         [Fact(DisplayName = "InstructorCourse Repository adds new instructorCourse.")]
-        public async Task InstructoCourseRepositoryAddNewInstructoCourse()
+        public async Task InstructoCourseRepositoryAddsNewInstructoCourse()
         {
-
-            #region Arrange an Instructor
+            #region Arrange: create new customer
 
             string customerEmail = $"{Guid.NewGuid().ToString()}@example.com";
             Customer customer = await customerManager.FindByEmailAsync(customerEmail);
@@ -47,6 +46,10 @@ namespace Test.PersitenceLayer.Tests.CourseRepo
 
             Assert.True(customer != null, "Customer should be created");
 
+            #endregion
+
+            #region Arrange: create new instructor and bind it to created customer
+
             var newInstructor = new Instructor();
             newInstructor.CustomerId = customer.Id;
             await instructoRepository.AddOrUpdateAsync(newInstructor);
@@ -56,7 +59,7 @@ namespace Test.PersitenceLayer.Tests.CourseRepo
 
             #endregion
 
-            #region Arrange course
+            #region Arrage: create new course and bind it to created instructor
 
             var newCourse = new Course();
             newCourse.Name = "Molecular Biology";
@@ -66,12 +69,13 @@ namespace Test.PersitenceLayer.Tests.CourseRepo
 
             var course= await courseRepository.FindAsync(newCourse.Id);
 
+            // Assert course created
             Assert.True(course != null, "Course should be persisted in DB");
             Assert.True(course.Name == newCourse.Name, "Course.Name should be persisted in DB");
 
             #endregion
 
-            #region Create instructorCourse
+            #region Act: create new instructorCourse
 
             var newInstructorCourse = new InstructorCourse();
             newInstructorCourse.InstructorId = instructor.Id;
@@ -79,16 +83,37 @@ namespace Test.PersitenceLayer.Tests.CourseRepo
 
             await instructorCourseRepository.AddOrUpdateAsync(newInstructorCourse);
 
-            var instructoCourse = await instructorCourseRepository
-                                        .FindAsync(c => c.CourseId == newInstructorCourse.CourseId
-                                                     && c.InstructorId == instructor.Id);
+            #endregion
+
+            #region Assert: instructorCourse exists in DB
+
+            var foundIntructorCourse = await instructorCourseRepository
+                                            .AsQueryable()
+                                            .Include(ic => ic.Instructor)
+                                            .Include(ic => ic.Course)
+                                            .FirstOrDefaultAsync(ic => ic.CourseId == newInstructorCourse.CourseId
+                                                                   && ic.InstructorId == instructor.Id);
 
 
-            Assert.True(instructoCourse != null, "Instructor course should be created");
-
+            Assert.True(foundIntructorCourse != null, "InstructorCourse should be created");
+            Assert.True(foundIntructorCourse.CourseId == course.Id, "InstructorCourse.CourseId should be equals to Course.Id");
+            Assert.True(foundIntructorCourse.InstructorId == instructor.Id, "InstructorCourse.InstructorId should be equals to Course.Id");
 
             #endregion
 
+            #region Assert: course & instructoCourse relations are saved
+
+            bool courseRelationIsCorrect = await courseRepository.AnyAsync(c => c.Id == foundIntructorCourse.Course.Id);
+            Assert.True(courseRelationIsCorrect, "Course should be in relation with InstructoCourse");
+
+            #endregion
+
+            #region Assert: instructor & instructorCourse relation are saved
+
+            bool intructorRelationIsCorrect = await instructoRepository.AnyAsync(c => c.Id == foundIntructorCourse.Instructor.Id);
+            Assert.True(intructorRelationIsCorrect, "Instructor should be in relation with InstructoCourse");
+
+            #endregion
         }
     }
 }

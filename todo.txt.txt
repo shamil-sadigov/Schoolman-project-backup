@@ -1,0 +1,2 @@
+- Delete all reading methods from services and left only creation logic. Because reading methods can be done over repositories
+- Delete Auditable entity from unnecessary classed such as course

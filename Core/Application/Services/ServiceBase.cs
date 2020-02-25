@@ -134,8 +134,6 @@ namespace Application.Services
         public virtual Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
                 => repository.FindAsync(predicate);
 
-
-
         public virtual async Task<IEnumerable<TEntity>> FindRangeAsync(Expression<Func<TEntity, bool>> predicate)
                 => await repository.FindRange(predicate).ToListAsync();
 

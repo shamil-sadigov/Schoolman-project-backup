@@ -12,6 +12,7 @@ namespace Persistence.Configurations.Education_related_configuration
 
             instructor.HasOne(i => i.Customer)
                       .WithMany(x=> x.Instructors)
+                      .HasForeignKey(i=> i.CustomerId)
                       .OnDelete(DeleteBehavior.Restrict);
 
             base.Configure(instructor);
