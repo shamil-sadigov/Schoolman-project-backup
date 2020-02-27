@@ -13,7 +13,7 @@ namespace Domain.Entities
         public string Descripton { get; set; }
         public TimeSpan Duration { get; set; }
         public CourseType Type { get; set; }
-
+        public string ImageUri { get; set; }
         public Course()
         {
             Reviews = new HashSet<CourseReview>();

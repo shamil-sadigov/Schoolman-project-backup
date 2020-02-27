@@ -17,4 +17,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Request Handlers\Course\Get courses\" />
+    <Folder Include="Request Handlers\Course\" />
+  </ItemGroup>
 </Project>

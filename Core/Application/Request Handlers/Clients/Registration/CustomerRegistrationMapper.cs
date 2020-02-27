@@ -39,6 +39,8 @@ namespace Application.Customers.Registration
                                ops => ops.MapFrom(request => request.Id))
                     .ForMember(user => user.RoleName,
                                ops => ops.MapFrom(request => request.Role.Name));
+
         }
+
     }
 }
