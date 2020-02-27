@@ -14,5 +14,4 @@ namespace Domain.Entities
         /// </summary>
         public ICollection<InstructorCourse> Courses { get; set; }
     }
-
 }

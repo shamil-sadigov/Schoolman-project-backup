@@ -70,11 +70,11 @@ namespace Application.Common.Handler_preprocessor
             // and in case validation fails we create instance of that Result with errors and return as response
 
             // Parameters for Result constructor
-            bool failed = false;
+            bool isSucceeded = false;
             string[] Errors = validationErrors;
 
             // return new Result instance with error messages
-            return (TResponse)Activator.CreateInstance(typeof(TResponse), failed, Errors);
+            return (TResponse)Activator.CreateInstance(typeof(TResponse), isSucceeded, Errors);
         }
     }
 

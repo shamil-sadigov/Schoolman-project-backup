@@ -15,6 +15,5 @@ namespace Application.Services.Business
         Task<Result<Role>> CreateAsync(string rolename);
         Task<Role> FindByName(string roleName);
         Task<Role> FindOrCreateAsync(string roleName);
-
     }
 }

@@ -11,18 +11,26 @@ namespace Domain.Entities
     {
         public string Name { get; set; }
         public string Descripton { get; set; }
+        public string About { get; set; }
+
+        public List<string> SkillsDesription { get; set; }
+
         public TimeSpan Duration { get; set; }
         public CourseType Type { get; set; }
         public string ImageUri { get; set; }
-        public Course()
+        public Course(int skillsDescriptionCount=4)
         {
+            SkillsDesription = new List<string>(capacity: skillsDescriptionCount);
             Reviews = new HashSet<CourseReview>();
             Instructors = new HashSet<InstructorCourse>();
             StudentsAcquired = new HashSet<StudentAcquiredCourse>();
             FAQs = new HashSet<FAQ>();
         }
 
+
         public CourseFee Fee { get; set; }
+
+        #region Nav props
 
         /// <summary>
         /// Course reviews that is left by Students
@@ -45,7 +53,8 @@ namespace Domain.Entities
         /// <summary>
         /// Frequently asked question regarding this course
         /// </summary>
-        public ICollection<FAQ> FAQs { get; set; }
+        public ICollection<FAQ> FAQs { get; set; } 
+        #endregion
     }
 
 

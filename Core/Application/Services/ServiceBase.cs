@@ -123,7 +123,6 @@ namespace Application.Services
             return true;
         }
 
-
         #endregion
 
         #region Reading

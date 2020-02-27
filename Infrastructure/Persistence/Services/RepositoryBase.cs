@@ -65,7 +65,7 @@ namespace Persistence.Services
             => set.AnyAsync(predicate);
 
         public IQueryable<T> AsQueryable()
-             => set.AsTracking();
+             => set.AsQueryable();
 
         public async Task RemoveRangeAsync(params T[] entities)
         {

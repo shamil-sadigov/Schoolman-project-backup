@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Domain;
+using Domain.Entities;
 using Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,11 @@ namespace Persistence.Contexts
 
     {
         private readonly ICurrentCustomerService currentUserService;
+
+
+        public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<Course> Courses { get; set; }
+
 
         public SchoolmanContext(DbContextOptions<SchoolmanContext> ops,
                                 ICurrentCustomerService currentUserService) : base(ops)

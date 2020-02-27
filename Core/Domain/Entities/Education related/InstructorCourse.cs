@@ -12,7 +12,16 @@ namespace Domain.Entities
         public int CourseId { get; set; }
         public string InstructorId { get; set; }
 
+        public InstructorCourse()
+        {
 
+        }
+
+        public InstructorCourse(int courseId, string instructorId)
+        {
+            CourseId = courseId;
+            InstructorId = instructorId;
+        }
         #region Nav properties
         /// <summary>
         /// Course that Instructor prepared
